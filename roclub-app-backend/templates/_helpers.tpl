@@ -47,7 +47,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Device Status Label
 */}}
 {{- define "roclub-app-backend.labels-device-status" -}}
-app: {{ .Chart.Name }}
+app.kubernetes.io/component: "device-status"
+app.kubernetes.io/environment: {{ .Values.environment }}
 {{- end }}
 
 {{/*
