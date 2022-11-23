@@ -6,6 +6,7 @@ metadata:
   name: {{ include include "roclub-app-backend.fullname" . }}
   labels:
     {{- include "roclub-app-backend.labels" . | nindent 4 }}
+    {{ include "roclub-app-backend.labels-device-status" . }}
 spec:
   entryPoints:
   - websecure

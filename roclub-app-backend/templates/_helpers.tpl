@@ -39,7 +39,15 @@ helm.sh/chart: {{ include "roclub-app-backend.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+app-group: {{ .Chart.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Device Status Label
+*/}}
+{{- define "roclub-app-backend.labels-device-status" -}}
+app: {{ .Chart.Name }}
 {{- end }}
 
 {{/*

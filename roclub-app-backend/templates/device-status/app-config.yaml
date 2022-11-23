@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "roclub-app-backend.fullname" . }}
+  labels:
+    {{- include "roclub-app-backend.labels" . | nindent 4 }}
+    {{ include "roclub-app-backend.labels-device-status" . }}
+data:
+  config.toml: |-
+    [kafka]
+    bootstrap.servers = {{ .Values.config.kafka.bostrapServers }}
+    group.id = {{ .Values.config.kafka.groupdID }}
+    auto.offset.reset = {{ .Values.config.kafka.autoOffsetReset }}
+    enable.auto.commit = {{ .Values.config.kafka.enableAutoCommit }}
+    security.protocol = {{ .Values.config.kafka.securityProtocol }}
+    sasl.mechanisms = {{ .Values.config.kafka.saslMechanisms }}
+    sasl.username = {{ .Values.config.kafka.saslUsername }}
+    sasl.password = {{ .Values.config.kafka.saslPassword }}
+    topics = {{ .Values.config.kafka.topics }}
+    poll_intervall = {{ .Values.config.kafka.pollIntervall }}
+
+    [http]
+    port = {{ .Values.service.port }}

@@ -9,6 +9,19 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+config:
+  kafka:
+    bostrapServers: ""
+    groupdID: ""
+    autoOffsetReset: ""
+    enableAutoCommit: ""
+    securityProtocol: ""
+    saslMechanisms: ""
+    pollIntervall: ""
+    saslUsername: ""
+    saslPassword: ""
+    topics: []
+
 serviceAccount:
   create: true
   annotations: {}
