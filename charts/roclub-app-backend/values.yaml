@@ -1,0 +1,55 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/roclub/devices-backend
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+environment: ""
+
+config:
+  kafka:
+    bostrapServers: ""
+    groupdID: ""
+    autoOffsetReset: ""
+    enableAutoCommit: ""
+    securityProtocol: ""
+    saslMechanisms: ""
+    pollIntervall: ""
+    saslUsername: ""
+    saslPassword: ""
+    topics: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  host: ""
+  tls:
+    secretName: ""
+    
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
