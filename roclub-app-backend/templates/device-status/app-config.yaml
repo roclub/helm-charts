@@ -6,18 +6,29 @@ metadata:
     {{- include "roclub-app-backend.labels" . | nindent 4 }}
     {{ include "roclub-app-backend.labels-device-status" . }}
 data:
-  config.toml: |-
+  device-status.toml: |-
     [kafka]
-    bootstrap.servers = {{ .Values.config.kafka.bostrapServers }}
-    group.id = {{ .Values.config.kafka.groupdID }}
-    auto.offset.reset = {{ .Values.config.kafka.autoOffsetReset }}
-    enable.auto.commit = {{ .Values.config.kafka.enableAutoCommit }}
-    security.protocol = {{ .Values.config.kafka.securityProtocol }}
-    sasl.mechanisms = {{ .Values.config.kafka.saslMechanisms }}
-    sasl.username = {{ .Values.config.kafka.saslUsername }}
-    sasl.password = {{ .Values.config.kafka.saslPassword }}
+    bootstrap_servers = "{{ .Values.config.kafka.bostrapServers }}"
+    group_id = "{{ .Values.config.kafka.groupdID }}"
+    auto_offset_reset = "{{ .Values.config.kafka.autoOffsetReset }}"
+    enable_auto_commit = {{ .Values.config.kafka.enableAutoCommit }}
+    security_protocol = "{{ .Values.config.kafka.securityProtocol }}"
+    sasl_mechanisms = "{{ .Values.config.kafka.saslMechanisms }}"
+    sasl_username = "{{ .Values.config.kafka.saslUsername }}"
+    sasl_password = "{{ .Values.config.kafka.saslPassword }}"
     topics = {{ .Values.config.kafka.topics }}
     poll_intervall = {{ .Values.config.kafka.pollIntervall }}
 
     [http]
     port = {{ .Values.service.port }}
+
+    [app]
+    devices_folder = "{{ .Values.config.app.devicesFolder }}"
+
+    [roclubapp]
+    webhoook_endpoint = "{{ .Values.config.roclubApp.webhoookEndpoint }}"
+    webhook_token = "{{ .Values.config.roclubApp.webhookToken }}"
+    webhook_trigger_intervall = {{ .Values.config.roclubApp.webhookTriggerIntervall }}
+
+    [logging]
+    debug =  {{ .Values.config.logging.logLevel }}

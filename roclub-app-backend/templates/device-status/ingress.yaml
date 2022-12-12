@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   annotations:
-  name: {{ include include "roclub-app-backend.fullname" . }}
+  name: {{ include "roclub-app-backend.fullname" . }}
   labels:
     {{- include "roclub-app-backend.labels" . | nindent 4 }}
     {{ include "roclub-app-backend.labels-device-status" . }}
@@ -13,7 +13,7 @@ spec:
   routes:
   - kind: Rule
     priority: 10
-    match: Host(`{{ .Values.ingress.host }}`) && Path(`/api/v1/devices/status`)
+    match: Host(`{{ .Values.ingress.host }}`) && Path(`/api/v1/device/status`)
     services:
     - name: {{ include "roclub-app-backend.fullname" . }}
       port: {{ .Values.service.port }}
