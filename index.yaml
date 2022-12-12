@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  roclub-app-backend:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-12-12T15:49:19.465335809Z"
+    description: The Helm chart used to deploy the roclub app backend API
+    digest: 36332fcb920ed747f10710cc3672e2f1bba508032f37d652d1a882a538f312f7
+    name: roclub-app-backend
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-app-backend-0.2.5/roclub-app-backend-0.2.5.tgz
+    version: 0.2.5
+generated: "2022-12-12T15:49:19.465342109Z"
