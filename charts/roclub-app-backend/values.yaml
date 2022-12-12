@@ -23,6 +23,17 @@ config:
     saslPassword: ""
     topics: []
 
+  app:
+    devicesFolder: ""
+
+  roclubApp:
+    webhoookEndpoint: ""
+    webhookToken: ""
+    webhookTriggerIntervall: 15
+
+  logging:
+    logLevel: ""
+
 serviceAccount:
   create: true
   annotations: {}
