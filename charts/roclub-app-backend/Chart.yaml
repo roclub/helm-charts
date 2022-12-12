@@ -3,5 +3,5 @@ name: roclub-app-backend
 description: The Helm chart used to deploy the roclub app backend API
 
 type: application
-version: 0.2.0
+version: 0.2.1
 appVersion: "latest"
