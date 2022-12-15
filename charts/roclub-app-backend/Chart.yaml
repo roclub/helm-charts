@@ -1,7 +1,9 @@
 apiVersion: v2
+appVersion: v0.2.0
+kubeVersion: ">=1.22.0-0"
+version: 0.3.0
+
 name: roclub-app-backend
 description: The Helm chart used to deploy the roclub app backend API
-
+home: https://github.com/roclub/helm-charts
 type: application
-version: 0.2.5
-appVersion: "latest"
