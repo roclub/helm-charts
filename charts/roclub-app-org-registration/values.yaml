@@ -1,0 +1,99 @@
+global:
+  config:
+    gateway:
+      informationServerAddress: ""
+    information:
+      mongodbConnectionString: ""
+      grpcPort: 8082
+    http:
+      port: 80
+    logger:
+      level: "debug"
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
+gateway:
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/roclub/app-backend-org-registration-gateway 
+    pullPolicy: IfNotPresent
+    tag: "0.1.2"
+
+  imagePullSecrets: 
+  - name: ""
+  nameOverride: ""
+  fullnameOverride: ""
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ingress:
+    enabled: true
+    className: ""
+    hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: []
+      secretName: ""
+      issuer:
+        acme: true
+        email: ""
+        server: ""
+        className: ""
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+information:
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/roclub/app-backend-org-registration-information
+    pullPolicy: IfNotPresent
+    tag: "0.1.2"
+
+  imagePullSecrets: 
+  - name: ""
+  nameOverride: ""
+  fullnameOverride: ""
+
+  service:
+    type: ClusterIP
+    port: 8082
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
