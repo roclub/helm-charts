@@ -7,28 +7,32 @@ metadata:
     {{ include "roclub-app-backend.labels-device-status" . }}
 data:
   device-status.toml: |-
-    [kafka]
-    bootstrap_servers = "{{ .Values.config.kafka.bostrapServers }}"
-    group_id = "{{ .Values.config.kafka.groupdID }}"
-    auto_offset_reset = "{{ .Values.config.kafka.autoOffsetReset }}"
-    enable_auto_commit = {{ .Values.config.kafka.enableAutoCommit }}
-    security_protocol = "{{ .Values.config.kafka.securityProtocol }}"
-    sasl_mechanisms = "{{ .Values.config.kafka.saslMechanisms }}"
-    sasl_username = "{{ .Values.config.kafka.saslUsername }}"
-    sasl_password = "{{ .Values.config.kafka.saslPassword }}"
-    topics = {{ .Values.config.kafka.topics }}
-    poll_intervall = {{ .Values.config.kafka.pollIntervall }}
+    [flow-manager]
 
-    [http]
-    port = {{ .Values.service.port }}
+        [flow-manager.config]
+        roclub_connector_timeout = 60
 
-    [app]
-    devices_folder = "{{ .Values.config.app.devicesFolder }}"
+        [flow-manager.kafka]
+        bootstrap_servers = "{{ .Values.config.flowManager.kafka.bootstrapServers }}"
+        group_id = "{{ .Values.config.flowManager.kafka.groupdID }}"
+        auto_offset_reset = "latest"
+        enable_auto_commit = false
+        security_protocol = "SASL_SSL"
+        sasl_mechanisms = "PLAIN"
+        sasl_username = "{{ .Values.config.flowManager.kafka.saslUsername }}"
+        sasl_password = "{{ .Values.config.flowManager.kafka.saslPassword }}"
+        topics = [ "device_status" ]
+        poll_intervall = 15000
 
-    [roclubapp]
-    webhoook_endpoint = "{{ .Values.config.roclubApp.webhoookEndpoint }}"
-    webhook_token = "{{ .Values.config.roclubApp.webhookToken }}"
-    webhook_trigger_intervall = {{ .Values.config.roclubApp.webhookTriggerIntervall }}
+        [flow-manager.database]
+        mongodb_connection_string = "{{ .Values.config.flowManager.database.mongoDBConnectionString }}"
+        mongodb_database = "roclub-connector"
+        mongodb_collection = "status"
 
-    [logging]
-    debug =  {{ .Values.config.logging.logLevel }}
+        [flow-manager.roclubapp]
+        webhoook_endpoint = "{{ .Values.config.flowManager.roclubApp.webhoookEndpoint }}"
+        webhook_token = "{{ .Values.config.flowManager.roclubApp.webhookToken }}"
+        webhook_trigger_intervall = {{ .Values.config.flowManager.roclubApp.webhookTriggerIntervall }}
+    
+    [logger]
+    level = "{{ .Values.config.logging.logLevel }}"
