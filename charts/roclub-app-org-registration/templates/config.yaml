@@ -7,18 +7,11 @@ metadata:
     {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
 data:
   org-registration.toml: |-
-    [gateway]
-    grpc_server_address = "{{ .Values.global.config.gateway.informationServerAddress }}"
-
     [information]
     mongodb_connection_string = "{{ .Values.global.config.information.mongodbConnectionString }}"
-    grpc_port = {{ .Values.global.config.information.grpcPort}}
    
     [http]
     port = {{ .Values.global.config.http.port }}
    
-    [grpc]
-
     [logger]
     level = "{{ .Values.global.config.logger.level }}"
-    
