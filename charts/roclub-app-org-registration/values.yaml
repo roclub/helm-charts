@@ -1,10 +1,10 @@
 global:
   config:
     gateway:
-      informationServerAddress: ""
+      http:
+        bearerToken: ""
     information:
       mongodbConnectionString: ""
-      grpcPort: 8082
     http:
       port: 80
     logger:

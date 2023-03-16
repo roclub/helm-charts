@@ -7,6 +7,11 @@ metadata:
     {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
 data:
   org-registration.toml: |-
+    [gateway]
+      [gateway.http]
+      port = "{{ .Values.gateway.service.port }}"
+      bearer_token = "{{ .Values.global.config.gateway.http.bearerToken }}"
+
     [information]
     mongodb_connection_string = "{{ .Values.global.config.information.mongodbConnectionString }}"
    
