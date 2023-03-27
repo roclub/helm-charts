@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  app-backend-connector-registration:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-27T08:56:55.294044919Z"
+    description: Deploys the Connector Registration microservice
+    digest: 0822fd96fbec2fe3b7491b80f17fd4f71bdd5fa90c4b0db8d04edf491fa61a6e
+    name: app-backend-connector-registration
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/app-backend-connector-registration-0.1.0/app-backend-connector-registration-0.1.0.tgz
+    version: 0.1.0
   roclub-app-backend:
   - apiVersion: v2
     appVersion: 0.4.5
@@ -205,4 +216,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-app-organization-registration-0.2.0/roclub-app-organization-registration-0.2.0.tgz
     version: 0.2.0
-generated: "2023-03-22T08:11:05.474683916Z"
+generated: "2023-03-27T08:56:55.294078819Z"
