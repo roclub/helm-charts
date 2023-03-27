@@ -47,11 +47,6 @@ gateway:
     tls:
       hosts: []
       secretName: ""
-      issuer:
-        acme: true
-        email: ""
-        server: ""
-        className: ""
 
   resources: {}
   autoscaling:
