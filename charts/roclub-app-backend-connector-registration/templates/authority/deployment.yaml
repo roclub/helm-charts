@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "roclub-app-backend-connector-registration.authorityName" . }}
+  labels:
+    {{- include "roclub-app-backend-connector-registration.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.authority.autoscaling.enabled }}
+  replicas: {{ .Values.authority.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "roclub-app-backend-connector-registration.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "roclub-app-backend-connector-registration.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "roclub-app-backend-connector-registration.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.authority.image.repository }}:{{ .Values.authority.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.authority.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.authority.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/roclub-connector-registration
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "roclub-app-backend-connector-registration.configName" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
