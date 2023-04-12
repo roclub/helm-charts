@@ -1,0 +1,12 @@
+{{- if .Values.sysdigSecureAgent.enabled -}}
+{{- $fullName := include "bootstrap.fullname" . -}}
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: {{ .Values.sysdigSecureAgent.priorityClassName }}
+  labels:
+    {{- include "bootstrap.labels" . | nindent 4 }}
+value: {{ .Values.sysdigSecureAgent.priorityClassValue }}
+globalDefault: false
+description: "This priority class is for deploying SysDig Secure Agents."
+{{- end }}

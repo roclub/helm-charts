@@ -1,0 +1,3 @@
+sysdigSecureAgent:
+  priorityClassName: sysdig-secure-agent
+  priorityClassValue: 100000
