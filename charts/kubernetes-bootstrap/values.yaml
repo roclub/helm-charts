@@ -1,0 +1,25 @@
+agent:
+  enabled: true
+  global:
+
+    clusterConfig:
+      name: ""
+
+    sysdig:
+      accessKey: 
+      region: eu1
+
+    kspm:
+      deploy: true
+      
+  priorityClassName: sysdig-secure
+  priorityClassValue: 100000
+  
+  nodeAnalyzer:
+    nodeAnalyzer:
+      benchmarkRunner:
+        deploy: false
+
+    secure:
+      vulnerabilityManagement:
+        newEngineOnly: true

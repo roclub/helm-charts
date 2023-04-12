@@ -1,0 +1,6 @@
+dependencies:
+- name: agent
+  repository: https://charts.sysdig.com
+  version: 1.6.8
+digest: sha256:66954476b4b09f2c622aad25c3d540c1de557f49b1efb3745a56dfdf24e340d4
+generated: "2023-04-11T09:12:23.72819+01:00"
