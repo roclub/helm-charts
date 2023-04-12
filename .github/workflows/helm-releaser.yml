@@ -28,6 +28,10 @@ jobs:
         run: |
           git checkout origin/gh-pages index.yaml
 
+      - name: Get all subcharts
+        run: |
+          helm repo add sysdig https://charts.sysdig.com
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         with:
