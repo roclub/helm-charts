@@ -11,6 +11,17 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/app-backend-connector-registration-0.1.0/app-backend-connector-registration-0.1.0.tgz
     version: 0.1.0
+  bootstrap:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-04-12T11:27:15.339246924Z"
+    description: A Helm chart for Kubernetes
+    digest: 25acdce8879f496f4574e241e4f10a2439b13f57ba0bdc88f5c26f961ac525c5
+    name: bootstrap
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/bootstrap-0.1.0/bootstrap-0.1.0.tgz
+    version: 0.1.0
   kubernetes-bootstrap:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -233,4 +244,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-app-organization-registration-0.2.0/roclub-app-organization-registration-0.2.0.tgz
     version: 0.2.0
-generated: "2023-04-12T09:41:49.785574195Z"
+generated: "2023-04-12T11:27:15.339396524Z"
