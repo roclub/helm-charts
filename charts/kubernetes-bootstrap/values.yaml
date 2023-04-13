@@ -1,25 +1,75 @@
-agent:
-  enabled: true
-  global:
+project: dev-roclub-app-backend-management
+cluster: eks-dev-roclub-app-backend
+applicationPrefix: 'dev'
+releaseNamePrefix: 'testing-bootstrap'
 
-    clusterConfig:
-      name: ""
+bootstrap:
+  targetRevision: 0.2.0
 
-    sysdig:
-      accessKey: 
-      region: eu1
-
-    kspm:
-      deploy: true
-      
-  priorityClassName: sysdig-secure
-  priorityClassValue: 100000
+metricsServer:
   
-  nodeAnalyzer:
-    nodeAnalyzer:
-      benchmarkRunner:
-        deploy: false
+  enabled: true
+  namespace: monitoring-chart-dev
 
-    secure:
-      vulnerabilityManagement:
-        newEngineOnly: true
+  targetRevision: 3.9.0
+
+sysdigSecureAgent:
+
+  enabled: true
+  namespace: sysdig-secure-chart-dev
+
+  targetRevision: 1.6.8
+
+  priorityClassName: sysdig-secure-agent
+  priorityClassValue: 100000
+
+  accessKey: 1ac578dd-f664-4532-a4ef-d70182ba7c7c
+
+traefik:
+  
+  enabled: true
+  namespace: default
+
+  targetRevision: 18.3.0
+
+promtail:
+  
+  enabled: true
+  namespace: monitoring-chart-dev
+
+  targetRevision: 6.7.4
+
+  url: https://364704:glc_eyJvIjoiNzc3MjczIiwibiI6Im1ndC1jbHVzdGVyIiwiayI6Ikd5OFUzYzFxMDZZZ0ttTmozM3gwemczNiIsIm0iOnsiciI6ImV1In19@logs-prod-eu-west-0.grafana.net/api/prom/push
+
+awsEBSDriver:
+  
+  enabled: true
+  namespace: kube-system
+
+  targetRevision: 2.12.1
+
+  awsRoleArn: arn:aws:iam::744529500733:role/eks-mgt-kubernetes-AmazonEKS-EBS-CSI-Driver-Role
+
+crossplane:
+  
+  enabled: true
+  namespace: crossplane
+
+  targetRevision: 1.10.1
+
+certManager:
+  
+  enabled: true
+  namespace: certmanager
+
+  targetRevision: 1.11.0
+
+clusterAutoscaler:
+  
+  enabled: true
+  namespace: kube-system
+
+  targetRevision: 9.28.0
+
+  awsRegion: eu-central-1
+  awsRoleArn: arn:aws:iam::172771008158:role/eks-dev-roclub-app-backend-AmazonEKSClusterAutoscalerRole

@@ -1,0 +1,71 @@
+{{- if .Values.certManager.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: '{{ .Values.applicationPrefix }}-cert-manager'
+  namespace: argocd
+spec:
+    project: {{ .Values.project }}
+    source:
+        repoURL: https://charts.jetstack.io
+        targetRevision: {{ .Values.certManager.targetRevision }}
+        chart: cert-manager
+        helm:
+            releaseName: '{{ .Values.releaseNamePrefix }}-aws-ebs-csi-driver'
+            values: |
+              global:
+                logLevel: 2
+
+                leaderElection:
+                  namespace: "kube-system"
+
+              installCRDs: true
+
+              podDnsPolicy: "None"
+              podDnsConfig:
+                nameservers:
+                  - 8.8.8.8
+                  - 8.8.4.4
+
+              featureGates: ""
+              maxConcurrentChallenges: 60
+              clusterResourceNamespace: ""
+              namespace: ""
+
+              ingressShim: {}
+
+              prometheus:
+                enabled: false
+
+              webhook:
+                replicaCount: 1
+                timeoutSeconds: 10
+
+              cainjector:
+                enabled: true
+              startupapicheck:
+                enabled: true
+
+    destination:
+        name: {{ .Values.cluster }}
+        namespace: {{ .Values.certManager.namespace }}
+
+    syncPolicy:
+        automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: false
+
+        syncOptions:
+            - Validate=true
+            - CreateNamespace=true
+            - PrunePropagationPolicy=foreground
+            - PruneLast=true 
+
+        retry:
+            limit: 3
+            backoff:
+                duration: 10s
+                factor: 2
+                maxDuration: 3m
+{{- end }}  

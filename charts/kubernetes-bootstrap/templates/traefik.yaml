@@ -1,0 +1,84 @@
+{{- if .Values.traefik.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: '{{ .Values.applicationPrefix }}-traefik'
+  namespace: argocd
+spec:
+    project: {{ .Values.project }}
+    source:
+        repoURL: https://helm.traefik.io/traefik
+        targetRevision: {{ .Values.traefik.targetRevision }}
+        chart: traefik
+        helm:
+            releaseName: '{{ .Values.releaseNamePrefix }}-traefik'
+            values: |
+              additionalArguments:
+              - "--api.dashboard=true" 
+              - "--api.insecure=true"
+
+              revisionHistoryLimit: 1
+
+              deployment:
+                enabled: true
+                kind: Deployment
+                replicas: 1
+
+              logs:
+                general:
+                  level: ERROR
+                access:
+                  enabled: false
+
+              service:
+                annotations: 
+                  kubernetes.io/ingress.class: alb
+
+              providers:
+                kubernetesCRD:
+                  allowCrossNamespace: true
+
+                kubernetesIngress:
+                  enabled: true
+                  allowExternalNameServices: true
+                  publishedService:
+                    enabled: true
+
+              ingressClass:
+                enabled: true
+                isDefaultClass: true
+
+              service:
+                annotations:
+                  service.beta.kubernetes.io/aws-load-balancer-type: nlb
+
+              ports:
+                traefik:
+                  web:
+                    port: 8000
+                    exposedPort: 80
+                    redirectTo: websecure
+
+    destination:
+        name: {{ .Values.cluster }}
+        namespace: {{ .Values.traefik.namespace }}
+
+    syncPolicy:
+        automated:
+            prune: true
+            selfHeal: true
+            allowEmpty: false
+
+        syncOptions:
+            - Validate=true
+            - CreateNamespace=true
+            - PrunePropagationPolicy=foreground
+            - PruneLast=true 
+
+        retry:
+            limit: 3
+            backoff:
+                duration: 10s
+                factor: 2
+                maxDuration: 3m
+{{- end }}  
