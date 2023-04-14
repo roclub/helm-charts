@@ -11,7 +11,7 @@ spec:
         targetRevision: {{ .Values.certManager.targetRevision }}
         chart: cert-manager
         helm:
-            releaseName: '{{ .Values.releaseNamePrefix }}-aws-ebs-csi-driver'
+            releaseName: '{{ .Values.releaseNamePrefix }}-cert-manager'
             values: |
               global:
                 logLevel: 2
