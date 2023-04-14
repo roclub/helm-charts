@@ -23,7 +23,7 @@ sysdigSecureAgent:
   priorityClassName: sysdig-secure-agent
   priorityClassValue: 100000
 
-  accessKey: 1ac578dd-f664-4532-a4ef-d70182ba7c7c
+  accessKey:
 
 traefik:
   
@@ -39,7 +39,7 @@ promtail:
 
   targetRevision: 6.7.4
 
-  url: https://364704:glc_eyJvIjoiNzc3MjczIiwibiI6Im1ndC1jbHVzdGVyIiwiayI6Ikd5OFUzYzFxMDZZZ0ttTmozM3gwemczNiIsIm0iOnsiciI6ImV1In19@logs-prod-eu-west-0.grafana.net/api/prom/push
+  url: 
 
 awsEBSDriver:
   
@@ -48,7 +48,7 @@ awsEBSDriver:
 
   targetRevision: 2.12.1
 
-  awsRoleArn: arn:aws:iam::744529500733:role/eks-mgt-kubernetes-AmazonEKS-EBS-CSI-Driver-Role
+  awsRoleArn: 
 
 crossplane:
   
@@ -60,7 +60,7 @@ crossplane:
 certManager:
   
   enabled: true
-  namespace: certmanager
+  namespace: cert-manager
 
   targetRevision: 1.11.0
 
@@ -72,4 +72,4 @@ clusterAutoscaler:
   targetRevision: 9.28.0
 
   awsRegion: eu-central-1
-  awsRoleArn: arn:aws:iam::172771008158:role/eks-dev-roclub-app-backend-AmazonEKSClusterAutoscalerRole
+  awsRoleArn: 
