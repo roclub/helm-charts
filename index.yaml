@@ -13,6 +13,16 @@ entries:
     version: 0.1.0
   bootstrap:
   - apiVersion: v2
+    appVersion: 0.2.2
+    created: "2023-04-17T10:57:11.800627849Z"
+    description: A Helm chart for Kubernetes
+    digest: 8671664b1f8c092528c0276f9bdcec548d726096e6fe9585a75827789c8a4eea
+    name: bootstrap
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/bootstrap-0.2.2/bootstrap-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     appVersion: 0.2.1
     created: "2023-04-13T07:11:55.203819898Z"
     description: A Helm chart for Kubernetes
@@ -286,4 +296,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-app-organization-registration-0.2.0/roclub-app-organization-registration-0.2.0.tgz
     version: 0.2.0
-generated: "2023-04-14T10:36:25.910798116Z"
+generated: "2023-04-17T10:57:11.800666349Z"
