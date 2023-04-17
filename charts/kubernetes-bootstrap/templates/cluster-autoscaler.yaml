@@ -18,6 +18,7 @@ spec:
               awsRegion: {{ .Values.clusterAutoscaler.awsRegion }}
               rbac:
                 serviceAccount:
+                  name: aws-cluster-autoscaler
                   annotations: 
                     eks.amazonaws.com/role-arn: {{ .Values.clusterAutoscaler.awsRoleArn }}
 
