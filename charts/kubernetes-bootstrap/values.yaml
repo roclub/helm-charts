@@ -61,8 +61,17 @@ certManager:
   
   enabled: true
   namespace: cert-manager
-
   targetRevision: 1.11.0
+
+  clusterIssuers:
+  - name: letsencrypt-staging
+    email: platform-engineering@roclub.com
+    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    ingressTemplate:
+        metadata:
+          annotations:
+            acme.cert-manager.io/http01-edit-in-place: "true"
+            acme.cert-manager.io/http01-ingress-class: mgt-traefik
 
 clusterAutoscaler:
   
