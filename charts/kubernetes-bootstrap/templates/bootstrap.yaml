@@ -14,15 +14,16 @@ spec:
             releaseName: '{{ .Values.releaseNamePrefix }}-{{ .Values.applicationPrefix }}-bootstrap'
             values: |
               sysdigSecureAgent:
-                enabled: true
+                enabled: {{ .Values.sysdigSecureAgent.enabled }}
                 priorityClassName: {{ .Values.sysdigSecureAgent.priorityClassName }}
                 priorityClassValue: {{ .Values.sysdigSecureAgent.priorityClassValue }}
 
               certManager:
-                enabled: true
+                enabled: {{ .Values.certManager.enabled }}
+                clusterIssuers:  {{ .Values.certManager.clusterIssuers }}
               
               promtail:
-                enabled: true
+                enabled: {{ .Values.promtail.enabled }}
 
     destination:
         name: {{ .Values.cluster }}
