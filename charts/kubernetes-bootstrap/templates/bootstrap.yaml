@@ -21,7 +21,7 @@ spec:
               certManager:
                 enabled: {{ .Values.certManager.enabled }}
                 
-                {{- if .Values.certManager.clusterIssuers -}}
+                {{- if .Values.certManager.clusterIssuers }}
                 clusterIssuers:
                 {{- range $issuer := .Values.certManager.clusterIssuers }}
                 - name: {{ $issuer.name }}
