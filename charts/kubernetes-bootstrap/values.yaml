@@ -4,7 +4,8 @@ applicationPrefix: 'dev'
 releaseNamePrefix: 'testing-bootstrap'
 
 bootstrap:
-  targetRevision: 0.2.0
+  enabled: true
+  targetRevision: 0.3.0
 
 metricsServer:
   
@@ -64,14 +65,14 @@ certManager:
   targetRevision: 1.11.0
 
   clusterIssuers:
-  - name: letsencrypt-staging
-    email: platform-engineering@roclub.com
+  - name: ""
+    email: ""
     server: "https://acme-staging-v02.api.letsencrypt.org/directory"
     ingressTemplate:
         metadata:
           annotations:
             acme.cert-manager.io/http01-edit-in-place: "true"
-            acme.cert-manager.io/http01-ingress-class: mgt-traefik
+            acme.cert-manager.io/http01-ingress-class: ""
 
 clusterAutoscaler:
   
