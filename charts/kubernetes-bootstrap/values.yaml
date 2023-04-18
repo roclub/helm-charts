@@ -1,7 +1,7 @@
 project: dev-roclub-app-backend-management
 cluster: eks-dev-roclub-app-backend
-applicationPrefix: 'dev'
-releaseNamePrefix: 'testing-bootstrap'
+applicationPrefix: 'devcert'
+releaseNamePrefix: 'certtesting-bootstrap'
 
 bootstrap:
   enabled: true
@@ -9,14 +9,14 @@ bootstrap:
 
 metricsServer:
   
-  enabled: true
+  enabled: false
   namespace: monitoring-chart-dev
 
   targetRevision: 3.9.0
 
 sysdigSecureAgent:
 
-  enabled: true
+  enabled: false
   namespace: sysdig-secure-chart-dev
 
   targetRevision: 1.6.8
@@ -28,14 +28,14 @@ sysdigSecureAgent:
 
 traefik:
   
-  enabled: true
+  enabled: false
   namespace: default
 
   targetRevision: 18.3.0
 
 promtail:
   
-  enabled: true
+  enabled: false
   namespace: monitoring-chart-dev
 
   targetRevision: 6.7.4
@@ -44,7 +44,7 @@ promtail:
 
 awsEBSDriver:
   
-  enabled: true
+  enabled: false
   namespace: kube-system
 
   targetRevision: 2.12.1
@@ -53,7 +53,7 @@ awsEBSDriver:
 
 crossplane:
   
-  enabled: true
+  enabled: false
   namespace: crossplane
 
   targetRevision: 1.10.1
@@ -65,21 +65,37 @@ certManager:
   targetRevision: 1.11.0
 
   clusterIssuers:
-  - name: ""
-    email: ""
+  - name: "staging-1"
+    email: "maxmustermann@roclub.com"
     server: "https://acme-staging-v02.api.letsencrypt.org/directory"
     ingressTemplate:
         metadata:
           annotations:
             acme.cert-manager.io/http01-edit-in-place: "true"
             acme.cert-manager.io/http01-ingress-class: ""
+  - name: "staging-2"
+    email: "maxmustermann@roclub.com"
+    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    ingressTemplate:
+        metadata:
+          annotations:
+            acme.cert-manager.io/http01-edit-in-place: "true"
+            acme.cert-manager.io/http01-ingress-class: ""
+  - name: "staging-3"
+    email: "maxmustermann@roclub.com"
+    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    ingressTemplate:
+      metadata:
+        annotations:
+          acme.cert-manager.io/http01-edit-in-place: "true"
+          acme.cert-manager.io/http01-ingress-class: ""
 
 clusterAutoscaler:
   
-  enabled: true
+  enabled: false
   namespace: kube-system
 
   targetRevision: 9.28.0
 
   awsRegion: eu-central-1
-  awsRoleArn: 
+  awsRoleArn: ""
