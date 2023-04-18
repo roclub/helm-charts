@@ -1,0 +1,18 @@
+{{- if .Values.certManager.enabled -}}
+{{- range $issuer := .Values.certManager.clusterIssuers }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $issuer.name }}
+spec:
+  acme:
+    email: {{ $issuer.email }}
+    server: {{ $issuer.server }}
+    privateKeySecretRef:
+      name: {{ $issuer.name }}-private-key
+    solvers:
+    - http01:
+        ingress:
+          ingressTemplate: {{ toYaml $issuer.ingressTemplate | nindent 12 }}
+{{- end }}
+{{- end }}
