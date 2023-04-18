@@ -17,7 +17,13 @@ spec:
                 enabled: true
                 priorityClassName: {{ .Values.sysdigSecureAgent.priorityClassName }}
                 priorityClassValue: {{ .Values.sysdigSecureAgent.priorityClassValue }}
-                
+
+              certManager:
+                enabled: true
+              
+              promtail:
+                enabled: true
+
     destination:
         name: {{ .Values.cluster }}
         namespace: {{ .Values.sysdigSecureAgent.namespace }}
