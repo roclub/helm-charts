@@ -33,6 +33,8 @@ spec:
 
               promtail:
                 enabled: {{ .Values.promtail.enabled }}
+                priorityClassName: {{ .Values.promtail.priorityClassName }}
+                priorityClassValue: {{ .Values.promtail.priorityClassValue }}
 
     destination:
         name: {{ .Values.cluster }}
