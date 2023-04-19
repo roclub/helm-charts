@@ -36,7 +36,7 @@ spec:
 
     destination:
         name: {{ .Values.cluster }}
-        namespace: {{ .Values.sysdigSecureAgent.namespace }}
+        namespace: {{ .Values.bootstrap.namespace | default "default" }}
 
     syncPolicy:
         automated:
