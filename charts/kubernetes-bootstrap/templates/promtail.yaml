@@ -16,7 +16,7 @@ spec:
               configmap:
                 enabled: true
 
-              priorityClassName:{{ .Values.promtail.priorityClassName }}
+              priorityClassName: {{ .Values.promtail.priorityClassName }}
 
               config:
                 logLevel: error
