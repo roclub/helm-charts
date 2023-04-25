@@ -7,12 +7,12 @@ metadata:
     {{ include "roclub-app-backend.labels-device-status" . }}
 data:
   device-status.toml: |-
-    [flow-manager]
+    [connector-status]
 
-        [flow-manager.config]
+        [connector-status.config]
         roclub_connector_timeout = 60
 
-        [flow-manager.kafka]
+        [connector-status.kafka]
         bootstrap_servers = "{{ .Values.config.flowManager.kafka.bootstrapServers }}"
         group_id = "{{ .Values.config.flowManager.kafka.groupdID }}"
         auto_offset_reset = "latest"
@@ -24,12 +24,12 @@ data:
         topics = [ "device_status" ]
         poll_intervall = 15000
 
-        [flow-manager.database]
+        [connector-status.repository]
         mongodb_connection_string = "{{ .Values.config.flowManager.database.mongoDBConnectionString }}"
         mongodb_database = "roclub-connector"
         mongodb_collection = "status"
 
-        [flow-manager.roclubapp]
+        [connector-status.roclubapp]
         webhoook_endpoint = "{{ .Values.config.flowManager.roclubApp.webhoookEndpoint }}"
         webhook_token = "{{ .Values.config.flowManager.roclubApp.webhookToken }}"
         webhook_trigger_intervall = {{ .Values.config.flowManager.roclubApp.webhookTriggerIntervall }}
