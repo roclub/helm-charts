@@ -21,7 +21,7 @@ data:
         sasl_mechanisms = "PLAIN"
         sasl_username = "{{ .Values.config.flowManager.kafka.saslUsername }}"
         sasl_password = "{{ .Values.config.flowManager.kafka.saslPassword }}"
-        topics = "{{ .Values.config.flowManager.kafka.topics }}"
+        topics = {{ .Values.config.flowManager.kafka.topics }}
         poll_intervall = 15000
 
         [connector-status.repository]
