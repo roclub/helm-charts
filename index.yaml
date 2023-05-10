@@ -475,4 +475,15 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-app-organization-registration-0.2.0/roclub-app-organization-registration-0.2.0.tgz
     version: 0.2.0
-generated: "2023-04-29T11:27:33.52442073Z"
+  roclub-connector-provisioning:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2023-05-10T10:38:32.374224406Z"
+    description: A Helm chart to deploy the spaghetti code from Daniel Lange
+    digest: 99ff3b55954f80829734f142e07fc9003c0b47e53a73111a0e9652cf644327a6
+    name: roclub-connector-provisioning
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.1/roclub-connector-provisioning-0.1.1.tgz
+    version: 0.1.1
+generated: "2023-05-10T10:38:32.374333807Z"
