@@ -19,10 +19,7 @@ metadata:
   labels:
     {{- include "roclub-connector-provisioning.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/issuer: {{ include "roclub-connector-provisioning.gatewayIssuerName" . }}
-  {{- with .Values.frontend.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    cert-manager.io/cluster-issuer: {{ .Values.frontend.ingress.tls.clusterIssuer }}
 spec:
   {{- if and .Values.frontend.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.frontend.ingress.className }}

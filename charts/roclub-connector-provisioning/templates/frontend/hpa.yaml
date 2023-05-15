@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "roclub-connector-provisioning.fullname" . }}
+  name: {{ include "roclub-connector-provisioning.frontendName" . }}
   labels:
     {{- include "roclub-connector-provisioning.labels" . | nindent 4 }}
 spec:

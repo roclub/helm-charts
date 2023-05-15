@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "roclub-connector-provisioning.fullname" . }}
+  name: {{ include "roclub-connector-provisioning.provisionAuthorityName" . }}
   labels:
     {{- include "roclub-connector-provisioning.labels" . | nindent 4 }}
 spec:
@@ -20,7 +20,7 @@ spec:
       labels:
         {{- include "roclub-connector-provisioning.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.backend.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -47,6 +47,13 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/roclub-connector-provisioning/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "roclub-connector-provisioning.fullname" . }}
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

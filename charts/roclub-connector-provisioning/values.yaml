@@ -1,5 +1,9 @@
 nameOverride: ""
 fullnameOverride: ""
+imagePullSecrets: []
+
+config:
+  logger: "debug"
 
 frontend:
 
@@ -24,6 +28,9 @@ frontend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
 
   service:
     type: ClusterIP
@@ -31,6 +38,7 @@ frontend:
 
   ingress:
     enabled: true
+    annotations:
     className: ""
     hosts:
     - host: ""
@@ -40,7 +48,12 @@ frontend:
     tls:
       hosts: []
       secretName: ""
+      clusterIssuer: ""
 
+    config:
+      app:
+        environment: ""
+        port: ""
 
 backend:
   replicaCount: 1
@@ -63,16 +76,26 @@ backend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
 
   service:
     type: ClusterIP
     port: 80
 
+  config:
+    kafka:
+      bootstrapServers: ""
+      saslUsername: ""
+      saslPassword: ""
+      subscriptionTopics: ""
+      clientID: ""
+      groupID: ""
+    mongodb:
+      connectionString: ""
+
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
