@@ -92,8 +92,16 @@ backend:
       subscriptionTopics: ""
       clientID: ""
       groupID: ""
+      autoOffsetReset: ""
+      enableAutoCommit: ""
+      securityProtocol: ""
+      saslMechanisms: ""
+      pollInterval: ""
+
     mongodb:
       connectionString: ""
+      database: ""
+      collection: ""
 
 serviceAccount:
   create: true
