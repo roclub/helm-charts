@@ -14,12 +14,36 @@ spec:
             releaseName: '{{ .Values.releaseNamePrefix }}-aws-ebs-csi-driver'
             values: |
               controller:
+                loggingFormat: json
+                priorityClassName: csi-drivers
+
                 serviceAccount:
                   annotations:
                     eks.amazonaws.com/role-arn: {{ .Values.awsEBSDriver.awsRoleArn }}
-                    
+              node:
+                loggingFormat: json
+                priorityClassName: csi-drivers
+
               storageClasses:
               - name: gp3
+                volumeBindingMode: WaitForFirstConsumer
+                reclaimPolicy: Retain
+                parameters:
+                  encrypted: "true"
+                  type: gp3
+              - name: aws-gp3-daily-backup
+                volumeBindingMode: WaitForFirstConsumer
+                reclaimPolicy: Retain
+                parameters:
+                  encrypted: "true"
+                  type: gp3
+              - name: aws-gp3-weekly-backup
+                volumeBindingMode: WaitForFirstConsumer
+                reclaimPolicy: Retain
+                parameters:
+                  encrypted: "true"
+                  type: gp3
+              - name: aws-gp3-monthly-backup
                 volumeBindingMode: WaitForFirstConsumer
                 reclaimPolicy: Retain
                 parameters:
