@@ -17,9 +17,16 @@ data:
     subscription_topics = {{ .Values.backend.config.kafka.subscriptionTopics }}
     client_id = "{{ .Values.backend.config.kafka.clientID }}"
     group_id = "{{ .Values.backend.config.kafka.groupID }}"
+    auto_offset_reset = "{{ .Values.backend.config.kafka.autoOffsetReset }}"
+    enable_auto_commit = "{{ .Values.backend.config.kafka.enableAutoCommit }}"
+    security_protocol = "{{ .Values.backend.config.kafka.securityProtocol }}"
+    sasl_mechanisms = "{{ .Values.backend.config.kafka.saslMechanisms }}"
+    poll_interval = "{{ .Values.backend.config.kafka.pollInterval }}"
 
     [mongodb]
-    connection_string = "{{ .Values.backend.config.mongodb.connectionString}}"
+    connection_string = "{{ .Values.backend.config.mongodb.connectionString }}"
+    database = "{{ .Values.backend.config.mongodb.database }}"
+    collection = "{{ .Values.backend.config.mongodb.collection }}"
 
     [logger]
     level = "{{ .Values.config.logger }}"
