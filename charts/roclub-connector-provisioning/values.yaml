@@ -38,17 +38,18 @@ frontend:
 
   ingress:
     enabled: true
-    annotations:
-    className: ""
+    annotations: {}
+    className: "dev-traefik"
     hosts:
-    - host: ""
+    - host: "provisioning.dev.roclub.io"
       paths:
         - path: /
           pathType: Prefix
     tls:
-      hosts: []
-      secretName: ""
-      clusterIssuer: ""
+      hosts:
+        - "provisioning.dev.roclub.io"
+      secretName: "provision-frontend-tls"
+      clusterIssuer: "dev.roclub.io"
 
     config:
       app:
