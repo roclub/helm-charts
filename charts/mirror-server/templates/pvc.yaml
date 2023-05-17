@@ -1,0 +1,14 @@
+{{- if .Values.persistency.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mirror-server.packagesClaimName" . }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistency.volumeSize }}
+  storageClassName: {{ .Values.persistency.storageClassName }}
+  volumeMode: Filesystem
+{{- end }}

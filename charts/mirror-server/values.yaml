@@ -1,0 +1,49 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/roclub/mirror-server
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "prd-traefik"
+  annotations: {}
+  hosts:
+    - host: mirror-server.roclub.io
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: 
+    secretName: mirror-server-tls
+    clusterIssuer: prd.roclub.io
+    hosts:
+      - mirror-server.roclub.io
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+persistency:
+  enabled: true
+  storageClassName: "gp3"
+  volumeSize: 10Gi
