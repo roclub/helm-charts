@@ -5,6 +5,13 @@ sysdigSecureAgent:
 
 promtail:
   enabled: false
+  priorityClassName: promtail
+  priorityClassValue: 100001
+
+csiDriver:
+  enabled: false
+  priorityClassName: csi-drivers
+  priorityClassValue: 100002
 
 certManager:
   enabled: true
