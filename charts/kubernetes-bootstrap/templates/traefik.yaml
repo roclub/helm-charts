@@ -17,7 +17,7 @@ spec:
               - "--api.dashboard=true" 
               - "--api.insecure=true"
 
-              revisionHistoryLimit: 1
+              revisionHistoryLimit: 3
 
               deployment:
                 enabled: true
@@ -28,7 +28,7 @@ spec:
                 general:
                   level: ERROR
                 access:
-                  enabled: false
+                  enabled: {{ .Values.traefik.logs.access.enabled }}
 
               service:
                 annotations: 

@@ -33,6 +33,10 @@ traefik:
 
   targetRevision: 18.3.0
 
+  logs:
+    access:
+      enabled: false
+
 promtail:
   
   enabled: false
