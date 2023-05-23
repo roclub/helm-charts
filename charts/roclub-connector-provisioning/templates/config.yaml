@@ -9,6 +9,7 @@ data:
     [app]
     port = {{ .Values.frontend.config.app.port }}
     environment = "{{ .Values.frontend.config.app.environment }}"
+    backend_url = "{{ .Values.frontend.config.app.backendUrl }}"
 
     [kafka]
     bootstrap_servers = {{ .Values.backend.config.kafka.bootstrapServers }}

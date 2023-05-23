@@ -43,8 +43,20 @@ frontend:
     hosts:
     - host: ""
       paths:
+        - path: /api/v1/devices
+          pathType: Prefix
+          backend:
+            service:
+              name: ""
+              port:
+                number: 80
         - path: /
           pathType: Prefix
+          backend:
+            service:
+              name: ""
+              port:
+                number: 80
     tls:
       hosts: []
       secretName: 
@@ -54,6 +66,7 @@ frontend:
       app:
         environment: ""
         port: ""
+        backendUrl: ""
 
 backend:
   replicaCount: 1
