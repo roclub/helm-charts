@@ -12,16 +12,19 @@ environment: ""
 
 config:
   kafka:
-    bostrapServers: ""
+    bootstrapServers: ""
     groupdID: ""
     autoOffsetReset: ""
     enableAutoCommit: ""
     securityProtocol: ""
     saslMechanisms: ""
-    pollIntervall: ""
+    pollIntervall: 10
     saslUsername: ""
     saslPassword: ""
     topics: []
+
+  api:
+    bearerToken: ""
 
   app:
     devicesFolder: ""
@@ -30,6 +33,9 @@ config:
     webhoookEndpoint: ""
     webhookToken: ""
     webhookTriggerIntervall: 15
+
+  database:
+    mongoDBConnectionString: ""
 
   logging:
     logLevel: ""
@@ -45,13 +51,21 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
-  enabled: false
-  host: ""
+  enabled: true
+  className: ""
+  annotations: {}
+  hosts:
+  - host: ""
+    paths:
+      - path: /
+        pathType: Prefix
   tls:
+    hosts: []
     secretName: ""
+    clusterIssuer: ""
     
 resources: {}
 # limits:
