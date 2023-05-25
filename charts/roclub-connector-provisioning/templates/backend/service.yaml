@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "roclub-connector-provisioning.selectorLabels" . | nindent 4 }}
+    {{- include "roclub-connector-provisioning.selectorLabelsBackend" . | nindent 4 }}

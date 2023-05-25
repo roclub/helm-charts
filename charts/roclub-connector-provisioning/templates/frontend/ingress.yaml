@@ -1,5 +1,6 @@
 {{- if .Values.frontend.ingress.enabled -}}
-{{- $fullName := include "roclub-connector-provisioning.frontendName" . -}}
+{{- $frontendName := include "roclub-connector-provisioning.frontendName" . -}}
+{{- $backendName := include "roclub-connector-provisioning.provisionAuthorityName" . -}}
 {{- $svcPort := .Values.frontend.service.port -}}
 {{- if and .Values.frontend.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.frontend.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -15,7 +16,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $frontendName }}
   labels:
     {{- include "roclub-connector-provisioning.labels" . | nindent 4 }}
   annotations:
@@ -33,25 +34,21 @@ spec:
       secretName: {{ .Values.frontend.ingress.tls.secretName }}
   {{- end }}
   rules:
-    {{- range .Values.frontend.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+          - path: /
+            pathType: Prefix
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}
+                name: {{ $frontendName }}
                 port:
                   number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
-    {{- end }}
+          - path: /api/v1/devices
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $backendName }}
+                port:
+                  number: {{ $svcPort }}
 {{- end }}

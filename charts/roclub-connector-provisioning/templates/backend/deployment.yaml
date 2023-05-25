@@ -10,7 +10,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "roclub-connector-provisioning.selectorLabels" . | nindent 6 }}
+      {{- include "roclub-connector-provisioning.selectorLabelsBackend" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "roclub-connector-provisioning.selectorLabels" . | nindent 8 }}
+        {{- include "roclub-connector-provisioning.selectorLabelsBackend" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -28,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "roclub-connector-provisioning.provisionAuthorityName" . }}
           securityContext:
             {{- toYaml .Values.backend.securityContext | nindent 12 }}
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag | default .Chart.AppVersion }}"

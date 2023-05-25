@@ -50,6 +50,19 @@ app.kubernetes.io/name: {{ include "roclub-connector-provisioning.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/* Selector labels for the frontend service */}}
+{{- define "roclub-connector-provisioning.selectorLabelsFrontend" -}}
+app.kubernetes.io/name: {{ include "roclub-connector-provisioning.frontendName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/* Selector labels for the backend service */}}
+{{- define "roclub-connector-provisioning.selectorLabelsBackend" -}}
+app.kubernetes.io/name: {{ include "roclub-connector-provisioning.provisionAuthorityName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+
 {{/*
 Create the name of the service account to use
 */}}

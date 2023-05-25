@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "roclub-connector-provisioning.fullname" . }}
+  name: {{ include "roclub-connector-provisioning.provisionAuthorityName" . }}
   labels:
     {{- include "roclub-connector-provisioning.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "roclub-connector-provisioning.fullname" . }}
+    name: {{ include "roclub-connector-provisioning.provisionAuthorityName" . }}
   minReplicas: {{ .Values.backend.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.backend.autoscaling.maxReplicas }}
   metrics:
