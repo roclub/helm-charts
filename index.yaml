@@ -224,6 +224,18 @@ entries:
   roclub-app-backend:
   - apiVersion: v2
     appVersion: 2.1.0
+    created: "2023-05-26T07:18:54.609136927Z"
+    description: The Helm chart used to deploy the roclub app backend API
+    digest: 01c5bce8321e7783ded72fcc8088157063db7d2a2241aa2478d674b9d6d03bf5
+    home: https://github.com/roclub/helm-charts
+    kubeVersion: '>=1.22.0-0'
+    name: roclub-app-backend
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-app-backend-2.1.0/roclub-app-backend-2.1.0.tgz
+    version: 2.1.0
+  - apiVersion: v2
+    appVersion: 2.1.0
     created: "2023-05-26T07:18:30.347943173Z"
     description: The Helm chart used to deploy the roclub app backend API
     digest: f2221ffcd12f42112553e7223aa158704ce70f4eb56bd5e076c6501ef9aff10f
@@ -529,4 +541,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.1/roclub-connector-provisioning-0.1.1.tgz
     version: 0.1.1
-generated: "2023-05-26T07:18:30.348197573Z"
+generated: "2023-05-26T07:18:54.609307027Z"
