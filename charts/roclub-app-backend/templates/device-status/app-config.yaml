@@ -13,7 +13,7 @@ data:
         roclub_connector_timeout = 60
 
         [connector-status.api]
-        bearer_token = {{ .Values.config.api.bearerToken }}
+        bearer_token = "{{ .Values.config.api.bearerToken }}"
 
         [connector-status.kafka]
         bootstrap_servers = "{{ .Values.config.kafka.bootstrapServers }}"
