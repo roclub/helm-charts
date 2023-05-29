@@ -22,10 +22,6 @@ spec:
               installCRDs: true
 
               podDnsPolicy: "None"
-              podDnsConfig:
-                nameservers:
-                  - 8.8.8.8
-                  - 8.8.4.4
 
               featureGates: ""
               maxConcurrentChallenges: 60
