@@ -7,12 +7,15 @@ metadata:
 spec:
     project: {{ .Values.project }}
     source:
+        {{- with .Values.certManager }}
         repoURL: https://charts.jetstack.io
-        targetRevision: {{ .Values.certManager.targetRevision }}
+        targetRevision: {{ .targetRevision }}
         chart: cert-manager
+        {{- end }}
         helm:
-            releaseName: '{{ .Values.releaseNamePrefix }}-cert-manager'
+            releaseName: {{ .Values.releaseNamePrefix }}-cert-manager
             values: |
+            {{- with .Values.certManager }}
               global:
                 logLevel: 2
 
@@ -21,7 +24,14 @@ spec:
 
               installCRDs: true
 
-              podDnsPolicy: "None"
+              podDnsPolicy: {{ .podDnsPolicy }}
+              {{- if .podDnsConfig }}
+              podDnsConfig:
+                nameservers:
+                {{- range .podDnsConfig.nameservers }}
+                - {{ . | quote }}
+                {{- end }}              
+              {{- end }}
 
               featureGates: ""
               maxConcurrentChallenges: 60
@@ -42,10 +52,12 @@ spec:
               startupapicheck:
                 enabled: true
 
+        {{- end }}
     destination:
         name: {{ .Values.cluster }}
-        namespace: {{ .Values.certManager.namespace }}
-
+        {{- with .Values.certManager }}
+        namespace: {{ .namespace }}
+        {{- end }}
     syncPolicy:
         automated:
             prune: true
@@ -64,4 +76,4 @@ spec:
                 duration: 10s
                 factor: 2
                 maxDuration: 3m
-{{- end }}  
+{{- end }}

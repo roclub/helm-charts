@@ -68,31 +68,19 @@ certManager:
   namespace: cert-manager
   targetRevision: 1.11.0
 
+  podDnsPolicy: ""
+  podDnsConfig: ""
+  # nameservers: []
+  
   clusterIssuers:
-  - name: "staging-1"
-    email: "maxmustermann@roclub.com"
+  - name: letsencrypt-staging
+    email: platform-engineering@roclub.com
     server: "https://acme-staging-v02.api.letsencrypt.org/directory"
     ingressTemplate:
         metadata:
           annotations:
             acme.cert-manager.io/http01-edit-in-place: "true"
-            acme.cert-manager.io/http01-ingress-class: ""
-  - name: "staging-2"
-    email: "maxmustermann@roclub.com"
-    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
-    ingressTemplate:
-        metadata:
-          annotations:
-            acme.cert-manager.io/http01-edit-in-place: "true"
-            acme.cert-manager.io/http01-ingress-class: ""
-  - name: "staging-3"
-    email: "maxmustermann@roclub.com"
-    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
-    ingressTemplate:
-      metadata:
-        annotations:
-          acme.cert-manager.io/http01-edit-in-place: "true"
-          acme.cert-manager.io/http01-ingress-class: ""
+            acme.cert-manager.io/http01-ingress-class: mgt-traefik
 
 clusterAutoscaler:
   

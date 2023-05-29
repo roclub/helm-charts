@@ -19,7 +19,7 @@ metadata:
   labels:
     {{- include "roclub-app-backend.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/issuer: {{ .Values.ingress.tls.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.clusterIssuer }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
