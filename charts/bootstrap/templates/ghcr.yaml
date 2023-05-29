@@ -1,26 +1,26 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: roclub-app
-spec:
-  finalizers:
-  - kubernetes
----
-kind: Secret
-type: kubernetes.io/dockerconfigjson
-apiVersion: v1
-metadata:
-  name: dockerconfigjson-github-com
-  namespace: default
-stringData:
-  .dockerconfigjson: '{"auths":{"ghcr.io":{"auth":"aG9sZ2Vyc29uOTc6Z2hwX2p0VjFqaEkydzBBYkJ2Rlhaa0E3Y1l0UmVrNGgxTzNTOTZwUg=="}}}'
----
-kind: Secret
-type: kubernetes.io/dockerconfigjson
-apiVersion: v1
-metadata:
-  name: dockerconfigjson-github-com
-  namespace: roclub-app
-stringData:
-  .dockerconfigjson: '{"auths":{"ghcr.io":{"auth":"aG9sZ2Vyc29uOTc6Z2hwX2p0VjFqaEkydzBBYkJ2Rlhaa0E3Y1l0UmVrNGgxTzNTOTZwUg=="}}}'
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: roclub-app
+# spec:
+#   finalizers:
+#   - kubernetes
+# ---
+# kind: Secret
+# type: kubernetes.io/dockerconfigjson
+# apiVersion: v1
+# metadata:
+#   name: dockerconfigjson-github-com
+#   namespace: default
+# stringData:
+#   .dockerconfigjson: '{"auths":{"ghcr.io":{"auth":"aG9sZ2Vyc29uOTc6Z2hwX2p0VjFqaEkydzBBYkJ2Rlhaa0E3Y1l0UmVrNGgxTzNTOTZwUg=="}}}'
+# ---
+# kind: Secret
+# type: kubernetes.io/dockerconfigjson
+# apiVersion: v1
+# metadata:
+#   name: dockerconfigjson-github-com
+#   namespace: roclub-app
+# stringData:
+#   .dockerconfigjson: '{"auths":{"ghcr.io":{"auth":"aG9sZ2Vyc29uOTc6Z2hwX2p0VjFqaEkydzBBYkJ2Rlhaa0E3Y1l0UmVrNGgxTzNTOTZwUg=="}}}'

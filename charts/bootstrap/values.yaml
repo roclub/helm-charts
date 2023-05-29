@@ -24,3 +24,11 @@ certManager:
           annotations:
             acme.cert-manager.io/http01-edit-in-place: "true"
             acme.cert-manager.io/http01-ingress-class: mgt-traefik
+  - name: letsencrypt-staging123
+    email: platform-engineering@roclub.com
+    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    ingressTemplate:
+        metadata:
+          annotations:
+            acme.cert-manager.io/http01-edit-in-place: "true"
+            acme.cert-manager.io/http01-ingress-class: mgt-traefik
