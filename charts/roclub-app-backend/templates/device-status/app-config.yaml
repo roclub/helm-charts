@@ -16,7 +16,7 @@ data:
         bearer_token = "{{ .Values.config.api.bearerToken }}"
 
         [connector-status.kafka]
-        bootstrap_servers = "{{ .Values.config.kafka.bootstrapServers }}"
+        bootstrap_servers = [{{- range .Values.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
         group_id = "{{ .Values.config.kafka.groupdID }}"
         auto_offset_reset = "latest"
         enable_auto_commit = false
@@ -24,7 +24,7 @@ data:
         sasl_mechanisms = "PLAIN"
         sasl_username = "{{ .Values.config.kafka.saslUsername }}"
         sasl_password = "{{ .Values.config.kafka.saslPassword }}"
-        topics = {{ .Values.config.kafka.topics }}
+        topics = [{{- range .Values.config.kafka.topics }}"{{ . }}",{{- end }}]
         poll_intervall = {{ .Values.config.kafka.pollIntervall }}
 
         [connector-status.repository]

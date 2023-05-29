@@ -12,7 +12,7 @@ environment: ""
 
 config:
   kafka:
-    bootstrapServers: ""
+    bootstrapServers: []
     groupdID: ""
     autoOffsetReset: ""
     enableAutoCommit: ""
