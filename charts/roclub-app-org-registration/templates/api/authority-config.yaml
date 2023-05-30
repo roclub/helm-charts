@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "roclub-app-org-registration.authorityName" . }}
+  labels:
+    {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
+data:
+  org-registration-authority.toml: |-
+    [organisation-registration-authority]
+    [organisation-registration-authority.repository]
+    mongodb_connection_string = "{{ .Values.authority.config.repository.connectionString }}"
+    mongodb_database = "{{ .Values.authority.config.repository.database }}"
+    mongodb_collection = "{{ .Values.authority.config.repository.collection }}"
+
+    [logger]
+    level = "{{ .Values.authority.config.logger.level }}"

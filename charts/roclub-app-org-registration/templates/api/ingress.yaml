@@ -1,9 +1,9 @@
-{{- if .Values.gateway.ingress.enabled -}}
-{{- $fullName := include "roclub-app-org-registration.gatewayName" . -}}
-{{- $svcPort := .Values.gateway.service.port -}}
-{{- if and .Values.gateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.gateway.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.gateway.ingress.annotations "kubernetes.io/ingress.class" .Values.gateway.ingress.className}}
+{{- if .Values.api.ingress.enabled -}}
+{{- $fullName := include "roclub-app-org-registration.fullname" . -}}
+{{- $svcPort := .Values.api.service.port -}}
+{{- if and .Values.api.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.api.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.api.ingress.annotations "kubernetes.io/ingress.class" .Values.api.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -19,24 +19,24 @@ metadata:
   labels:
     {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/issuer: {{ include "roclub-app-org-registration.gatewayIssuerName" . }}
-  {{- with .Values.gateway.ingress.annotations }}
+    cert-manager.io/cluster-issuer: {{ .Values.api.ingress.tls.clusterIssuer }}
+  {{- with .Values.api.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.gateway.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.gateway.ingress.className }}
+  {{- if and .Values.api.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.api.ingress.className }}
   {{- end }}
-  {{- if .Values.gateway.ingress.tls }}
+  {{- if .Values.api.ingress.tls }}
   tls:
     - hosts:
-        {{- range .Values.gateway.ingress.tls.hosts }}
+        {{- range .Values.api.ingress.tls.hosts }}
         - {{ . | quote }}
         {{- end }}
-      secretName: {{ .Values.gateway.ingress.tls.secretName }}
+      secretName: {{ .Values.api.ingress.tls.secretName }}
   {{- end }}
   rules:
-    {{- range .Values.gateway.ingress.hosts }}
+    {{- range .Values.api.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:

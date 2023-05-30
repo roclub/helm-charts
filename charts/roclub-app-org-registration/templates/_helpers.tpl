@@ -24,36 +24,29 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Define the name for all gateway related resources
+Define the name for all api related resources
 */}}
-{{- define "roclub-app-org-registration.gatewayName" -}}
+{{- define "roclub-app-org-registration.apiName" -}}
 {{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-api" .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s-gateway" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- $prefix := default .Chart.Name .Values.nameOverride }}
+{{- printf "%s-api-%s" $prefix .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 
 {{/*
-Define the name for all information related resources
+Define the name for all authority related resources
 */}}
-{{- define "roclub-app-org-registration.informationName" -}}
+{{- define "roclub-app-org-registration.authorityName" -}}
 {{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-authority" .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s-information" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- $prefix := default .Chart.Name .Values.nameOverride }}
+{{- printf "%s-authority-%s" $prefix .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
-{{- end }}
+
 
 {{/*
 Create chart name and version as used by the chart label.
@@ -86,25 +79,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "roclub-app-org-registration.serviceAccountName" -}}
-{{- if .Values.global.serviceAccount.create }}
-{{- default (include "roclub-app-org-registration.fullname" .) .Values.global.serviceAccount.name }}
+{{- if .Values.api.serviceAccount.create }}
+{{- default (include "roclub-app-org-registration.fullname" .) .Values.api.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.global.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create the name for the gateway certtificate issuer
-*/}}
-{{- define "roclub-app-org-registration.gatewayIssuerName" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s-gateway-issuer" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- default "default" .Values.api.serviceAccount.name }}
 {{- end }}
 {{- end }}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "roclub-app-org-registration.apiName" . }}
+  labels:
+    {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
+data:
+  org-registration-api.toml: |-
+    [organisation-registration-api]
+    port = {{ .Values.api.config.http.port }}
+    bearer_token = "{{ .Values.api.config.http.bearerToken }}"
+
+    [logger]
+    level = "{{ .Values.api.config.logger.level }}"
