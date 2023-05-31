@@ -31,6 +31,11 @@ spec:
                 {{- end }}
                 {{- end }}
 
+              csiDriver:
+                enabled: {{ .Values.csiDriver.enabled }}
+                priorityClassName: {{ .Values.csiDriver.priorityClassName }}
+                priorityClassValue: {{ .Values.csiDriver.priorityClassValue }}
+
               promtail:
                 enabled: {{ .Values.promtail.enabled }}
                 priorityClassName: {{ .Values.promtail.priorityClassName }}

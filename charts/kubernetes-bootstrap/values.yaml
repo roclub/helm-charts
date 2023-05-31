@@ -7,6 +7,11 @@ bootstrap:
   enabled: true
   targetRevision: 0.3.0
 
+  csiDriver:
+    enabled: false
+    priorityClassName: csi-drivers
+    priorityClassValue: 100002
+
 metricsServer:
   
   enabled: false
@@ -69,8 +74,9 @@ certManager:
   targetRevision: 1.11.0
 
   podDnsPolicy: ""
-  podDnsConfig: ""
-  # nameservers: []
+  podDnsConfig: 
+    nameservers:
+    - 8.8.8.8
   
   clusterIssuers:
   - name: letsencrypt-staging
