@@ -602,6 +602,16 @@ entries:
   roclub-connector-provisioning:
   - apiVersion: v2
     appVersion: 0.1.1
+    created: "2023-06-02T12:01:33.406996588Z"
+    description: A Helm chart to deploy the roclub provisioning backend and frontend
+    digest: 39e71ce6b5d936c771cf53f40a033702fe840c4600ea4a6fb2a7dc31f634895d
+    name: roclub-connector-provisioning
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.5/roclub-connector-provisioning-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 0.1.1
     created: "2023-05-25T12:31:58.114021871Z"
     description: A Helm chart to deploy the spaghetti code from Daniel Lange
     digest: 7ba7936206dfa084ce3786c4c36fd6ef775822aad2efd833d9b19d930ad3a4fa
@@ -630,4 +640,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.1/roclub-connector-provisioning-0.1.1.tgz
     version: 0.1.1
-generated: "2023-05-31T05:58:12.615587853Z"
+generated: "2023-06-02T12:01:33.407180289Z"
