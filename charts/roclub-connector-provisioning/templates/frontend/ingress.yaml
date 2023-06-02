@@ -34,7 +34,7 @@ spec:
       secretName: {{ .Values.frontend.ingress.tls.secretName }}
   {{- end }}
   rules:
-    - host: {{ .host | quote }}
+    - host: "provisioning.dev.roclub.io"
       http:
         paths:
           - path: /
