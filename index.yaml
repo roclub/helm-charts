@@ -651,4 +651,15 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.1/roclub-connector-provisioning-0.1.1.tgz
     version: 0.1.1
-generated: "2023-06-02T12:02:44.812449994Z"
+  roclub-connector-registration:
+  - apiVersion: v2
+    appVersion: 1.0.5
+    created: "2023-06-09T13:40:24.285263809Z"
+    description: Deploys the Connector Registration microservice
+    digest: 968a36cc140f77370c5209276800af9b94067679f0bce80ca3c8d00e8979c621
+    name: roclub-connector-registration
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-connector-registration-1.0.5/roclub-connector-registration-1.0.5.tgz
+    version: 1.0.5
+generated: "2023-06-09T13:40:24.285690909Z"
