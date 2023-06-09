@@ -1,8 +1,6 @@
 apiVersion: v2
-name: app-backend-connector-registration
+name: roclub-connector-registration
 description: Deploys the Connector Registration microservice
 type: application
-
-
-version: 0.1.0
-appVersion: "1.16.0"
+version: 1.0.5
+appVersion: "1.0.5"

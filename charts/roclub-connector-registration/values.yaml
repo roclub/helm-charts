@@ -1,0 +1,64 @@
+imagePullSecrets: [""]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+api:
+  image:
+    repository: ghcr.io/roclub/roclub-connector-registration-api
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  config:
+    aws:
+      accessKey:
+      accessSecret:
+
+    webserver:
+      bearerToken:
+    
+    repository:
+      connectionString:
+      database:
+    
+    logger:
+      level:
+    
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+    - host: ""
+      paths:
+        - path: /api/v1/connector/registration/
+          pathType: Prefix
+    tls:
+      hosts: []
+      secretName: ""
+      clusterIssuer: ""
+    
+  resources: {}
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

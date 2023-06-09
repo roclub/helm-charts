@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "roclub-connector-registration.fullname" . }}-config"
+  labels:
+    {{- include "roclub-connector-registration.labels" . | nindent 4 }}
+data:
+  connector-registration-api.toml: |-
+    [webserver]
+    port = {{ .Values.api.service.port }}
+    bearer_token = "{{ .Values.api.config.webserver.bearerToken }}"
+    [aws_iot_core]
+    shared_profile_name = "AKIASQOPUL2PEZ52I4Y2"
+    path = "1Y+l0aEx3002o9GmBe+SGUPpZ1RSTwoojOwkPHWd"
+    [repository]
+    mongodb_connection_string = "{{ .Values.api.config.repository.connectionString }}"
+    mongodb_database = "{{ .Values.api.config.repository.database }}"
+    [logger]
+    level = "{{ .Values.api.config.logger.level }}"
