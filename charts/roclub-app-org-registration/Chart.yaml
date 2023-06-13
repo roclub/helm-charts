@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: 1.0.0
 kubeVersion: ">=1.22.0-0"
-version: 1.0.0
+version: 1.0.1
 
 name: roclub-app-organization-registration
 description: The Helm chart used to deploy the roclub app backend API
