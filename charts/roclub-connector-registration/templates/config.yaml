@@ -10,8 +10,8 @@ data:
     port = {{ .Values.api.service.port }}
     bearer_token = "{{ .Values.api.config.webserver.bearerToken }}"
     [aws_iot_core]
-    access_key = {{ .Values.api.config.aws.accessKey }}
-    access_secret = {{ .Values.api.config.aws.accessSecret }}
+    access_key = "{{ .Values.api.config.aws.accessKey }}"
+    access_secret = "{{ .Values.api.config.aws.accessSecret }}"
     [repository]
     mongodb_connection_string = "{{ .Values.api.config.repository.connectionString }}"
     mongodb_database = "{{ .Values.api.config.repository.database }}"
