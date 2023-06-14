@@ -3,4 +3,4 @@ name: roclub-connector-registration
 description: Deploys the Connector Registration microservice
 type: application
 version: 1.0.9
-appVersion: "1.0.9"
+appVersion: "1.0.10"
