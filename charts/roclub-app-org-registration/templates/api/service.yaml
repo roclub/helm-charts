@@ -1,7 +1,8 @@
+{{- $fullName := include "roclub-app-org-registration.fullname" . -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "roclub-app-org-registration.apiName" . }}
+  name: {{ $fullName }}
   labels:
     {{- include "roclub-app-org-registration.labels" . | nindent 4 }}
 spec:
