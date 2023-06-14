@@ -10,8 +10,8 @@ data:
     port = {{ .Values.api.service.port }}
     bearer_token = "{{ .Values.api.config.webserver.bearerToken }}"
     [aws_iot_core]
-    shared_profile_name = "AKIASQOPUL2PEZ52I4Y2"
-    path = "1Y+l0aEx3002o9GmBe+SGUPpZ1RSTwoojOwkPHWd"
+    access_key = {{ .Values.api.config.aws.accessKey }}
+    access_secret = {{ .Values.api.config.aws.accessSecret }}
     [repository]
     mongodb_connection_string = "{{ .Values.api.config.repository.connectionString }}"
     mongodb_database = "{{ .Values.api.config.repository.database }}"
