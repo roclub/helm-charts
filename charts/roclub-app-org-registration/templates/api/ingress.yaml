@@ -48,7 +48,7 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ include "roclub-app-org-registration.apiName" . }}
+                name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
               {{- else }}
