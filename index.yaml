@@ -690,6 +690,16 @@ entries:
   roclub-connector-registration:
   - apiVersion: v2
     appVersion: 1.0.10
+    created: "2023-06-20T08:08:22.756726048Z"
+    description: Deploys the Connector Registration microservice
+    digest: 56e599d9e2db1fcab331d90ce81e445b068e3cc27862b3618bd1cb598237ec2d
+    name: roclub-connector-registration
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-connector-registration-1.0.12/roclub-connector-registration-1.0.12.tgz
+    version: 1.0.12
+  - apiVersion: v2
+    appVersion: 1.0.10
     created: "2023-06-20T07:56:08.469255241Z"
     description: Deploys the Connector Registration microservice
     digest: 00a290d0a179b8d847f6404eb36605122eb183170fb4ad450602cbad7d67ec5d
@@ -748,4 +758,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-registration-1.0.5/roclub-connector-registration-1.0.5.tgz
     version: 1.0.5
-generated: "2023-06-20T07:56:08.469467944Z"
+generated: "2023-06-20T08:08:22.756937454Z"
