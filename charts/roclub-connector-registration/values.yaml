@@ -24,7 +24,24 @@ api:
     repository:
       connectionString:
       database:
-    
+
+    kafka:
+      bootstrapServers: []
+      groupdID: ""
+      autoOffsetReset: ""
+      enableAutoCommit: ""
+      securityProtocol: ""
+      saslMechanisms: ""
+      pollIntervall: 10
+      saslUsername: ""
+      saslPassword: ""
+      topics: []
+
+    roclubApp:
+      webhoookEndpoint: ""
+      webhookToken: ""
+      webhookTriggerIntervall: 15
+
     logger:
       level:
     
