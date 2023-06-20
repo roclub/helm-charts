@@ -17,25 +17,25 @@ data:
     mongodb_database = "{{ .Values.api.config.repository.database }}"
 
     [kafka]
-    bootstrap_servers = [{{- range .Values.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
-    group_id = "{{ .Values.config.kafka.groupdID }}"
+    bootstrap_servers = [{{- range .Values.api.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
+    group_id = "{{ .Values.api.config.kafka.groupdID }}"
     auto_offset_reset = "latest"
     enable_auto_commit = false
     security_protocol = "SASL_SSL"
     sasl_mechanisms = "PLAIN"
-    sasl_username = "{{ .Values.config.kafka.saslUsername }}"
-    sasl_password = "{{ .Values.config.kafka.saslPassword }}"
-    topics = [{{- range .Values.config.kafka.topics }}"{{ . }}",{{- end }}]
-    poll_intervall = {{ .Values.config.kafka.pollIntervall }}
+    sasl_username = "{{ .Values.api.config.kafka.saslUsername }}"
+    sasl_password = "{{ .Values.api.config.kafka.saslPassword }}"
+    topics = [{{- range .Values.api.config.kafka.topics }}"{{ . }}",{{- end }}]
+    poll_intervall = {{ .Values.api.config.kafka.pollIntervall }}
 
     [connector-status]
     [connector-status.config]
     roclub_connector_timeout = 60
 
     [connector-status.roclubapp]
-    webhoook_endpoint = "{{ .Values.config.roclubApp.webhoookEndpoint }}"
-    webhook_token = "{{ .Values.config.roclubApp.webhookToken }}"
-    webhook_trigger_intervall = {{ .Values.config.roclubApp.webhookTriggerIntervall
+    webhoook_endpoint = "{{ .Values.api.config.roclubApp.webhoookEndpoint }}"
+    webhook_token = "{{ .Values.api.config.roclubApp.webhookToken }}"
+    webhook_trigger_intervall = {{ .Values.api.config.roclubApp.webhookTriggerIntervall }}
 
     [logger]
     level = "{{ .Values.api.config.logger.level }}"
