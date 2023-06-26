@@ -7,11 +7,6 @@ bootstrap:
   enabled: true
   targetRevision: 0.3.0
 
-  csiDriver:
-    enabled: false
-    priorityClassName: csi-drivers
-    priorityClassValue: 100002
-
 metricsServer:
   
   enabled: false
