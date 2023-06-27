@@ -37,18 +37,24 @@ spec:
                 parameters:
                   encrypted: "true"
                   type: gp3
+                  tagSpecification_1: "backup=true"
+                  tagSpecification_2: "frequency=daily"
               - name: aws-gp3-weekly-backup
                 volumeBindingMode: WaitForFirstConsumer
                 reclaimPolicy: Retain
                 parameters:
                   encrypted: "true"
                   type: gp3
+                  tagSpecification_1: "backup=true"
+                  tagSpecification_2: "frequency=weekly"
               - name: aws-gp3-monthly-backup
                 volumeBindingMode: WaitForFirstConsumer
                 reclaimPolicy: Retain
                 parameters:
                   encrypted: "true"
                   type: gp3
+                  tagSpecification_1: "backup=true"
+                  tagSpecification_2: "frequency=monthly"
 
     destination:
         name: {{ .Values.cluster }}
