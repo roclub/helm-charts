@@ -30,7 +30,7 @@ data:
 
     [connector-status]
     [connector-status.config]
-    roclub_connector_timeout = 60
+    roclub_connector_timeout = 500
 
     [connector-status.roclubapp]
     webhoook_endpoint = "{{ .Values.api.config.roclubApp.webhoookEndpoint }}"
