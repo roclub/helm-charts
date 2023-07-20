@@ -12,3 +12,9 @@ data:
 
     [logger]
     level = "{{ .Values.config.logger }}"
+
+    [aws]
+    aws_access_key = "{{ .Values.config.aws.aws_access_key }}"
+    aws_secret_key = "{{ .Values.config.aws.aws_secret_key }}"
+    aws_s3_bucket = "{{ .Values.config.aws.aws_s3_bucket }}"
+    aws_s3_region = "{{ .Values.config.aws.aws_s3_region }}"
