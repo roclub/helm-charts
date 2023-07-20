@@ -4,6 +4,11 @@ imagePullSecrets: []
 
 config:
   logger: "debug"
+  aws:
+    aws_access_key: ""
+    aws_secret_key: ""
+    aws_s3_bucket: ""
+    aws_s3_region: ""
 
 image:
   repository: ""
