@@ -3,4 +3,4 @@ name: roclub-app-webrtc-test
 description: A Helm chart to deploy the webrtc test page
 type: application
 version: 0.2.0
-appVersion: 0.2.0
+appVersion: "0.2.0"
