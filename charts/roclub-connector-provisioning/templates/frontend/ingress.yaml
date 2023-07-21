@@ -34,7 +34,8 @@ spec:
       secretName: {{ .Values.frontend.ingress.tls.secretName }}
   {{- end }}
   rules:
-    - host: "provisioning.dev.roclub.io"
+    {{- range .Values.frontend.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
           - path: /
@@ -51,4 +52,5 @@ spec:
                 name: {{ $backendName }}
                 port:
                   number: {{ $svcPort }}
+    {{- end }}
 {{- end }}
