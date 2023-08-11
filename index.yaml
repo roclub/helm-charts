@@ -298,6 +298,16 @@ entries:
     version: 0.1.0
   mirror-server:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-08-11T11:17:54.142544966Z"
+    description: Deploys the mirror server for roclub packages.
+    digest: 9fbbff80fcf95d3f9066cf7acf28593985b6005b289532f69bd8b15de91c78c5
+    name: mirror-server
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/mirror-server-1.0.0/mirror-server-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 0.1.2
     created: "2023-06-26T09:20:58.068926374Z"
     description: Deploys the mirror server for roclub packages.
@@ -831,4 +841,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-registration-1.0.5/roclub-connector-registration-1.0.5.tgz
     version: 1.0.5
-generated: "2023-07-21T07:19:01.519467963Z"
+generated: "2023-08-11T11:17:54.142694169Z"
