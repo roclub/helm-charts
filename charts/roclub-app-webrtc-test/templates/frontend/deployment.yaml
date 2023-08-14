@@ -28,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml .Values.frontend.podSecurityContext | nindent 8 }}
       containers:
-         - name: {{ include "roclub-app-webrtc-test.frontendName" . }}
+        - name: {{ include "roclub-app-webrtc-test.frontendName" . }}
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}"
@@ -49,7 +49,7 @@ spec:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           volumeMounts:
             - name: config-volume
-              mountPath: /opt/roclub-webrtc-test/
+              mountPath: /opt/roclub-app-webrtc-test/
       volumes:
         - name: config-volume
           configMap:
