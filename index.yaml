@@ -691,6 +691,16 @@ entries:
   roclub-app-webrtc-test:
   - apiVersion: v2
     appVersion: 0.3.1
+    created: "2023-08-15T08:21:11.466815867Z"
+    description: A Helm chart to deploy the webrtc test page
+    digest: 1f880efe45c366d9f76797eeb5060a685bc7b34bfd808fbe974b6a419ea47f76
+    name: roclub-app-webrtc-test
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-app-webrtc-test-0.3.2/roclub-app-webrtc-test-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 0.3.1
     created: "2023-08-15T07:51:18.325671445Z"
     description: A Helm chart to deploy the webrtc test page
     digest: 19603da15026ff8230e5db7d093b48e6c7bb7ec7bdfec930bfc9f5f45d2a35c6
@@ -861,4 +871,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-connector-registration-1.0.5/roclub-connector-registration-1.0.5.tgz
     version: 1.0.5
-generated: "2023-08-15T07:51:18.325816747Z"
+generated: "2023-08-15T08:21:11.467014577Z"
