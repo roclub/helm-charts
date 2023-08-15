@@ -4,20 +4,15 @@ imagePullSecrets: []
 
 config:
   logger: "debug"
-  aws:
-    aws_access_key: ""
-    aws_secret_key: ""
-    aws_s3_bucket: ""
-    aws_s3_region: ""
-
-image:
-  repository: ""
-  pullPolicy: IfNotPresent
-  tag: ""
 
 frontend:
 
   replicaCount: 1
+
+  image:
+    repository: "ghcr.io/roclub/app-frontend-webrtc-test-frontend"
+    pullPolicy: IfNotPresent
+    tag: ""
 
   imagePullSecrets: []
 
@@ -47,6 +42,13 @@ frontend:
     hosts:
     - host: ""
       paths:
+        - path: /api/v1/webrtc-test
+          pathType: Prefix
+          backend:
+            service:
+              name: ""
+              port:
+                number: 80
         - path: /
           pathType: Prefix
           backend:
@@ -59,10 +61,54 @@ frontend:
       secretName: 
       clusterIssuer: 
 
-    config:
-      app:
-        environment: ""
-        port: ""
+  config:
+    app:
+      environment: ""
+      port: ""
+
+backend:
+
+  replicaCount: 1
+
+  image:
+    repository: "ghcr.io/roclub/app-frontend-webrtc-test-backend"
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets: []
+
+  resources: {}
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  config:
+    app:
+      environment: ""
+      port: ""
+    aws:
+      awsAccessKey: ""
+      awsSecretKey: ""
+      awsS3Bucket: ""
+      awsS3Region: ""
+    mongodb:
+      connectionString: ""
+      database: ""
+      collection: ""
 
 serviceAccount:
   create: true
