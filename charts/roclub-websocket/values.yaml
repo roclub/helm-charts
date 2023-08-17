@@ -1,0 +1,44 @@
+nameOverride: ""
+fullnameOverride: ""
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/roclub/roclub-websocket-prod
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: {}
+  className: ""
+  hosts:
+  - host: ""
+    paths:
+      - path: /
+        pathType: Prefix
+  tls:
+    hosts: []
+    secretName: ""
+    clusterIssuer: ""
+    
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
