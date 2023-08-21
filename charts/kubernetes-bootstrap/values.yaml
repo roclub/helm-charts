@@ -92,3 +92,8 @@ clusterAutoscaler:
 
   awsRegion: eu-central-1
   awsRoleArn: ""
+
+nodeExporter:
+  enabled: true
+  targetRevision: 4.22.0
+  namespace: monitoring
