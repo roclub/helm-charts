@@ -94,6 +94,17 @@ entries:
     version: 0.1.0
   kubernetes-bootstrap:
   - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2023-08-21T13:26:49.086334236Z"
+    description: This Helm chart is used to bootstrap Kubernetes clusters the roclub
+      way.
+    digest: 0caadc71b3b496b5205623c75219dacffd321e13a54c744216bb187e34592fb5
+    name: kubernetes-bootstrap
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/kubernetes-bootstrap-0.3.0/kubernetes-bootstrap-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: 0.2.19
     created: "2023-06-27T09:33:08.088644807Z"
     description: This Helm chart is used to bootstrap Kubernetes clusters the roclub
@@ -902,4 +913,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-17T20:43:11.671942427Z"
+generated: "2023-08-21T13:26:49.086638534Z"
