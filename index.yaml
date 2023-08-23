@@ -752,6 +752,16 @@ entries:
     version: 0.1.0
   roclub-connector-provisioning:
   - apiVersion: v2
+    appVersion: 0.3.0
+    created: "2023-08-23T13:15:28.86452655Z"
+    description: A Helm chart to deploy the roclub provisioning backend and frontend
+    digest: 7e7709eca6e03a9513a0e72dd7a52b00136480dea4f980dbd815e9ee4058b132
+    name: roclub-connector-provisioning
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-connector-provisioning-0.1.7/roclub-connector-provisioning-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     appVersion: 0.1.1
     created: "2023-07-21T03:24:07.388001565Z"
     description: A Helm chart to deploy the roclub provisioning backend and frontend
@@ -913,4 +923,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-21T13:26:49.086638534Z"
+generated: "2023-08-23T13:15:28.864702453Z"
