@@ -36,5 +36,3 @@ data:
 
     [logger]
     level = "{{ .Values.config.logger }}"
-
-# bootstrap_serversNew = [{{- range .Values.backend.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
