@@ -115,6 +115,11 @@ backend:
       database: ""
       collection: ""
 
+    azure:
+      clientID: ""
+      tenantID: ""
+      appScope: ""
+
 serviceAccount:
   create: true
   annotations: {}
