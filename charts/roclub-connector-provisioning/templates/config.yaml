@@ -29,5 +29,12 @@ data:
     database = "{{ .Values.backend.config.mongodb.database }}"
     collection = "{{ .Values.backend.config.mongodb.collection }}"
 
+    [azure]
+    client_id = "{{ .Values.backend.config.azure.clientID }}"
+    tenant_id = "{{ .Values.backend.config.azure.tenantID }}"
+    app_scope = "{{ .Values.backend.config.azure.appScope }}"
+
     [logger]
     level = "{{ .Values.config.logger }}"
+
+# bootstrap_serversNew = [{{- range .Values.backend.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
