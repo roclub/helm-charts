@@ -8,6 +8,13 @@ promtail:
   priorityClassName: promtail
   priorityClassValue: 100001
 
+prometheus:
+
+  nodeExporterServiceMonitor:
+    enabled: true
+    namespace: monitoring
+
+
 csiDriver:
   enabled: false
   priorityClassName: csi-drivers

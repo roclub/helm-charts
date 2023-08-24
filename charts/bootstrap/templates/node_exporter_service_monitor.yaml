@@ -1,0 +1,20 @@
+{{- if .Values.prometheus.nodeExporterServiceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: node-exporter
+  namespace: {{ .Values.prometheus.nodeExporterServiceMonitor.namespace }}
+  labels:
+    instance: primary
+spec:
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus-node-exporter
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+{{- end }}
