@@ -13,13 +13,6 @@ promtail:
 
 prometheus:
 
-  grafanaAgent:
-    enabled: true
-    namespace: monitoring
-
-    image: grafana/grafana-agent:v0.35.4
-    logLevel: warn
-
   monitorInstance:
     enabled: true
 
@@ -94,6 +87,11 @@ prometheus:
 
     endpoints:
     - interval: 30s
+
+  nodeExporterServiceMonitor:
+    enabled: true
+    namespace: monitoring
+
 
 csiDriver:
   enabled: true

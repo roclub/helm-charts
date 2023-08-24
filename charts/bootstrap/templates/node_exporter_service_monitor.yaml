@@ -5,24 +5,17 @@ metadata:
   name: node-exporter
   namespace: {{ .Values.prometheus.nodeExporterServiceMonitor.namespace }}
   labels:
-  {{- with .Values.prometheus.serviceMonitorSelector.matchLabels }}
-  {{ toYaml . | indent 2 }}
-  {{- end }}
+    instance: primary
 spec:
   namespaceSelector:
     matchNames:
-    {{- range .Values.prometheus.nodeExporterServiceMonitor.namespaceSelector }}
-    - {{ . }}
-    {{- end }}
+    - monitoring
   selector:
     matchLabels:
-    {{- with .Values.prometheus.nodeExporterServiceMonitor.selector.matchLabels }}
-    {{ toYaml . | indent 2 }}
-    {{- end }}
+      app.kubernetes.io/name: prometheus-node-exporter
   endpoints:
-  {{- range .Values.prometheus.nodeExporterServiceMonitor.endpoints }}
   - port: metrics
-    interval: {{ .interval }}
+    interval: 15s
     path: /metrics
-  {{- end }}
+>>>>>>> b82abf8 (Stash)
 {{- end }}
