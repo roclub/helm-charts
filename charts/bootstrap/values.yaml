@@ -1,22 +1,102 @@
+nameOverride: ""
+fullnameOverride: ""
+
 sysdigSecureAgent:
-  enabled: false
+  enabled: true
   priorityClassName: sysdig-secure-agent
   priorityClassValue: 100000
 
 promtail:
-  enabled: false
+  enabled: true
   priorityClassName: promtail
   priorityClassValue: 100001
 
 prometheus:
 
-  nodeExporterServiceMonitor:
+  grafanaAgent:
     enabled: true
     namespace: monitoring
 
+    image: grafana/grafana-agent:v0.35.4
+    logLevel: warn
+
+  monitorInstance:
+    enabled: true
+
+    name: primary
+    namespace: monitoring
+    labels:
+      grafana-agent/identifier: primary
+
+    remoteWrite:
+    - name: grafana-cloud
+      url: ""
+      basicAuth:
+        username: ""
+        password: ""
+
+  serviceMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  podMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  probeMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  nodeExporterServiceMonitor:
+    enabled: false
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: prometheus-node-exporter
+
+    endpoints:
+    - interval: 30s
+
+  cadvisorServiceMonitor:
+    enabled: true
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: kubelet
+
+    endpoints:
+    - interval: 30s
+
+  kubeletServiceMonitor:
+    enabled: false
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: kubelet
+
+    endpoints:
+    - interval: 30s
 
 csiDriver:
-  enabled: false
+  enabled: true
   priorityClassName: csi-drivers
   priorityClassValue: 100002
 
