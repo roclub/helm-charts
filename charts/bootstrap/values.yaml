@@ -95,6 +95,14 @@ prometheus:
     endpoints:
     - interval: 30s
 
+  argocdServiceMonitor:
+    enabled: true
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - argocd
+
 csiDriver:
   enabled: true
   priorityClassName: csi-drivers
