@@ -42,3 +42,6 @@ serviceAccount:
   annotations: {}
   name: ""
 
+env:
+  - name: BUBBLE_WEBHOOK
+    value: ""
