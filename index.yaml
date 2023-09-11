@@ -905,6 +905,16 @@ entries:
   roclub-websocket:
   - apiVersion: v2
     appVersion: 0.1.7
+    created: "2023-09-11T16:53:19.052578679Z"
+    description: Deploys the websocket server for bubble.
+    digest: c9a655317cc9896220afd262eceabc2d5cac071db9e1495475b8328713155237
+    name: roclub-websocket
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.4/roclub-websocket-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.1.7
     created: "2023-09-11T10:29:09.60746441Z"
     description: Deploys the websocket server for bubble.
     digest: e0b86b9afeebebc5e9131d092013f487f814bfa9fa18da117a932c26e47a7309
@@ -943,4 +953,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-11T10:29:09.608028319Z"
+generated: "2023-09-11T16:53:19.052767976Z"
