@@ -1,0 +1,79 @@
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+signallingServer:
+  image:
+    repository: ghcr.io/roclub/cloud-signaling-server-node-prod
+    pullPolicy: IfNotPresent
+    tag: "latest"
+    
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: {}
+    hosts:
+    - host: "signalling-server.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: ["signalling-server.dev.roclub.io"]
+      secretName: "signalling-server-tls"
+      clusterIssuer: "staging"
+    
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+remoteOperator:
+  image:
+    repository: ghcr.io/roclub/cloud-webrtc-remote-control
+    pullPolicy: IfNotPresent
+    tag: "latest"
+    
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: {}
+    hosts:
+    - host: "remote-operator.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: ["remote-operator.dev.roclub.io"]
+      secretName: "remote-operator-tls"
+      clusterIssuer: "staging"
+    
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

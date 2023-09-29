@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "remote-operations-platform.singallingName" . }}
+  labels:
+    {{- include "remote-operations-platform.selectorLabelsSignallingServer" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.signallingServer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "remote-operations-platform.selectorLabelsSignallingServer" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.signallingServer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "remote-operations-platform.selectorLabelsSignallingServer" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "remote-operations-platform.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.signallingServer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.signallingServer.securityContext | nindent 12 }}
+          image: "{{ .Values.signallingServer.image.repository }}:{{ .Values.signallingServer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.signallingServer.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.signallingServer.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.signallingServer.resources | nindent 12 }}
+      {{- with .Values.signallingServer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.signallingServer.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.signallingServer.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
