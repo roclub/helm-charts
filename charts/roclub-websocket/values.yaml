@@ -45,3 +45,5 @@ serviceAccount:
 env:
   - name: BUBBLE_WEBHOOK
     value: ""
+  - name: BUBBLE_BEARER_TOKEN
+    value: ""
