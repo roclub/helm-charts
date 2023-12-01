@@ -12,7 +12,7 @@ signallingServer:
   image:
     repository: ghcr.io/roclub/cloud-signaling-server-node-prod
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "v0.1.1"
     
   replicaCount: 1
 
@@ -32,7 +32,7 @@ signallingServer:
     tls:
       hosts: ["signalling-server.dev.roclub.io"]
       secretName: "signalling-server-tls"
-      clusterIssuer: "staging"
+      clusterIssuer: "dev.roclub.io"
     
   resources: {}
 
@@ -47,7 +47,7 @@ remoteOperator:
   image:
     repository: ghcr.io/roclub/cloud-webrtc-remote-control
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "0.4.2"
     
   replicaCount: 1
 
@@ -67,7 +67,7 @@ remoteOperator:
     tls:
       hosts: ["remote-operator.dev.roclub.io"]
       secretName: "remote-operator-tls"
-      clusterIssuer: "staging"
+      clusterIssuer: "dev.roclub.io"
     
   resources: {}
 

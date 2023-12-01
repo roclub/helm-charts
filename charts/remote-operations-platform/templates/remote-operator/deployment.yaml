@@ -35,10 +35,24 @@ spec:
             - name: http
               containerPort: {{ .Values.remoteOperator.service.port }}
               protocol: TCP
-          livenessProbe: null
-          readinessProbe: null
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
           resources:
             {{- toYaml .Values.remoteOperator.resources | nindent 12 }}
+          volumeMounts:
+          - name: nginx-config-volume
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: {{ include "remote-operations-platform.remoteOperator" . }}-nginx-config
       {{- with .Values.remoteOperator.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
