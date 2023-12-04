@@ -97,3 +97,10 @@ nodeExporter:
   enabled: true
   targetRevision: 4.22.0
   namespace: monitoring
+  
+grafanaAgent:
+
+  enabled: false
+  namespace: monitoring
+
+  targetRevision: 0.3.2

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: remote-operations-platform
+description: Deploys the backend used to make remote operations possible
+type: application
+version: 0.1.0
+appVersion: 0.1.0

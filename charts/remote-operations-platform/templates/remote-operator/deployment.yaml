@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "remote-operations-platform.remoteOperator" . }}
+  labels:
+    {{- include "remote-operations-platform.selectorLabelsRemoteOperator" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.remoteOperator.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "remote-operations-platform.selectorLabelsRemoteOperator" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.remoteOperator.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "remote-operations-platform.selectorLabelsRemoteOperator" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "remote-operations-platform.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.remoteOperator.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.remoteOperator.securityContext | nindent 12 }}
+          image: "{{ .Values.remoteOperator.image.repository }}:{{ .Values.remoteOperator.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.remoteOperator.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.remoteOperator.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.remoteOperator.resources | nindent 12 }}
+          volumeMounts:
+          - name: nginx-config-volume
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: {{ include "remote-operations-platform.remoteOperator" . }}-nginx-config
+      {{- with .Values.remoteOperator.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteOperator.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteOperator.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

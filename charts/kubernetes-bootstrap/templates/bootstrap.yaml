@@ -41,6 +41,12 @@ spec:
                 priorityClassName: {{ .Values.promtail.priorityClassName }}
                 priorityClassValue: {{ .Values.promtail.priorityClassValue }}
 
+              grafanaAgent:
+                enabled: {{ .Values.grafanaAgent.enabled }}
+
+              prometheus:
+
+
     destination:
         name: {{ .Values.cluster }}
         namespace: {{ .Values.bootstrap.namespace | default "default" }}
