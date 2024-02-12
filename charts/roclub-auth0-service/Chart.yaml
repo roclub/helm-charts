@@ -1,0 +1,6 @@
+apiVersion: v2
+name: roclub-auth0-service
+description: Deploys the auth0 service to verify tokens.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

@@ -1,0 +1,56 @@
+nameOverride: ""
+fullnameOverride: ""
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/roclub/auth0-service-prod
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  annotations: {}
+  className: ""
+  hosts:
+  - host: ""
+    paths:
+      - path: /
+        pathType: Prefix
+  tls:
+    hosts: []
+    secretName: ""
+    clusterIssuer: ""
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+env:
+  - name: PORT
+    value: ""
+  - name: NODE_ENV
+    value: ""
+  - name: BEARER
+    value: ""
+  - name: AUTH0_DOMAIN
+    value: ""
+  - name: AUTH0_AUDIENCE
+    value: ""
+  - name: ALLOWED_ORIGINS
+    value: ""
