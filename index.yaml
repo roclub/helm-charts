@@ -750,6 +750,17 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-app-webrtc-test-0.1.0/roclub-app-webrtc-test-0.1.0.tgz
     version: 0.1.0
+  roclub-auth0-service:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-13T10:44:24.536680196Z"
+    description: Deploys the auth0 service to verify tokens.
+    digest: 78f8eb0c9203ca617b1584d2b3dbfa6a282fd8c0b3eeb2627049c6ed9ac2f3c9
+    name: roclub-auth0-service
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/roclub-auth0-service-0.1.0/roclub-auth0-service-0.1.0.tgz
+    version: 0.1.0
   roclub-connector-provisioning:
   - apiVersion: v2
     appVersion: 0.3.0
@@ -963,4 +974,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-02T16:43:31.324927021Z"
+generated: "2024-02-13T10:44:24.536843897Z"
