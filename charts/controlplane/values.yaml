@@ -105,6 +105,7 @@ remoteControlGateway:
       - secretName: controlplane-tls
         hosts:
           - controlplane.{{yourstage}}.roclub.io
+    port: 80
 
   resources: {}
 

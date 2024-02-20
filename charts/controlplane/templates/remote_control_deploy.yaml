@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.remoteControlName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.remoteControl.autoscaling.enabled }}
+  replicas: {{ .Values.remoteControl.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.remoteControl.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.labels" . | nindent 8 }}
+        {{- with .Values.remoteControl.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.remoteControl.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountRemoteControlName" . }}
+      securityContext:
+        {{- toYaml .Values.remoteControl.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.remoteControl.securityContext | nindent 12 }}
+          image: "{{ .Values.remoteControl.image.repository }}:{{ .Values.remoteControl.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.remoteControl.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.remoteControl.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.remoteControl.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/edged/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane.remoteControlName" . }}-config"
+      {{- with .Values.remoteControl.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteControl.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteControl.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
