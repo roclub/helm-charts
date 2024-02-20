@@ -338,6 +338,17 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/mirror-server-0.1.2/mirror-server-0.1.2.tgz
     version: 0.1.2
+  remote-operations-platform:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-20T08:02:11.703006221Z"
+    description: Deploys the backend used to make remote operations possible
+    digest: 859005fa8b883582b34204dc4ab8a63057e57078078c0c88f8495125143b2dbd
+    name: remote-operations-platform
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/remote-operations-platform-0.1.1/remote-operations-platform-0.1.1.tgz
+    version: 0.1.1
   roclub-app-backend:
   - apiVersion: v2
     appVersion: 2.2.0
@@ -974,4 +985,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-13T10:44:24.536843897Z"
+generated: "2024-02-20T08:02:11.703194994Z"
