@@ -77,3 +77,19 @@ remoteOperator:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+env:
+  - name: VITE_APP_SIGNALING_SERVER_URL
+    value: ""
+  - name: VITE_APP_SIGNALING_SERVER_TOKEN
+    value: ""
+  - name: VITE_APP_DATA_CHANNEL_LABEL
+    value: ""
+  - name: VITE_APP_ENV
+    value: ""
+  - name: VITE_APP_BUBBLE_WEBHOOK
+    value: ""
+  - name: VITE_APP_BUBBLE_BEARER
+    value: ""
+  - name: VITE_APP_GRPC_SERVER_URL
+    value: ""
