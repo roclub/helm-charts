@@ -31,7 +31,7 @@ spec:
             {{- toYaml .Values.remoteOperator.securityContext | nindent 12 }}
           image: "{{ .Values.remoteOperator.image.repository }}:{{ .Values.remoteOperator.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.remoteOperator.image.pullPolicy }}
-          {{- range .Values.env }}
+          {{- range .Values.remoteOperator.env }}
             - name: {{ .name }}
               value: {{ .value | quote }}
           {{- end }}

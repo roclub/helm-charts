@@ -31,6 +31,10 @@ spec:
             {{- toYaml .Values.signallingServer.securityContext | nindent 12 }}
           image: "{{ .Values.signallingServer.image.repository }}:{{ .Values.signallingServer.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.signallingServer.image.pullPolicy }}
+          {{- range .Values.signallingServer.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.signallingServer.service.port }}

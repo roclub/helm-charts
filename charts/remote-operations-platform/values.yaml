@@ -33,7 +33,12 @@ signallingServer:
       hosts: ["signalling-server.dev.roclub.io"]
       secretName: "signalling-server-tls"
       clusterIssuer: "dev.roclub.io"
-    
+  env:
+    - name: SIGNALLING_SERVER_TOKEN
+      value: ""
+    - name: PORT
+      value: 8080
+
   resources: {}
 
   podAnnotations: {}
@@ -68,7 +73,22 @@ remoteOperator:
       hosts: ["remote-operator.dev.roclub.io"]
       secretName: "remote-operator-tls"
       clusterIssuer: "dev.roclub.io"
-    
+  env:
+    - name: VITE_APP_SIGNALING_SERVER_URL
+      value: ""
+    - name: VITE_APP_SIGNALING_SERVER_TOKEN
+      value: ""
+    - name: VITE_APP_DATA_CHANNEL_LABEL
+      value: ""
+    - name: VITE_APP_ENV
+      value: ""
+    - name: VITE_APP_BUBBLE_WEBHOOK
+      value: ""
+    - name: VITE_APP_BUBBLE_BEARER
+      value: ""
+    - name: VITE_APP_GRPC_SERVER_URL
+      value: ""
+
   resources: {}
 
   podAnnotations: {}
@@ -77,19 +97,3 @@ remoteOperator:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-
-env:
-  - name: VITE_APP_SIGNALING_SERVER_URL
-    value: ""
-  - name: VITE_APP_SIGNALING_SERVER_TOKEN
-    value: ""
-  - name: VITE_APP_DATA_CHANNEL_LABEL
-    value: ""
-  - name: VITE_APP_ENV
-    value: ""
-  - name: VITE_APP_BUBBLE_WEBHOOK
-    value: ""
-  - name: VITE_APP_BUBBLE_BEARER
-    value: ""
-  - name: VITE_APP_GRPC_SERVER_URL
-    value: ""
