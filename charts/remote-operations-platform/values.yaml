@@ -12,7 +12,7 @@ signallingServer:
   image:
     repository: ghcr.io/roclub/cloud-signaling-server-node-prod
     pullPolicy: IfNotPresent
-    tag: "v0.1.1"
+    tag: ""
     
   replicaCount: 1
 
@@ -52,7 +52,7 @@ remoteOperator:
   image:
     repository: ghcr.io/roclub/cloud-webrtc-remote-control
     pullPolicy: IfNotPresent
-    tag: "0.4.2"
+    tag: ""
     
   replicaCount: 1
 
