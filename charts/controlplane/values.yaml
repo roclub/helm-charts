@@ -1,0 +1,116 @@
+# Default values for controlplane.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+remoteControl:
+    logger: "debug"
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/roclub/controlplane-session-control
+    pullPolicy: IfNotPresent
+    tag: "2.0.0"
+
+  imagePullSecrets: 
+    - name: dockerconfigjson-github-com
+
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+  affinity: {}
+
+remoteControlGateway:
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/roclub/controlplane-session-control-gateway
+    pullPolicy: IfNotPresent
+    tag: "2.0.0"
+
+  imagePullSecrets: 
+    - name: dockerconfigjson-github-com
+
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: 
+      traefik.ingress.kubernetes.io/router.middlewares: roclub-app-cors-header@kubernetescrd
+      traefik.ingress.kubernetes.io/service.serversscheme: h2c
+      cert-manager.io/cluster-issuer: "dev.roclub.io"
+    hosts:
+      - host: controlplane.dev.roclub.io 
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: controlplane-tls
+        hosts:
+          - controlplane.dev.roclub.io
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+  affinity: {}

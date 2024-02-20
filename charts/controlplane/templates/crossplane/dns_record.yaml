@@ -1,0 +1,29 @@
+---
+apiVersion: aws.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: controlplane
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: roclub-app 
+      name: crossplane-aws-auth
+      key: creds
+---
+apiVersion: route53.aws.upbound.io/v1beta1
+kind: Record
+metadata:
+  name: controlplane.dev.roclub.io
+spec:
+  providerConfigRef:
+    name: controlplane
+    namespace: roclub-app
+  forProvider:
+    name: controlplane
+    region: "us-east-1"
+    type: CNAME
+    ttl: 300
+    records:
+    - "a2ec8445449804ed3a37ad044a9444c1-edfb5d05e0a75188.elb.eu-central-1.amazonaws.com" 
+    zoneId: "Z014743627GZM6VTA9N24" 

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.remoteControlGatewayName" . }}
+  labels:
+    {{- include "controlplane.selectorLabelsRemoteControlGateway" . | nindent 4 }}
+spec:
+  {{- if not .Values.remoteControlGateway.autoscaling.enabled }}
+  replicas: {{ .Values.remoteControlGateway.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabelsRemoteControlGateway" . | nindent 6 }}
+      {{- with .Values.remoteControlGateway.podLabels }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+  template:
+    metadata:
+      {{- with .Values.remoteControlGateway.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.selectorLabelsRemoteControlGateway" . | nindent 8 }}
+        {{- with .Values.remoteControlGateway.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.remoteControlGateway.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountRemoteControlGatewayName" . }}
+      securityContext:
+        {{- toYaml .Values.remoteControlGateway.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.remoteControlGateway.securityContext | nindent 12 }}
+          image: "{{ .Values.remoteControlGateway.image.repository }}:{{ .Values.remoteControlGateway.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.remoteControlGateway.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080 
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.remoteControlGateway.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/edged/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane.remoteControlName" . }}-config"
+      {{- with .Values.remoteControlGateway.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteControlGateway.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.remoteControlGateway.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
