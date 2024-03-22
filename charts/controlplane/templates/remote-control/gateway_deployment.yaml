@@ -41,7 +41,10 @@ spec:
           imagePullPolicy: {{ .Values.remoteControlGateway.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080 
+              containerPort: 8081 
+              protocol: TCP
+            - name: grpc
+              containerPort: 8080
               protocol: TCP
           resources:
             {{- toYaml .Values.remoteControlGateway.resources | nindent 12 }}

@@ -1,4 +1,4 @@
-{{/*
+{/*
 Expand the name of the chart.
 */}}
 {{- define "controlplane.name" -}}
@@ -38,7 +38,6 @@ helm.sh/chart: {{ include "controlplane.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
@@ -86,6 +85,13 @@ app.kubernetes.io/name: {{ include "controlplane.remoteControlGatewayName" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{- define "controlplane.selectorLabelsRemoteControl" -}}
+app.kubernetes.io/name: {{ include "controlplane.remoteControlName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
@@ -97,7 +103,7 @@ If release name contains chart name it will be used as a full name.
 {{- else }}
 {{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-remote-control" .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- printf "%s-%s-remote-control" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
@@ -112,6 +118,58 @@ Create the name of the service account to use
 {{- default (include "controlplane.fullname" .) .Values.remoteControl.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.remoteControl.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.connectorStatusName" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-connector-status" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-connector-status" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.selectorLabelsConnectorStatus" -}}
+app.kubernetes.io/name: {{ include "controlplane.connectorStatusName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "controlplane.serviceAccountConnectorStatusName" -}}
+{{- if .Values.connectorStatus.serviceAccount.create }}
+{{- default (include "controlplane.fullname" .) .Values.connectorStatus.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.connectorStatus.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.connectorControlName" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-connector-control" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-connector-control" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.selectorLabelsConnectorControl" -}}
+app.kubernetes.io/name: {{ include "controlplane.connectorControlName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "controlplane.serviceAccountConnectorControlName" -}}
+{{- if .Values.connectorControl.serviceAccount.create }}
+{{- default (include "controlplane.fullname" .) .Values.connectorControl.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.connectorControl.serviceAccount.name }}
 {{- end }}
 {{- end }}
 

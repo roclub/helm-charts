@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "controlplane.connectorStatusName" . }}-config"
+  labels:
+    {{- include "controlplane.selectorLabelsConnectorStatus" . | nindent 4 }}
+data:
+  config.toml: |-
+    [connector_status]
+    [connector_status.connector_repository]
+    mongodb_connection_string = "{{ .Values.connectorStatus.config.repository.connectionString }}"
+
+    [connector_status.app_endpoint]
+    url   = "{{ .Values.connectorStatus.config.appEndpoint.url }}"
+    token = "{{ .Values.connectorStatus.config.appEndpoint.token }}"
+
+    [connector_status.iot_dataplane]
+    key    = "{{ .Values.connectorStatus.config.iotDataplane.key }}"
+    secret = "{{ .Values.connectorStatus.config.iotDataplane.secret }}"
+
+    [connector_status.kafka]
+    bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
+    sasl_username     = "{{ .Values.connectorStatus.config.kafka.saslUsername }}"
+    sasl_password     = "{{ .Values.connectorStatus.config.kafka.saslPassword }}"
+
+    [connector_status.api]
+    bearer_token = "{{ .Values.connectorStatus.config.api.bearerToken }}"
+
+    [connector_status.logger]
+    level = "debug"

@@ -1,6 +1,6 @@
 {{- if .Values.remoteControlGateway.ingress.enabled -}}
 {{- $fullName := include "controlplane.remoteControlGatewayName" . -}}
-{{- $svcPort := .Values.remoteControlGateway.service.port -}}
+{{- $svcPort := .Values.remoteControlGateway.service.httpPort -}}
 {{- if and .Values.remoteControlGateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.remoteControlGateway.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.remoteControlGateway.ingress.annotations "kubernetes.io/ingress.class" .Values.remoteControlGateway.ingress.className}}
@@ -20,7 +20,6 @@ metadata:
     {{- include "controlplane.labels" . | nindent 4 }}
   {{- with .Values.remoteControlGateway.ingress.annotations }}
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: ci-tools-https-redirectscheme@kubernetescrd
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
