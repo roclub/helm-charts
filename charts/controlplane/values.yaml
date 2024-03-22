@@ -6,6 +6,10 @@ nameOverride: ""
 fullnameOverride: ""
 
 remoteControl:
+<<<<<<< HEAD
+=======
+  config:
+>>>>>>> 853ae01 (removed secrets)
     logger: "debug"
 
   replicaCount: 1
