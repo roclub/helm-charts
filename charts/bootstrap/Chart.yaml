@@ -1,6 +1,0 @@
-apiVersion: v2
-name: bootstrap
-description: Deploys Kubernetes Resources that are required by third party charts.
-type: application
-version: 0.4.0
-appVersion: "0.4.0"
