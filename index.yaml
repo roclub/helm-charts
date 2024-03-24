@@ -92,6 +92,18 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/bootstrap-0.1.0/bootstrap-0.1.0.tgz
     version: 0.1.0
+  controlplane:
+  - apiVersion: v2
+    appVersion: 2.0.12
+    created: "2024-03-24T10:14:36.871255516Z"
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: 1f82fde65b2e247d71ba95a3cb692de2e8bbbd8387700ae7cfa6d24ce4456d99
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.0.12/controlplane-2.0.12.tgz
+    version: 2.0.12
   kubernetes-bootstrap:
   - apiVersion: v2
     appVersion: 0.3.0
@@ -1015,4 +1027,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-24T09:58:08.231935098Z"
+generated: "2024-03-24T10:14:36.871448734Z"
