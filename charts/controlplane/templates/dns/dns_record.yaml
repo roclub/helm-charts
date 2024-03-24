@@ -1,0 +1,19 @@
+{{- if .Values.remoteControlGateway.ingress.enabled -}}
+{{- range .Values.remoteControlGateway.ingress.hosts }}
+apiVersion: route53.aws.upbound.io/v1beta1
+kind: Record
+metadata:
+  name: {{ .host | quote }}
+spec:
+  providerConfigRef:
+    name: controlplane
+  forProvider:
+    name: controlplane
+    region: "us-east-1"
+    type: CNAME
+    ttl: 300
+    records:
+    -  {{ .loadBalancer }}
+    zoneId: {{ .zoneID }} 
+{{- end }}
+{{- end }}

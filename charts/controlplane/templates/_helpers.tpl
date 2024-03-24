@@ -1,4 +1,4 @@
-{/*
+{{/*
 Expand the name of the chart.
 */}}
 {{- define "controlplane.name" -}}
@@ -38,6 +38,7 @@ helm.sh/chart: {{ include "controlplane.chart" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
@@ -89,8 +90,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/name: {{ include "controlplane.remoteControlName" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-
 
 {{/*
 Create a default fully qualified app name.
@@ -172,4 +171,3 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- default "default" .Values.connectorControl.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
