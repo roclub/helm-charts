@@ -98,6 +98,8 @@ remoteControlGateway:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
       - host: controlplane.{{yourstage}}.roclub.io 
+        zoneID: ""
+        loadBalancer: "" 
         paths:
           - path: /v2/sessions/
             pathType: Prefix
@@ -105,7 +107,6 @@ remoteControlGateway:
       - secretName: controlplane-tls
         hosts:
           - controlplane.{{yourstage}}.roclub.io
-    port: 80
 
   resources: {}
 
