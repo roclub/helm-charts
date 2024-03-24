@@ -13,12 +13,81 @@ promtail:
 
 prometheus:
 
-  grafanaAgent:
+<<<<<<< HEAD
+  monitorInstance:
+    enabled: true
+
+    name: primary
+    namespace: monitoring
+    labels:
+      grafana-agent/identifier: primary
+
+    remoteWrite:
+    - name: grafana-cloud
+      url: ""
+      basicAuth:
+        username: ""
+        password: ""
+
+  serviceMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  podMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  probeMonitorSelector:
+    namespaceSelector: {}
+    matchLabels:
+      grafana-agent/scrape: enabled
+
+  nodeExporterServiceMonitor:
+    enabled: false
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: prometheus-node-exporter
+
+    endpoints:
+    - interval: 30s
+
+  cadvisorServiceMonitor:
     enabled: true
     namespace: monitoring
 
-    image: grafana/grafana-agent:v0.35.4
-    logLevel: warn
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: kubelet
+
+    endpoints:
+    - interval: 30s
+
+  kubeletServiceMonitor:
+    enabled: false
+    namespace: monitoring
+
+    namespaceSelector:
+    - default
+    - monitoring
+
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: kubelet
+
+    endpoints:
+    - interval: 30s
 
   monitorInstance:
     enabled: true
