@@ -95,6 +95,17 @@ entries:
   controlplane:
   - apiVersion: v2
     appVersion: 2.0.12
+    created: "2024-03-24T11:24:23.228059324Z"
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: 78c0a54a3897a8fefde4ee453c34e681b98521c94fab266db74cad7100a87fe5
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.0.13/controlplane-2.0.13.tgz
+    version: 2.0.13
+  - apiVersion: v2
+    appVersion: 2.0.12
     created: "2024-03-24T10:14:36.871255516Z"
     description: Deploys all microservices associated with managing and controlling
       the roclub connectors
@@ -1027,4 +1038,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-24T10:14:36.871448734Z"
+generated: "2024-03-24T11:24:23.228260631Z"
