@@ -341,6 +341,16 @@ entries:
   remote-operations-platform:
   - apiVersion: v2
     appVersion: 0.7.0
+    created: "2024-03-24T09:58:08.231706622Z"
+    description: Deploys the backend used to make remote operations possible
+    digest: 164467aa570778d8ba86dc53f49b76a044cc614ff05d2d3cd5b990f7d142c44b
+    name: remote-operations-platform
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/remote-operations-platform-0.1.4/remote-operations-platform-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.7.0
     created: "2024-02-20T15:26:44.307525835Z"
     description: Deploys the backend used to make remote operations possible
     digest: 16e2c37c83dfd794fe8c1440523e4944c24052a89c7e2645d92cbd589dbd30c8
@@ -1005,4 +1015,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-20T15:26:44.307731471Z"
+generated: "2024-03-24T09:58:08.231935098Z"
