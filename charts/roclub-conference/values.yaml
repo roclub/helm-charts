@@ -1,0 +1,97 @@
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+backend:
+  image:
+    repository: ghcr.io/roclub/livekit-backend-prod
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: {}
+    hosts:
+    - host: "conference-backend.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: ["conference-backend.dev.roclub.io"]
+      secretName: "livekit-backend-tls"
+      clusterIssuer: "dev.roclub.io"
+  env:
+    - name: PORT
+      value: 8080
+    - name: LK_API_KEY
+      value: ""
+    - name: LK_API_SECRET
+      value: ""
+    - name: API_BEARER
+      value: ""
+    - name: TOKEN_TTL
+      value: "5m"
+
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+frontend:
+  image:
+    repository: ghcr.io/roclub/livekit-prototype
+    pullPolicy: IfNotPresent
+    tag: ""
+    
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: {}
+    hosts:
+    - host: "conference.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: ["conference.dev.roclub.io"]
+      secretName: "conference-tls"
+      clusterIssuer: "dev.roclub.io"
+  env:
+    - name: VITE_APP_LK_TOKEN_ENDPOINT
+      value: ""
+    - name: VITE_APP_LK_SERVER_URL
+      value: ""
+    - name: VITE_APP_LK_BACKEND_BEARER
+      value: ""
+
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
