@@ -56,7 +56,7 @@ backend:
 
 frontend:
   image:
-    repository: ghcr.io/roclub/livekit-prototype
+    repository: ghcr.io/roclub/livekit-remote-control-development
     pullPolicy: IfNotPresent
     tag: ""
     
@@ -79,13 +79,6 @@ frontend:
       hosts: ["conference.dev.roclub.io"]
       secretName: "conference-tls"
       clusterIssuer: "dev.roclub.io"
-  env:
-    - name: VITE_APP_LK_TOKEN_ENDPOINT
-      value: ""
-    - name: VITE_APP_LK_SERVER_URL
-      value: ""
-    - name: VITE_APP_LK_BACKEND_BEARER
-      value: ""
 
   resources: {}
 
