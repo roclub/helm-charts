@@ -13,7 +13,7 @@ backend:
     repository: ghcr.io/roclub/livekit-backend-prod
     pullPolicy: IfNotPresent
     tag: ""
-    
+
   replicaCount: 1
 
   service:
@@ -40,6 +40,10 @@ backend:
       value: ""
     - name: LK_API_SECRET
       value: ""
+    - name: API_BEARER
+      value: ""
+    - name: TOKEN_TTL
+      value: "5m"
 
   resources: {}
 
@@ -75,6 +79,13 @@ frontend:
       hosts: ["conference.dev.roclub.io"]
       secretName: "conference-tls"
       clusterIssuer: "dev.roclub.io"
+  env:
+    - name: VITE_APP_LK_TOKEN_ENDPOINT
+      value: ""
+    - name: VITE_APP_LK_SERVER_URL
+      value: ""
+    - name: VITE_APP_LK_BACKEND_BEARER
+      value: ""
 
   resources: {}
 
