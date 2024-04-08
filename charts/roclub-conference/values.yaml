@@ -12,7 +12,7 @@ backend:
   image:
     repository: ghcr.io/roclub/livekit-backend-prod
     pullPolicy: IfNotPresent
-    tag: "0.4.1"
+    tag: "0.4.4"
 
   replicaCount: 1
 
@@ -60,7 +60,7 @@ frontend:
   image:
     repository: ghcr.io/roclub/livekit-remote-control-development
     pullPolicy: IfNotPresent
-    tag: "0.2.3"
+    tag: "0.3.2"
     
   replicaCount: 1
 
