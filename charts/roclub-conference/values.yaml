@@ -3,6 +3,8 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
+stage: "dev"
+
 serviceAccount:
   create: true
   annotations: {}
@@ -74,6 +76,10 @@ frontend:
     annotations: {}
     hosts:
     - host: "conference.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: "conference.roclub.io"
       paths:
         - path: /
           pathType: Prefix
