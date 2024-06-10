@@ -30,31 +30,37 @@ spec:
   {{- if .Values.frontend.ingress.tls }}
   tls:
     - hosts:
-        {{- range .Values.frontend.ingress.tls.hosts }}
-        - {{ . | quote }}
+      - {{ .Values.frontend.ingress.hostname }}
+      {{- range .Values.frontend.ingress.extraHosts }}
+        {{- if .host }}
+      -  {{ .host }}
         {{- end }}
+      {{- end }}
       secretName: {{ .Values.frontend.ingress.tls.secretName }}
   {{- end }}
   rules:
-    {{- range .Values.frontend.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.frontend.ingress.hostname }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+          - path: {{ .Values.frontend.ingress.path }}
+            pathType: {{ $.Values.frontend.ingress.pathType }}
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
+    {{- range .Values.frontend.ingress.extraHosts }}
+    {{- if ne .host "" }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - path: {{ $.Values.frontend.ingress.path }}
+            pathType: {{ $.Values.frontend.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+    {{- end }}
     {{- end }}
 {{- end }}

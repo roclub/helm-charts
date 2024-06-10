@@ -72,13 +72,12 @@ frontend:
     enabled: true
     className: "dev-traefik"
     annotations: {}
-    hosts:
-    - host: "conference.dev.roclub.io"
-      paths:
-        - path: /
-          pathType: Prefix
+    hostname: "conference.dev.roclub.io"
+    path: /
+    pathType: Prefix
+    extraHosts:
+      - host: ""
     tls:
-      hosts: ["conference.dev.roclub.io"]
       secretName: "conference-tls"
       clusterIssuer: "dev.roclub.io"
 
