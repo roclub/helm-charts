@@ -1,19 +1,12 @@
-{{- if .Values.remoteControlGateway.ingress.enabled -}}
-{{- range .Values.remoteControlGateway.ingress.hosts }}
-apiVersion: route53.aws.upbound.io/v1beta1
-kind: Record
+---
+{{- if .Values.influxdb2.ingress.enabled -}}
+apiVersion: aws.roclub.io/v1alpha1
+kind: dnsrecord
 metadata:
-  name: {{ .host | quote }}
+  name: controlplane-influx
 spec:
-  providerConfigRef:
-    name: controlplane
-  forProvider:
-    name: controlplane
-    region: "us-east-1"
-    type: CNAME
-    ttl: 300
-    records:
-    -  {{ .loadBalancer }}
-    zoneId: {{ .zoneID }} 
-{{- end }}
-{{- end }}
+  providerConfigName: "controlplane-dns-record-influx"
+  recordName: {{ .Values.influxdb2.ingress.recordName }}
+  zoneName: {{ .Values.influxdb2.ingress.zoneName }}
+  stage: {{ .Values.influxdb2.ingress.stage }}
+{{- end -}}
