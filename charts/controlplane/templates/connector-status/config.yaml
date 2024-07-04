@@ -1,15 +1,25 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ include "controlplane.connectorControlName" . }}-config"
+  name: "{{ include "controlplane.connectorStatusName" . }}-config"
   labels:
-    {{- include "controlplane.selectorLabelsConnectorControl" . | nindent 4 }}
+    {{- include "controlplane.selectorLabelsConnectorStatus" . | nindent 4 }}
 data:
   config.toml: |-
-    [connector_Control]
-    [connector_Control.iot_dataplane]
-    key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
-    secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"
+    [connector_status]
+    [connector_status.connector_status_repository]
+    influxdb_org= "{{ .Values.connectorStatus.config.influxdb.org }}"
+    influxdb_url= "{{ .Values.connectorStatus.config.influxdb.url }}"
+    influxdb_token= "{{ .Values.connectorStatus.config.influxdb.token }}"
 
-    [connector_Control.logger]
+    [connector_status.app_endpoint]
+    url   = "{{ .Values.connectorStatus.config.appEndpoint.url }}"
+    token = "{{ .Values.connectorStatus.config.appEndpoint.token }}"
+
+    [connector_status.kafka]
+    bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
+    sasl_username     = "{{ .Values.connectorStatus.config.kafka.saslUsername }}"
+    sasl_password     = "{{ .Values.connectorStatus.config.kafka.saslPassword }}"
+
+    [connector_status.logger]
     level = "debug"
