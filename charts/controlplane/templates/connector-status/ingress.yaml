@@ -1,6 +1,6 @@
 {{- if .Values.connectorStatus.ingress.enabled -}}
 {{- $fullName := include "controlplane.connectorStatusName" . -}}
-{{- $svcPort := .Values.connectorStatus.service.port -}}
+{{- $svcPort := .Values.connectorStatus.service.httpPort -}}
 {{- if and .Values.connectorStatus.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.connectorStatus.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.connectorStatus.ingress.annotations "kubernetes.io/ingress.class" .Values.connectorStatus.ingress.className}}

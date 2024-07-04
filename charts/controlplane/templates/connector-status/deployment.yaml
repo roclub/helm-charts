@@ -37,8 +37,11 @@ spec:
           image: "{{ .Values.connectorStatus.image.repository }}:{{ .Values.connectorStatus.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.connectorStatus.image.pullPolicy }}
           ports:
+            - name: grpc
+              containerPort: {{ .Values.connectorStatus.service.gRPCPort }}
+              protocol: TCP
             - name: http
-              containerPort: {{ .Values.connectorStatus.service.port }}
+              containerPort: {{ .Values.connectorStatus.service.httpPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.connectorStatus.resources | nindent 12 }}

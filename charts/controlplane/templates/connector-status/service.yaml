@@ -9,7 +9,11 @@ metadata:
 spec:
   type: {{ .Values.connectorStatus.service.type }}
   ports:
-  - port: {{ .Values.connectorStatus.service.port }}
+  - port: {{ .Values.connectorStatus.service.gRPCPort }}
+    targetPort: grpc
+    protocol: TCP
+    name: grpc
+  - port: {{ .Values.connectorStatus.service.httpPort }}
     targetPort: http
     protocol: TCP
     name: http
