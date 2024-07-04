@@ -6,7 +6,7 @@ remoteControl:
     iotDataplane:
       key: ""
       secret: ""
-    
+
     logger: "debug"
 
   replicaCount: 1
@@ -16,8 +16,8 @@ remoteControl:
     pullPolicy: IfNotPresent
     tag: "2.0.12"
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
 
 
   serviceAccount:
@@ -39,19 +39,19 @@ remoteControl:
   ingress:
     enabled: true
     className: "{{yourstage}}-traefik"
-    annotations: 
+    annotations:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
-        zoneID: ""
-        loadBalancer: "" 
-        paths:
-          - path: /v2/sessions/
-            pathType: Prefix
+    - host: controlplane.{{yourstage}}.roclub.io
+      zoneID: ""
+      loadBalancer: ""
+      paths:
+      - path: /v2/sessions/
+        pathType: Prefix
     tls:
-      - secretName: controlplane-tls
-        hosts:
-          - controlplane.{{yourstage}}.roclub.io
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io
 
   resources: {}
 
@@ -79,7 +79,10 @@ connectorStatus:
       saslPassword: ""
 
     repository:
-      connectionString: ""
+      influxdb:
+        org: ""
+        url: ""
+        token: ""
 
     appEndpoint:
       url: ""
@@ -92,8 +95,8 @@ connectorStatus:
     pullPolicy: IfNotPresent
     tag: "2.0.12"
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
 
   serviceAccount:
     create: true
@@ -127,21 +130,21 @@ connectorStatus:
   nodeSelector: {}
 
   tolerations: []
- 
+
   ingress:
     enabled: true
     className: "{{yourstage}}-traefik"
-    annotations: 
+    annotations:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
-        paths:
-          - path: /v2/connectors/
-            pathType: Prefix
+    - host: controlplane.{{yourstage}}.roclub.io
+      paths:
+      - path: /v2/connectors/
+        pathType: Prefix
     tls:
-      - secretName: controlplane-tls
-        hosts:
-          - controlplane.{{yourstage}}.roclub.io
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io
 
 connectorControl:
   config:
@@ -156,8 +159,8 @@ connectorControl:
     pullPolicy: IfNotPresent
     tag: "2.0.12"
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
 
   serviceAccount:
     create: true
@@ -191,18 +194,18 @@ connectorControl:
   nodeSelector: {}
 
   tolerations: []
- 
+
   ingress:
     enabled: true
     className: "{{yourstage}}-traefik"
-    annotations: 
+    annotations:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
-        paths:
-          - path: /v2/connectors/
-            pathType: Prefix
+    - host: controlplane.{{yourstage}}.roclub.io
+      paths:
+      - path: /v2/connectors/
+        pathType: Prefix
     tls:
-      - secretName: controlplane-tls
-        hosts:
-          - controlplane.{{yourstage}}.roclub.io
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io
