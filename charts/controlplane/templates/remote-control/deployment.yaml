@@ -37,8 +37,11 @@ spec:
           image: "{{ .Values.remoteControl.image.repository }}:{{ .Values.remoteControl.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.remoteControl.image.pullPolicy }}
           ports:
+            - name: grpc
+              containerPort: {{ .Values.remoteControl.service.gRPCPort }}
+              protocol: TCP
             - name: http
-              containerPort: {{ .Values.remoteControl.service.port }}
+              containerPort: {{ .Values.remoteControl.service.httpPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.remoteControl.resources | nindent 12 }}
