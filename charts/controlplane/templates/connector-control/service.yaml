@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "controlplane.connectorStatusName" . }}
+  name: {{ include "controlplane.connectorControlName" . }}
   labels:
     {{- include "controlplane.labels" . | nindent 4 }}
   annotations:
     traefik.ingress.kubernetes.io/service.passhostheader: "true"
 spec:
-  type: {{ .Values.connectorStatus.service.type }}
+  type: {{ .Values.connectorControl.service.type }}
   ports:
-  - port: {{ .Values.connectorStatus.service.gRPCPort }}
+   - port: {{ .Values.connectorControl.service.gRPCPort }}
     targetPort: grpc
     protocol: TCP
     name: grpc
-  - port: {{ .Values.connectorStatus.service.httpPort }}
+  - port: {{ .Values.connectorControl.service.httpPort }}
     targetPort: http
     protocol: TCP
     name: http
   selector:
-    {{- include "controlplane.selectorLabelsConnectorStatus" . | nindent 4 }}
+    {{- include "controlplane.selectorLabelsConnectorControl" . | nindent 4 }}

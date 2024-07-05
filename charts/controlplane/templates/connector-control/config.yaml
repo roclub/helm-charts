@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "controlplane.connectorControlName" . }}-config"
+  labels:
+    {{- include "controlplane.selectorLabelsConnectorControl" . | nindent 4 }}
+data:
+  config.toml: |-
+    [connector_control]
+    [connector_control.iot_dataplane]
+    key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
+    secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"
+
+    [connector_control.logger]
+    level = "debug"

@@ -7,16 +7,6 @@ metadata:
 data:
   config.toml: |-
     [session_control]
-    [session_control.kafka]
-    bootstrap_servers = [{{- range .Values.remoteControl.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
-    sasl_username     = "{{ .Values.remoteControl.config.kafka.saslUsername }}"
-    sasl_password     = "{{ .Values.remoteControl.config.kafka.saslPassword }}"
-
-    [session_control.kafka.schema_registry]
-    url      = "{{ .Values.remoteControl.config.kafka.schemaRegistry.url }}"
-    username = "{{ .Values.remoteControl.config.kafka.schemaRegistry.username }}"
-    password = "{{ .Values.remoteControl.config.kafka.schemaRegistry.password }}"
-
     [session_control.iot_dataplane]
     key    = "{{ .Values.remoteControl.config.iotDataplane.key }}"
     secret = "{{ .Values.remoteControl.config.iotDataplane.secret }}"

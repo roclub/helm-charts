@@ -3,20 +3,10 @@ fullnameOverride: ""
 
 remoteControl:
   config:
-    kafka:
-      bootstrapServers: []
-      saslUsername: ""
-      saslPassword: ""
-      
-      schemaRegistry:
-        url: ""
-        username: ""
-        password: ""
-    
     iotDataplane:
       key: ""
       secret: ""
-    
+
     logger: "debug"
 
   replicaCount: 1
@@ -26,8 +16,8 @@ remoteControl:
     pullPolicy: IfNotPresent
     tag: "2.0.12"
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
 
 
   serviceAccount:
@@ -43,70 +33,25 @@ remoteControl:
 
   service:
     type: ClusterIP
-    port: 80
-
-  resources: {}
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
-  # Additional volumes on the output Deployment definition.
-  volumes: []
-  volumeMounts: []
-
-  nodeSelector: {}
-
-  tolerations: []
-  affinity: {}
-
-remoteControlGateway:
-
-  replicaCount: 1
-
-  image:
-    repository: ghcr.io/roclub/controlplane-session-control-gateway
-    pullPolicy: IfNotPresent
-    tag: "2.0.12"
-
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
-
-  serviceAccount:
-    create: true
-    automount: true
-    annotations: {}
-    name: "remote-control-gateway"
-
-  podAnnotations: {}
-  podLabels: {}
-  podSecurityContext: {}
-  securityContext: {}
-
-  service:
-    type: ClusterIP
     httpPort: 8081
     gRPCPort: 8080
 
   ingress:
     enabled: true
     className: "{{yourstage}}-traefik"
-    annotations: 
+    annotations:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
-        zoneID: ""
-        loadBalancer: "" 
-        paths:
-          - path: /v2/sessions/
-            pathType: Prefix
+    - host: controlplane.{{yourstage}}.roclub.io
+      zoneID: ""
+      loadBalancer: ""
+      paths:
+      - path: /v2/sessions/
+        pathType: Prefix
     tls:
-      - secretName: controlplane-tls
-        hosts:
-          - controlplane.{{yourstage}}.roclub.io
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io
 
   resources: {}
 
@@ -134,15 +79,11 @@ connectorStatus:
       saslPassword: ""
 
     repository:
-      connectionString: ""
+      influxdb:
+        org: ""
+        url: ""
+        token: ""
 
-    api:
-      bearerToken: ""
-
-    iotDataplane:
-      key: ""
-      secret: ""
-          
     appEndpoint:
       url: ""
       token: ""
@@ -154,8 +95,8 @@ connectorStatus:
     pullPolicy: IfNotPresent
     tag: "2.0.12"
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
 
   serviceAccount:
     create: true
@@ -170,7 +111,8 @@ connectorStatus:
 
   service:
     type: ClusterIP
-    port: 8080
+    httpPort: 8081
+    gRPCPort: 8080
 
   resources: {}
 
@@ -188,19 +130,82 @@ connectorStatus:
   nodeSelector: {}
 
   tolerations: []
- 
+
   ingress:
     enabled: true
     className: "{{yourstage}}-traefik"
-    annotations: 
+    annotations:
       cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
-        paths:
-          - path: /v2/connectors/
-            pathType: Prefix
+    - host: controlplane.{{yourstage}}.roclub.io
+      paths:
+      - path: /v2/connectors/
+        pathType: Prefix
     tls:
-      - secretName: controlplane-tls
-        hosts:
-          - controlplane.{{yourstage}}.roclub.io
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io
 
+connectorControl:
+  config:
+    iotDataplane:
+      key: ""
+      secret: ""
+
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/roclub/controlplane-connector-control
+    pullPolicy: IfNotPresent
+    tag: "2.0.12"
+
+  imagePullSecrets:
+  - name: dockerconfigjson-github-com
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "connector-control"
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  ingress:
+    enabled: true
+    className: "{{yourstage}}-traefik"
+    annotations:
+      cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
+    hosts:
+    - host: controlplane.{{yourstage}}.roclub.io
+      paths:
+      - path: /v2/connectors/
+        pathType: Prefix
+    tls:
+    - secretName: controlplane-tls
+      hosts:
+      - controlplane.{{yourstage}}.roclub.io

@@ -1,9 +1,9 @@
-{{- if .Values.remoteControlGateway.ingress.enabled -}}
-{{- $fullName := include "controlplane.remoteControlGatewayName" . -}}
+{{- if .Values.remoteControl.ingress.enabled -}}
+{{- $fullName := include "controlplane.remoteControlName" . -}}
 {{- $svcPort := .Values.remoteControlGateway.service.httpPort -}}
-{{- if and .Values.remoteControlGateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.remoteControlGateway.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.remoteControlGateway.ingress.annotations "kubernetes.io/ingress.class" .Values.remoteControlGateway.ingress.className}}
+{{- if and .Values.remoteControl.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.remoteControl.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.remoteControl.ingress.annotations "kubernetes.io/ingress.class" .Values.remoteControl.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -18,17 +18,17 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "controlplane.labels" . | nindent 4 }}
-  {{- with .Values.remoteControlGateway.ingress.annotations }}
+  {{- with .Values.remoteControl.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.remoteControlGateway.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.remoteControlGateway.ingress.className }}
+  {{- if and .Values.remoteControl.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.remoteControl.ingress.className }}
   {{- end }}
-  {{- if .Values.remoteControlGateway.ingress.tls }}
+  {{- if .Values.remoteControl.ingress.tls }}
   tls:
-    {{- range .Values.remoteControlGateway.ingress.tls }}
+    {{- range .Values.remoteControl.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -37,7 +37,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.remoteControlGateway.ingress.hosts }}
+    {{- range .Values.remoteControl.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
