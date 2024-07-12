@@ -93,11 +93,11 @@ remoteControlGateway:
 
   ingress:
     enabled: true
-    className: "{{yourstage}}-traefik"
+    className: "dev-traefik"
     annotations: 
-      cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
+      cert-manager.io/cluster-issuer: "dev.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
+      - host: controlplane.dev.roclub.io 
         zoneID: ""
         loadBalancer: "" 
         paths:
@@ -106,7 +106,11 @@ remoteControlGateway:
     tls:
       - secretName: controlplane-tls
         hosts:
-          - controlplane.{{yourstage}}.roclub.io
+          - controlplane.dev.roclub.io
+    recordName: controlplane.dev.roclub.io
+    zoneName: dev.roclub.io.
+    stage: dev
+    loadBalancerSelector: default/cluster-bootstrap-traefik
 
   resources: {}
 
@@ -190,17 +194,39 @@ connectorStatus:
   tolerations: []
  
   ingress:
-    enabled: true
-    className: "{{yourstage}}-traefik"
+    enabled: false
+    className: "dev-traefik"
     annotations: 
-      cert-manager.io/cluster-issuer: "{{yourstage}}.roclub.io"
+      cert-manager.io/cluster-issuer: "dev.roclub.io"
     hosts:
-      - host: controlplane.{{yourstage}}.roclub.io 
+      - host: controlplane.dev.roclub.io 
         paths:
           - path: /v2/connectors/
             pathType: Prefix
     tls:
       - secretName: controlplane-tls
         hosts:
-          - controlplane.{{yourstage}}.roclub.io
+          - controlplane.dev.roclub.io
 
+influxdb2:
+  persistence:
+    enabled: false
+    storageClass: "gp3"
+    accessMode: ReadWriteOnce
+    size: 50Gi
+    mountPath: /var/lib/influxdb2
+    subPath: ""
+
+  ingress:
+    enabled: true
+    ingressClassName: dev-traefik 
+    tls: true
+    secretName: influx-tls
+    hostname: influx.dev.roclub.io
+    annotations:
+      cert-manager.io/cluster-issuer: dev.roclub.io
+    path: /
+    recordName: influx.dev.roclub.io
+    zoneName: dev.roclub.io.
+    stage: dev
+    loadBalancerSelector: default/cluster-bootstrap-traefik
