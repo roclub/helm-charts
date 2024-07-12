@@ -9,4 +9,19 @@ spec:
   recordName: {{ .Values.influxdb2.ingress.recordName }}
   zoneName: {{ .Values.influxdb2.ingress.zoneName }}
   stage: {{ .Values.influxdb2.ingress.stage }}
+  loadBalancerSelector: {{ .Values.remoteControlGateway.ingress.loadBalancerSelector }}
+{{- end }}
+---
+{{- if .Values.influxdb2.ingress.enabled -}}
+apiVersion: aws.roclub.io/v1alpha1
+kind: dnsrecord
+metadata:
+  name: controplane-api
+spec:
+  providerConfigName: "controlplane-dns-record-api"
+  recordName: {{ .Values.remoteControlGateway.ingress.recordName }}
+  zoneName: {{ .Values.remoteControlGateway.ingress.zoneName }}
+  stage: {{ .Values.remoteControlGateway.ingress.stage }}
+  loadBalancerSelector: {{ .Values.remoteControlGateway.ingress.loadBalancerSelector }}
 {{- end -}}
+
