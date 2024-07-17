@@ -1,0 +1,51 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/roclub/knowledgebase
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "cluster-bootstrap-traefik"
+  recordName: knowledgebase.dev.roclub.io
+  zoneName: dev.roclub.io
+  stage: dev
+  loadBalancerSelector: default/cluster-bootstrap-traefik
+  annotations: 
+    cert-manager.io/cluster-issuer: "dev.roclub.io"
+  hosts:
+    - host: knowledgebase.dev.roclub.io 
+  tls:
+    - secretName: knowledgebase-tls
+      hosts:
+        - knowledgebase.dev.roclub.io
+
+resources: {}
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
