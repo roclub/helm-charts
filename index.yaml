@@ -137,6 +137,17 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/controlplane-2.0.12/controlplane-2.0.12.tgz
     version: 2.0.12
+  knowledgebase:
+  - apiVersion: v2
+    appVersion: 0.1.7
+    created: "2024-07-18T11:41:22.385553055Z"
+    description: Deploys the roclub knowledgebase stack to Kubernetes
+    digest: a824ac2b50bb35a30a8757f7f4028632a823b84dad6324ced4ffa417de9595ee
+    name: knowledgebase
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/knowledgebase-0.1.7/knowledgebase-0.1.7.tgz
+    version: 0.1.7
   kubernetes-bootstrap:
   - apiVersion: v2
     appVersion: 0.3.0
@@ -1207,4 +1218,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-10T08:39:32.370691647Z"
+generated: "2024-07-18T11:41:22.385746837Z"
