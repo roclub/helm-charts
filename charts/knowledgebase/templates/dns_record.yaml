@@ -1,0 +1,12 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: aws.roclub.io/v1alpha1
+kind: dnsrecord
+metadata:
+  name: knowledgebase 
+spec:
+  providerConfigName: "knowledgebase-dns-record"
+  recordName: {{ .Values.ingress.recordName }}
+  zoneName: {{ .Values.ingress.zoneName }}
+  stage: {{ .Values.ingress.stage }}
+  loadBalancerSelector: {{ .Values.ingress.loadBalancerSelector }}
+{{- end }}

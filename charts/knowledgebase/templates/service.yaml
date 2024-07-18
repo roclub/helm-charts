@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "knowledgebase.fullname" . }}-en
+  labels:
+    {{- include "knowledgebase.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "knowledgebase.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "knowledgebase.fullname" . }}-de
+  labels:
+    {{- include "knowledgebase.labels" . | nindent 4 }}
+    {{- include "knowledgebase.selectorLabelsGerman" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "knowledgebase.selectorLabels" . | nindent 4 }}
+    {{- include "knowledgebase.selectorLabelsGerman" . | nindent 4 }}
