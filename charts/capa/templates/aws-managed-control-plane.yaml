@@ -1,0 +1,26 @@
+{{- if .Values.cluster -}}
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: AWSManagedControlPlane
+metadata:
+  name: {{ .Values.cluster.name }}-control-plane
+  namespace: {{ .Values.cluster.namespace }}
+  labels: 
+    app.kubernetes.io/name: {{ template "name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+spec:
+  region: {{ .Values.cluster.awsRegion }}
+  sshKeyName: {{ .Values.cluster.sshKeyname }}
+  version: {{ .Values.cluster.version }}
+  {{- if .Values.cluster.iamAuthenticatorConfig }}
+  iamAuthenticatorConfig:
+    mapRoles:
+    {{- range $v := .Values.cluster.iamAuthenticatorConfig }}
+    - username: {{ $v.username }}
+      rolearn: {{ $v.rolearn }}
+      groups:
+      - {{ $v.groups }}
+    {{- end }}
+  {{- end }}
+{{- end }}

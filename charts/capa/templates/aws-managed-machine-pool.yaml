@@ -1,0 +1,34 @@
+{{- if .Values.cluster.machinepool -}}
+{{- range $v := .Values.cluster.machinepool }}
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachinePool
+metadata:
+  name: {{ $v.name }}
+  namespace: {{ .Values.cluster.namespace }}
+  labels: 
+    app.kubernetes.io/name: {{ template "name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+spec:
+  clusterName: {{ .Values.cluster.name }}
+  replicas: {{ $v.replicas }}
+  template:
+    spec:
+      bootstrap:
+        dataSecretName: ""
+      clusterName: {{ .Values.cluster.name }}
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: AWSManagedMachinePool
+        name: {{ $v.name }}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSManagedMachinePool
+metadata:
+  name: {{ $v.name }}
+  namespace: {{ .Values.cluster.namespace }}
+spec: {}
+---
+{{- end }}
+{{- end }}

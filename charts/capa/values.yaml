@@ -1,0 +1,23 @@
+cluster:
+  name: ""
+  namespace: ""
+  awsRegion: "eu-central-1"
+  podsCidrBlocks: ""
+  version: "1.29.0"
+
+  subnets:
+  - availabilityZone: ""
+    cidrBlock: ""
+    id: ""
+    isPublic: ""
+
+  machinepool:
+  - name: "cluster-1"
+    replicas: 3
+  - name: "cluster-2"
+
+  iamAuthenticatorConfig:
+  - username: ""
+    rolearn: ""
+    groups: ""
+
