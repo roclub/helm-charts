@@ -1,0 +1,55 @@
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+nameOverride: ""
+fullnameOverride: ""
+
+stage: "dev"
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+frontend:
+  image:
+    repository: ghcr.io/roclub/livekit-remote-control-conference-development
+    pullPolicy: IfNotPresent
+    tag: "0.1.9"
+    
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    className: "dev-traefik"
+    annotations: {}
+    hosts:
+    - host: "conference2.dev.roclub.io"
+      paths:
+        - path: /
+          pathType: Prefix
+    tls:
+      hosts: ["conference2.dev.roclub.io"]
+      secretName: "conference-tls"
+      clusterIssuer: "dev.roclub.io"
+
+  resources: {}
+
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
