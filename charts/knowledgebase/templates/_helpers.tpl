@@ -69,3 +69,10 @@ Selector labels german
 knowledgebase.roclub.io/language: "german"
 {{- end }}
 
+{{/*
+Selector labels english
+*/}}
+{{- define "knowledgebase.selectorLabelsEnglish" -}}
+knowledgebase.roclub.io/language: "english"
+{{- end }}
+
