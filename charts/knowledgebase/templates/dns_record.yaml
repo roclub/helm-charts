@@ -1,12 +1,17 @@
 {{- if .Values.ingress.enabled -}}
+{{- $stage := .Values.ingress.stage -}}
+{{- $loadBalancerSelector := .Values.ingress.loadBalancerSelector -}}
+{{- range .Values.ingress.hosts -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
-  name: knowledgebase 
+  name: {{ .host }}
 spec:
-  providerConfigName: "knowledgebase-dns-record"
-  recordName: {{ .Values.ingress.recordName }}
-  zoneName: {{ .Values.ingress.zoneName }}
-  stage: {{ .Values.ingress.stage }}
-  loadBalancerSelector: {{ .Values.ingress.loadBalancerSelector }}
-{{- end }}
+  providerConfigName: knowledgebase-dns-record
+  recordName: {{ .host }}
+  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .host) }}.
+  stage: {{ $stage }}
+  loadBalancerSelector: {{ $loadBalancerSelector }}
+---
+{{- end -}}
+{{- end -}}

@@ -33,17 +33,22 @@ frontend:
 
   ingress:
     enabled: true
-    className: "dev-traefik"
-    annotations: {}
+    className: "dev-cluster-bootstrap-traefik"
+    annotations:
+        cert-manager.io/cluster-issuer: "dev.roclub.io"
+    recordName: conference2.dev.roclub.io 
+    zoneName: dev.roclub.io.
+    stage: dev
+    loadBalancerSelector: default/dev-cluster-bootstrap-traefik
     hosts:
     - host: "conference2.dev.roclub.io"
       paths:
         - path: /
           pathType: Prefix
     tls:
-      hosts: ["conference2.dev.roclub.io"]
-      secretName: "conference-tls"
-      clusterIssuer: "dev.roclub.io"
+      secretName: "conference2-tls"
+      hosts: 
+      - "conference2.dev.roclub.io"
 
   resources: {}
 

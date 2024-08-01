@@ -29,8 +29,6 @@ service:
 ingress:
   enabled: true
   className: "cluster-bootstrap-traefik"
-  recordName: knowledgebase.dev.roclub.io
-  zoneName: dev.roclub.io
   stage: dev
   loadBalancerSelector: default/cluster-bootstrap-traefik
   annotations: 
@@ -39,8 +37,7 @@ ingress:
     - host: knowledgebase.dev.roclub.io 
   tls:
     - secretName: knowledgebase-tls
-      hosts:
-        - knowledgebase.dev.roclub.io
+      hosts: [ knowledgebase.dev.roclub.io ]
 
 resources: {}
 
