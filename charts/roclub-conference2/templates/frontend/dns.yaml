@@ -1,0 +1,12 @@
+{{- if .Values.frontend.ingress.enabled -}}
+apiVersion: aws.roclub.io/v1alpha1
+kind: dnsrecord
+metadata:
+  name: conference2
+spec:
+  providerConfigName: "conference2-dns-record"
+  recordName: {{ .Values.frontend.ingress.recordName }}
+  zoneName: {{ .Values.frontend.ingress.zoneName }}
+  stage: {{ .Values.frontend.ingress.stage }}
+  loadBalancerSelector: {{ .Values.frontend.ingress.loadBalancerSelector }}
+{{- end }}
