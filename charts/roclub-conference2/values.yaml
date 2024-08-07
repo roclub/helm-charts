@@ -23,7 +23,6 @@ frontend:
   image:
     repository: ghcr.io/roclub/livekit-remote-control-conference-development
     pullPolicy: IfNotPresent
-    tag: "0.1.13"
     
   replicaCount: 1
 
