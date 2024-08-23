@@ -1,0 +1,30 @@
+{{- $gatewayName := include "controlplane.name" . -}}
+{{- $name := include "controlplane.remoteControlName" . -}}
+{{- $svcPort := .Values.remoteControl.service.httpPort -}}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $gatewayName }}-remote-control
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $gatewayName }}
+  hostnames:
+  {{- range .Values.remoteControl.gatewayAPI.hosts }}
+    - {{ .host }}
+  {{- end }}
+  rules:
+  {{- range .Values.remoteControl.gatewayAPI.hosts }}
+    - matches:
+      {{- range .paths }}
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+      {{- end }}
+      backendRefs:
+        - name: {{ $name }}
+          port: {{ $svcPort }}
+  {{- end }}
+

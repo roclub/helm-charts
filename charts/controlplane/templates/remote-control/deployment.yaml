@@ -38,7 +38,7 @@ spec:
           imagePullPolicy: {{ .Values.remoteControl.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.remoteControl.service.port }}
+              containerPort: {{ .Values.remoteControl.service.httpPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.remoteControl.resources | nindent 12 }}
