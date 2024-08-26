@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.connectorControlName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.connectorControl.autoscaling.enabled }}
+  replicas: {{ .Values.connectorControl.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabelsConnectorControl" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.connectorControl.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.selectorLabelsConnectorControl" . | nindent 8 }}
+        {{- with .Values.connectorControl.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.connectorControl.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountConnectorControlName" . }}
+      securityContext:
+        {{- toYaml .Values.connectorControl.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.connectorControl.securityContext | nindent 12 }}
+          image: "{{ .Values.connectorControl.image.repository }}:{{ .Values.connectorControl.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.connectorControl.image.pullPolicy }}
+          ports:
+            - name: grpc
+              containerPort: {{ .Values.connectorControl.service.gRPCPort }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.connectorControl.service.httpPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.connectorControl.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/edged/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane.connectorControlName" . }}-config"
+      {{- with .Values.connectorControl.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.connectorControl.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.connectorControl.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
