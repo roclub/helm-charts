@@ -43,6 +43,24 @@ spec:
             - name: http
               containerPort: {{ .Values.connectorControl.service.httpPort }}
               protocol: TCP
+          startupProbe:
+            httpGet:
+              path: v1/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: v1/health
+              port: http
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: v1/ready
+              port: http
+            failureThreshold: 2
+            periodSeconds: 30
           resources:
             {{- toYaml .Values.connectorControl.resources | nindent 12 }}
           volumeMounts:
