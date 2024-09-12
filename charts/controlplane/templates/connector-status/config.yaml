@@ -13,9 +13,6 @@ data:
     influxdb_url="http://{{ $influxName }}-influxdb2"
     influxdb_token="Ub8aeCeephaeghae8shi"
 
-    [connector_status.app_endpoint]
-    url = "https://www.localhost:8080"
-
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
     sasl_username     = "{{ .Values.connectorStatus.config.kafka.saslUsername }}"
