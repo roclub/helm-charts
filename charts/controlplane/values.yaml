@@ -19,6 +19,12 @@ remoteControl:
       key: ""
       secret: ""
 
+    liveKit:
+      key: ""
+      secret: ""
+      host: ""
+      ttl: 300
+
     logger: "debug"
 
   service:
@@ -187,4 +193,3 @@ influxdb2:
     size: 50Gi
     mountPath: /var/lib/influxdb2
     subPath: ""
-

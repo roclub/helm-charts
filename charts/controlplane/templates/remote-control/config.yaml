@@ -11,5 +11,11 @@ data:
     key    = "{{ .Values.remoteControl.config.iotDataplane.key }}"
     secret = "{{ .Values.remoteControl.config.iotDataplane.secret }}"
 
+    [session_control.liveKit]
+    key = "{{ .Values.remoteControl.config.liveKit.key }}"
+    secret = "{{ .Values.remoteControl.config.liveKit.secret }}"
+    host = "{{ .Values.remoteControl.config.liveKit.host }}"
+    ttl = "{{ .Values.remoteControl.config.liveKit.ttl }}"
+
     [session_control.logger]
     level = "{{ .Values.remoteControl.config.logger }}"
