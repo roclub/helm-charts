@@ -1,0 +1,73 @@
+{{- if .Values.httpRoute.enabled -}}
+{{- $fullname := include "knowledgebase.fullname" . -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: {{ $fullname }}-proxy-config
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        externalTrafficPolicy: Cluster
+        annotations:
+          service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: kubernetes.io/service-name={{ $fullname }}-knowledgebase
+          service.beta.kubernetes.io/aws-load-balancer-name: {{ $fullname }}-knowledgebase
+          service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+          service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: {{ $fullname }}
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    namespace: envoy-gateway-system
+    name: {{ $fullname }}-proxy-config
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ $fullname }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ $fullname }}-letsencrypt
+spec:
+  gatewayClassName: {{ $fullname }}
+  listeners:
+  {{- range .Values.httpRoute.hosts }}
+    - name: http
+      protocol: HTTP
+      port: 80
+    - name: https
+      hostname: {{ .host  }}
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: {{ .host }}-https
+  {{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $fullname }}-letsencrypt
+spec:
+  acme:
+    server: "https://acme-staging-v02.api.letsencrypt.org/directory"
+    preferredChain: ""
+    email: platformengineering@roclub.com
+    privateKeySecretRef:
+      name: {{ $fullname }}-letsencrypt
+    solvers:
+    - http01:
+        gatewayHTTPRoute:
+          parentRefs:
+          - kind: Gateway
+            name: {{ $fullname }}
+{{- end -}}

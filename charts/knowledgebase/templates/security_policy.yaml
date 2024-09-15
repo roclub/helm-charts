@@ -1,0 +1,27 @@
+{{- $fullname := include "knowledgebase.fullname" . -}}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-zitadel
+  namespace: roclub-app
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ $fullname }}-oidc
+  oidc:
+    provider:
+      issuer: "https://identity.dev.roclub.io"
+    clientID: "284625366511846739@knowledgebase"
+    clientSecret:
+      name: "zitadel-client-secret"
+    redirectURL: "https://kb.dev.roclub.io/oauth2/callback"
+    logoutPath: "https://kb.dev.roclub.io/"
+---
+apiVersion: v1
+data:
+  client-secret: bGhOenpPU0FaaTJmYXhLd00yaFd2QXR5bTFkZWZROFhFeXpPTXBTV2xsUHNYUmVDM3R1QXZ5a3RoYmtZUFduOA==
+kind: Secret
+metadata:
+  name: zitadel-client-secret
