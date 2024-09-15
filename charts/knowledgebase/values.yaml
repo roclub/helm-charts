@@ -29,13 +29,14 @@ service:
 httpRoute:
   enabled: true
   stage: dev
-  annotations: 
-    cert-manager.io/cluster-issuer: "dev.roclub.io"
+  oidc:
+    clientID: 284625366511846739@knowledgebase
+    clientSecret: iKXLrVyMYKybaktdAnP4uZvUjHn8j7ovRoExJvF8HvTElKyDPI7GRLsoajqB6dw4
   hosts:
     - host: kb.dev.roclub.io 
   tls:
     - secretName: knowledgebase-tls
-      hosts: [ knowledgebase.dev.roclub.io ]
+      hosts: [ kb.dev.roclub.io ]
 
 resources: {}
 
