@@ -1,7 +1,7 @@
-{{- if .Values.ingress.enabled -}}
-{{- $stage := .Values.ingress.stage -}}
-{{- $loadBalancerSelector := .Values.ingress.loadBalancerSelector -}}
-{{- range .Values.ingress.hosts -}}
+{{- if .Values.httpRoute.enabled -}}
+{{- $stage := .Values.httpRoute.stage -}}
+{{- $fullname := include "knowledgebase.fullname" . -}}
+{{- range .Values.httpRoute.hosts -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
@@ -11,7 +11,7 @@ spec:
   recordName: {{ .host }}
   zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .host) }}.
   stage: {{ $stage }}
-  loadBalancerSelector: {{ $loadBalancerSelector }}
+  loadBalancerSelector: kubernetes.io/service-name={{ $fullname }}-knowledgebase
 ---
 {{- end -}}
 {{- end -}}

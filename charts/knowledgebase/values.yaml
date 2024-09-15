@@ -26,15 +26,13 @@ service:
   type: ClusterIP
   port: 8080
 
-ingress:
+httpRoute:
   enabled: true
-  className: "cluster-bootstrap-traefik"
   stage: dev
-  loadBalancerSelector: default/cluster-bootstrap-traefik
   annotations: 
     cert-manager.io/cluster-issuer: "dev.roclub.io"
   hosts:
-    - host: knowledgebase.dev.roclub.io 
+    - host: kb.dev.roclub.io 
   tls:
     - secretName: knowledgebase-tls
       hosts: [ knowledgebase.dev.roclub.io ]

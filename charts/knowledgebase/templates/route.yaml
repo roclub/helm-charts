@@ -1,0 +1,148 @@
+{{- if .Values.httpRoute.enabled -}}
+{{- $fullname := include "knowledgebase.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullname }}
+  labels:
+    {{- include "knowledgebase.labels" . | nindent 4 }}
+  {{- with .Values.httpRoute.annotations }}
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: "knowledgebase"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $fullname }}
+  hostnames:
+  {{- range .Values.httpRoute.hosts }}
+    - {{ .host }}
+  {{- end }}
+  rules:
+    - matches:
+        - path:
+            type: 'PathPrefix'
+            value: /
+      backendRefs:
+        - name: {{ $fullname }}-en
+          port: {{ $svcPort }}
+    - matches:
+        - path:
+            type: 'PathPrefix'
+            value: '/en-en/'
+      backendRefs:
+        - name: {{ $fullname }}-en
+          port: {{ $svcPort }}
+    - matches:
+        - path:
+            type: 'PathPrefix'
+            value: '/de-de/'
+      backendRefs:
+        - name: {{ $fullname }}-de
+          port: {{ $svcPort }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullname }}-oidc
+  labels:
+    {{- include "knowledgebase.labels" . | nindent 4 }}
+  {{- with .Values.httpRoute.annotations }}
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: "knowledgebase"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $fullname }}
+  hostnames:
+  {{- range .Values.httpRoute.hosts }}
+    - {{ .host }}
+  {{- end }}
+  rules:
+    - matches:
+        - path:
+            type: 'PathPrefix'
+            value: '/en-en/handbook/'
+        - path:
+            type: 'PathPrefix'
+            value: '/en-en/onboarding/'
+        - path:
+            type: 'PathPrefix'
+            value: '/en-en/privacy_and_security/'
+        - path:
+            type: 'PathPrefix'
+            value: '/en-en/requirements/'
+
+      backendRefs:
+        - name: {{ $fullname }}-en
+          port: {{ $svcPort }}
+    - matches:
+        - path:
+            type: 'PathPrefix'
+            value: '/de-de/handbook/'
+        - path:
+            type: 'PathPrefix'
+            value: '/de-de/onboarding/'
+        - path:
+            type: 'PathPrefix'
+            value: '/de-de/privacy_and_security/'
+        - path:
+            type: 'PathPrefix'
+            value: '/de-de/requirements/'
+      backendRefs:
+        - name: {{ $fullname }}-de
+          port: {{ $svcPort }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullname }}-tls-redirect
+spec:
+  parentRefs:
+    - name: {{ $fullname }}
+      group: gateway.networking.k8s.io
+      kind: Gateway
+      sectionName: http
+  hostnames:
+  {{- range .Values.httpRoute.hosts }}
+    - {{ .host }}
+  {{- end }}
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullname }}-oauth-callback
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $fullname }}
+      sectionName: http
+  hostnames:
+  {{- range .Values.httpRoute.hosts }}
+    - {{ .host }}
+  {{- end }}
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /oauth2/callback
+      filters:
+      - type: RequestRedirect
+        requestRedirect:
+          path:
+            type: ReplaceFullPath
+            replaceFullPath: /en-en/
+          statusCode: 302
+{{- end -}}         
