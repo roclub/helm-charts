@@ -11,7 +11,7 @@ spec:
   recordName: {{ .host }}
   zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .host) }}.
   stage: {{ $stage }}
-  loadBalancerSelector: kubernetes.io/service-name={{ $fullname }}
+  loadBalancerSelector: {{ $fullname }}
 ---
 {{- end -}}
 {{- end -}}
