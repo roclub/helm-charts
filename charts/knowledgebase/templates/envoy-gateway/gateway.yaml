@@ -11,8 +11,8 @@ spec:
     kubernetes:
       envoyService:
         annotations:
-          service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: kubernetes.io/service-name={{ $fullname }}-knowledgebase
-          service.beta.kubernetes.io/aws-load-balancer-name: {{ $fullname }}-knowledgebase
+          service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: kubernetes.io/service-name={{ $fullname }}
+          service.beta.kubernetes.io/aws-load-balancer-name: {{ $fullname }}
           service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
           service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
           service.beta.kubernetes.io/aws-load-balancer-type: external
