@@ -84,6 +84,11 @@ connectorStatus:
       saslUsername: ""
       saslPassword: ""
 
+    influx:
+      org: "roclub"
+      url: ""
+      token: ""
+
   serviceAccount:
     create: true
     automount: true
