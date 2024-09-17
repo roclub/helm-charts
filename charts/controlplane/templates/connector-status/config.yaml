@@ -9,9 +9,9 @@ data:
   config.toml: |-
     [connector_status]
     [connector_status.connector_status_repository]
-    influxdb_org="roclub"
-    influxdb_url="http://{{ $influxName }}-influxdb2"
-    influxdb_token="Ub8aeCeephaeghae8shi"
+    influxdb_org= "{{ .Values.connectorStatus.config.influx.org }}"
+    influxdb_url= "{{ .Values.connectorStatus.config.influx.url }}"
+    influxdb_token= "{{ .Values.connectorStatus.config.influx.token }}"
 
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
