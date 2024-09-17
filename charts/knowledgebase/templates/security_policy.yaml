@@ -15,8 +15,8 @@ spec:
     clientID: "{{ .Values.httpRoute.oidc.clientID }}"
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
-    redirectURL: "https://knowledgebase.{{ .Values.httpRoute.stage }}.roclub.io/oauth2/callback"
-    logoutPath: "https://knowledgebase.{{ .Values.httpRoute.stage }}.roclub.io/"
+    redirectURL: "https://kb.{{ .Values.httpRoute.stage }}.roclub.io/oauth2/callback"
+    logoutPath: "https://kb.{{ .Values.httpRoute.stage }}.roclub.io/"
 ---
 apiVersion: v1
 data:
