@@ -28,15 +28,15 @@ service:
 
 httpRoute:
   enabled: true
-  stage: dev
+  stage: stg
   oidc:
     clientID: 284625366511846739@knowledgebase
     clientSecret: iKXLrVyMYKybaktdAnP4uZvUjHn8j7ovRoExJvF8HvTElKyDPI7GRLsoajqB6dw4
   hosts:
-    - host: kb.dev.roclub.io 
+    - host: kb.stg.roclub.io 
   tls:
     - secretName: knowledgebase-tls
-      hosts: [ kb.dev.roclub.io ]
+      hosts: [ kb.stg.roclub.io ]
 
 resources: {}
 
