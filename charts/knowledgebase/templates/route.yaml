@@ -7,10 +7,6 @@ metadata:
   name: {{ $fullname }}
   labels:
     {{- include "knowledgebase.labels" . | nindent 4 }}
-  {{- with .Values.httpRoute.annotations }}
-  annotations:
-    alb.ingress.kubernetes.io/load-balancer-name: "knowledgebase"
-    {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   parentRefs:
@@ -22,13 +18,6 @@ spec:
     - {{ .host }}
   {{- end }}
   rules:
-    - matches:
-        - path:
-            type: 'PathPrefix'
-            value: /
-      backendRefs:
-        - name: {{ $fullname }}-en
-          port: {{ $svcPort }}
     - matches:
         - path:
             type: 'PathPrefix'
@@ -67,34 +56,33 @@ spec:
   rules:
     - matches:
         - path:
-            type: 'PathPrefix'
-            value: '/en-en/handbook/'
+            type: RegularExpression
+            value: 'handbook'
         - path:
-            type: 'PathPrefix'
-            value: '/en-en/onboarding/'
+            type: RegularExpression
+            value: 'onboarding'
         - path:
-            type: 'PathPrefix'
-            value: '/en-en/privacy_and_security/'
+            type: RegularExpression
+            value: 'privacy_and_security/'
         - path:
-            type: 'PathPrefix'
-            value: '/en-en/requirements/'
-
+            type: RegularExpression
+            value: 'requirements'
       backendRefs:
         - name: {{ $fullname }}-en
           port: {{ $svcPort }}
     - matches:
         - path:
-            type: 'PathPrefix'
-            value: '/de-de/handbook/'
+            type: RegularExpression
+            value: 'handbook'
         - path:
-            type: 'PathPrefix'
-            value: '/de-de/onboarding/'
+            type: RegularExpression
+            value: 'onboarding'
         - path:
-            type: 'PathPrefix'
-            value: '/de-de/privacy_and_security/'
+            type: RegularExpression
+            value: 'privacy_and_security/'
         - path:
-            type: 'PathPrefix'
-            value: '/de-de/requirements/'
+            type: RegularExpression
+            value: 'requirements'
       backendRefs:
         - name: {{ $fullname }}-de
           port: {{ $svcPort }}
@@ -108,7 +96,6 @@ spec:
     - name: {{ $fullname }}
       group: gateway.networking.k8s.io
       kind: Gateway
-      sectionName: http
   hostnames:
   {{- range .Values.httpRoute.hosts }}
     - {{ .host }}
@@ -128,7 +115,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: {{ $fullname }}
-      sectionName: http
   hostnames:
   {{- range .Values.httpRoute.hosts }}
     - {{ .host }}
@@ -139,8 +125,8 @@ spec:
           type: PathPrefix
           value: /oauth2/callback
       filters:
-      - type: RequestRedirect
-        requestRedirect:
+      - type: URLRewrite 
+        urlRewrite:
           path:
             type: ReplaceFullPath
             replaceFullPath: /en-en/
