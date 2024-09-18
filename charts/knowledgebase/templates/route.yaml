@@ -7,7 +7,6 @@ metadata:
   name: {{ $fullname }}
   labels:
     {{- include "knowledgebase.labels" . | nindent 4 }}
-  {{- end }}
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
@@ -39,11 +38,6 @@ metadata:
   name: {{ $fullname }}-oidc
   labels:
     {{- include "knowledgebase.labels" . | nindent 4 }}
-  {{- with .Values.httpRoute.annotations }}
-  annotations:
-    alb.ingress.kubernetes.io/load-balancer-name: "knowledgebase"
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
