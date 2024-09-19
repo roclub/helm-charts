@@ -23,7 +23,10 @@ remoteControl:
       key: ""
       secret: ""
       host: ""
-      ttl: 300
+      ttl: "300"
+
+    authzService:
+      address: ""
 
     logger: "debug"
 
@@ -89,6 +92,11 @@ connectorStatus:
       url: ""
       token: ""
 
+    authzService:
+      address: ""
+
+    logger: "debug"
+
   serviceAccount:
     create: true
     automount: true
@@ -144,6 +152,11 @@ connectorControl:
       key: ""
       secret: ""
 
+    authzService:
+      address: ""
+
+    logger: "debug"
+
   gatewayAPI:
     hosts:
       - host: controlplane.dev.roclub.io
@@ -181,6 +194,65 @@ connectorControl:
   volumeMounts: []
   nodeSelector: {}
   tolerations: []
+
+authZ:
+  image:
+    repository: ghcr.io/roclub/controlplane-auth-z
+    pullPolicy: Always
+
+  imagePullSecrets: 
+    - name: dockerconfigjson-github-com
+
+  replicaCount: 1
+
+  config:
+    openfga:
+      url: ""
+      storeId: ""
+      modelId: ""
+
+    logger: "debug"
+
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
+
+  gatewayAPI:
+    hosts:
+      - host: controlplane.dev.roclub.io
+        paths:
+          - path: /v2/authz/
+            pathType: PathPrefix
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "auth-z"
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+  affinity: {}
 
 influxdb2:
   enabled: true
