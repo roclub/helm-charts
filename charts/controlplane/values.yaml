@@ -23,7 +23,7 @@ remoteControl:
       key: ""
       secret: ""
       host: ""
-      ttl: "300"
+      ttl: 300
 
     authzService:
       address: ""
