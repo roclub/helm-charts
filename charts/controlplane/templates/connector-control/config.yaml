@@ -11,5 +11,8 @@ data:
     key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
     secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"
 
+    [connector_control.authz_service]
+    address = "{{ .Values.connectorControl.config.authzService.address }}"
+
     [connector_control.logger]
     level = "debug"

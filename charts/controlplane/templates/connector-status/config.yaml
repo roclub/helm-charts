@@ -9,14 +9,17 @@ data:
   config.toml: |-
     [connector_status]
     [connector_status.connector_status_repository]
-    influxdb_org= "{{ .Values.connectorStatus.config.influx.org }}"
-    influxdb_url= "{{ .Values.connectorStatus.config.influx.url }}"
-    influxdb_token= "{{ .Values.connectorStatus.config.influx.token }}"
+    influxdb_org = "{{ .Values.connectorStatus.config.influx.org }}"
+    influxdb_url = "{{ .Values.connectorStatus.config.influx.url }}"
+    influxdb_token = "{{ .Values.connectorStatus.config.influx.token }}"
 
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
     sasl_username     = "{{ .Values.connectorStatus.config.kafka.saslUsername }}"
     sasl_password     = "{{ .Values.connectorStatus.config.kafka.saslPassword }}"
+
+    [connector_status.authz_service]
+    address = "{{ .Values.connectorStatus.config.authzService.address }}"
 
     [connector_status.logger]
     level = "debug"
