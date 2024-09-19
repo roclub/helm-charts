@@ -120,6 +120,14 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{- define "controlplane.serviceAccountAuthZName" -}}
+{{- if .Values.authZ.serviceAccount.create }}
+{{- default (include "controlplane.fullname" .) .Values.authZ.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.authZ.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
 {{- define "controlplane.connectorStatusName" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
@@ -159,8 +167,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 {{- end }}
 
+{{- define "controlplane.authZName" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-auth-z" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-auth-z" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
 {{- define "controlplane.selectorLabelsConnectorControl" -}}
 app.kubernetes.io/name: {{ include "controlplane.connectorControlName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "controlplane.selectorLabelsAuthZ" -}}
+app.kubernetes.io/name: {{ include "controlplane.authZName" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
