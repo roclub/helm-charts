@@ -197,7 +197,7 @@ connectorControl:
 
 authZ:
   image:
-    repository: ghcr.io/roclub/controlplane-auth-z
+    repository: ghcr.io/roclub/controlplane-authz
     pullPolicy: Always
 
   imagePullSecrets: 
@@ -229,7 +229,7 @@ authZ:
     create: true
     automount: true
     annotations: {}
-    name: "auth-z"
+    name: "authz"
 
   podAnnotations: {}
   podLabels: {}

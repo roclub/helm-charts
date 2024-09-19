@@ -173,9 +173,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- else }}
 {{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}
-{{- printf "%s-auth-z" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-authz" .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- printf "%s-%s-auth-z" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s-authz" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 {{- end }}
