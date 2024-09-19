@@ -86,7 +86,7 @@ connectorStatus:
 
     influx:
       org: "roclub"
-      url: ""
+      url: "http://{{ $influxName }}-influxdb2"
       token: ""
 
   serviceAccount:
