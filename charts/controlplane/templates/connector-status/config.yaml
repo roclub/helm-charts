@@ -1,4 +1,6 @@
 {{- $influxName := include "controlplane.name" . -}}
+{{- $token := include "controlplane.influxdb2.secrets.token" . }}
+{{- $password := include "controlplane.influxdb2.secrets.password" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,9 +11,9 @@ data:
   config.toml: |-
     [connector_status]
     [connector_status.connector_status_repository]
-    influxdb_org= "{{ .Values.connectorStatus.config.influx.org }}"
-    influxdb_url= "{{ .Values.connectorStatus.config.influx.url }}"
-    influxdb_token= "{{ .Values.connectorStatus.config.influx.token }}"
+    influxdb_org = "{{ .Values.connectorStatus.config.influx.org }}"
+    influxdb_url = http://{{ $influxName }}-influxdb2
+    influxdb_token = {{ $token }}
 
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
@@ -20,3 +22,11 @@ data:
 
     [connector_status.logger]
     level = "debug"
+---
+apiVersion: v1
+data:
+  admin-password: "{{ $password }}"
+  admin-token: "{{ $token }}"
+kind: Secret
+metadata:
+  name: {{ $influxName }}-influxdb2-auth

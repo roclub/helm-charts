@@ -62,9 +62,7 @@ remoteControl:
   # Additional volumes on the output Deployment definition.
   volumes: []
   volumeMounts: []
-
   nodeSelector: {}
-
   tolerations: []
   affinity: {}
 
@@ -86,7 +84,6 @@ connectorStatus:
 
     influx:
       org: "roclub"
-      url: "http://{{ $influxName }}-influxdb2"
       token: ""
 
   serviceAccount:
