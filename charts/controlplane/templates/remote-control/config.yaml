@@ -18,7 +18,7 @@ data:
     ttl = "{{ .Values.remoteControl.config.liveKit.ttl }}"
 
     [session_control.authz_service]
-    address = "{{ .Values.remoteControl.config.authzService.address }}"
+    address = "{{ include "controlplane.authZName" . }}"
 
     [session_control.logger]
     level = "{{ .Values.remoteControl.config.logger }}"
