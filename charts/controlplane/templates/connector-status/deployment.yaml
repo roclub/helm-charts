@@ -63,6 +63,12 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/edged/
+          env:
+          - name: INFLUXDB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "controlplane.name" . }}-influxdb2-auth 
+                key: admin-token
       volumes:
         - name: config-volume
           configMap:

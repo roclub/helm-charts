@@ -12,7 +12,7 @@ data:
     [connector_status]
     [connector_status.connector_status_repository]
     influxdb_org = "{{ .Values.connectorStatus.config.influx.org }}"
-    influxdb_url = http://{{ $influxName }}-influxdb2
+    influxdb_url = "http://{{ $influxName }}-influxdb2"
 
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
@@ -24,11 +24,3 @@ data:
 
     [connector_status.logger]
     level = "debug"
----
-apiVersion: v1
-data:
-  admin-password: "{{ $password }}"
-  admin-token: "{{ $token }}"
-kind: Secret
-metadata:
-  name: {{ $influxName }}-influxdb2-auth
