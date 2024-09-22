@@ -197,3 +197,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- default "default" .Values.connectorControl.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "controlplane.influxdb2.secrets.token" -}}
+{{- randAlphaNum 32 | b64enc }}
+{{- end }}
+
+{{- define "controlplane.influxdb2.secrets.password" -}}
+{{- randAlphaNum 32 | b64enc }}
+{{- end }}
