@@ -25,9 +25,6 @@ remoteControl:
       host: ""
       ttl: 300
 
-    authzService:
-      address: ""
-
     logger: "debug"
 
   service:
@@ -89,9 +86,6 @@ connectorStatus:
       org: "roclub"
       token: ""
 
-    authzService:
-      address: ""
-
     logger: "debug"
 
   serviceAccount:
@@ -149,9 +143,6 @@ connectorControl:
       key: ""
       secret: ""
 
-    authzService:
-      address: ""
-
     logger: "debug"
 
   gatewayAPI:
@@ -204,9 +195,9 @@ authZ:
 
   config:
     openfga:
-      url: ""
-      storeId: ""
-      modelId: ""
+      url: "http://openfga-dev.openfga.svc.cluster.local:8080"
+      storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
+      modelId: "01J7BE0N8AQ9XST88B4XXT7KJT"
 
     logger: "debug"
 

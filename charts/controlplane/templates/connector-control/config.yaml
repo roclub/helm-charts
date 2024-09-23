@@ -12,7 +12,7 @@ data:
     secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"
 
     [connector_control.authz_service]
-    address = "{{ include "controlplane.authZName" . }}"
+    address = "http://{{ include "controlplane.authZName" . }}:8080"
 
     [connector_control.logger]
     level = "debug"

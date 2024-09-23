@@ -1,11 +1,11 @@
-{{- $influxName := include "controlplane.name" . -}}
+{{- $name := include "controlplane.name" . -}}
 apiVersion: v1
 data:
-  admin-password: {{ include "controlplane.influxdb2.secrets.password" . }}
-  admin-token: {{ include "controlplane.influxdb2.secrets.token" . }}
+  admin-password: Tm9ZZWU1b2V0aG81VmFpSm9uZ3VpczRBbHU5QmVpTmcwZWFUaGFpMEFoVm9obDlpcGg=
+  admin-token: VWI4YWVDZWVwaGFlZ2hhZThzaGk=
 kind: Secret
 metadata:
-  name: {{ $influxName }}-influxdb2-auth
+  name: {{ $name }}-influxdb2-auth
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "0"
