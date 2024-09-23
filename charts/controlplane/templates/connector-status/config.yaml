@@ -1,4 +1,6 @@
 {{- $influxName := include "controlplane.name" . -}}
+{{- $token := include "controlplane.influxdb2.secrets.token" . }}
+{{- $password := include "controlplane.influxdb2.secrets.password" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,14 +11,16 @@ data:
   config.toml: |-
     [connector_status]
     [connector_status.connector_status_repository]
-    influxdb_org="roclub"
-    influxdb_url="http://{{ $influxName }}-influxdb2"
-    influxdb_token="Ub8aeCeephaeghae8shi"
+    influxdb_org = "{{ .Values.connectorStatus.config.influx.org }}"
+    influxdb_url = "http://{{ $influxName }}-influxdb2"
 
     [connector_status.kafka]
     bootstrap_servers = [{{- range .Values.connectorStatus.config.kafka.bootstrapServers }}"{{ . }}",{{- end }}]
     sasl_username     = "{{ .Values.connectorStatus.config.kafka.saslUsername }}"
     sasl_password     = "{{ .Values.connectorStatus.config.kafka.saslPassword }}"
+
+    [connector_status.authz_service]
+    address = "http://{{ include "controlplane.authZName" . }}:8080"
 
     [connector_status.logger]
     level = "debug"

@@ -62,9 +62,7 @@ remoteControl:
   # Additional volumes on the output Deployment definition.
   volumes: []
   volumeMounts: []
-
   nodeSelector: {}
-
   tolerations: []
   affinity: {}
 
@@ -83,6 +81,12 @@ connectorStatus:
       bootstrapServers: []
       saslUsername: ""
       saslPassword: ""
+
+    influx:
+      org: "roclub"
+      token: ""
+
+    logger: "debug"
 
   serviceAccount:
     create: true
@@ -139,6 +143,8 @@ connectorControl:
       key: ""
       secret: ""
 
+    logger: "debug"
+
   gatewayAPI:
     hosts:
       - host: controlplane.dev.roclub.io
@@ -176,6 +182,65 @@ connectorControl:
   volumeMounts: []
   nodeSelector: {}
   tolerations: []
+
+authZ:
+  image:
+    repository: ghcr.io/roclub/controlplane-authz
+    pullPolicy: Always
+
+  imagePullSecrets: 
+    - name: dockerconfigjson-github-com
+
+  replicaCount: 1
+
+  config:
+    openfga:
+      url: "http://openfga-dev.openfga.svc.cluster.local:8080"
+      storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
+      modelId: "01J7BE0N8AQ9XST88B4XXT7KJT"
+
+    logger: "debug"
+
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
+
+  gatewayAPI:
+    hosts:
+      - host: controlplane.dev.roclub.io
+        paths:
+          - path: /v2/authz/
+            pathType: PathPrefix
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "authz"
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+  affinity: {}
 
 influxdb2:
   enabled: true
