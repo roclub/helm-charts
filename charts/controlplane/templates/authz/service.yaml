@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "controlplane.authZName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.authZ.service.type }}
+  ports:
+    - port: {{ .Values.authZ.service.gRPCPort }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+    - port: {{ .Values.authZ.service.httpPort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "controlplane.selectorLabelsAuthZ" . | nindent 4 }}

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "controlplane.authZName" . }}-config"
+  labels:
+    {{- include "controlplane.selectorLabelsAuthZ" . | nindent 4 }}
+data:
+  config.toml: |-
+    [authz]
+    [authz.openfga]
+    url = "{{ .Values.authZ.config.openfga.url }}"
+    store_id = "{{ .Values.authZ.config.openfga.storeId }}"
+    model_id = "{{ .Values.authZ.config.openfga.modelId }}"
+
+    [authz.logger]
+    level = "{{ .Values.authZ.config.logger }}"

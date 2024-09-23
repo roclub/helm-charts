@@ -1,0 +1,15 @@
+{{- $gatewayName := include "controlplane.name" . -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: jwt-authentication
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway 
+    name: {{ $gatewayName }}
+  jwt:
+    providers:
+    - name: zitadel
+      remoteJWKS:
+        uri: https://identity.{{ .Values.stg }}.roclub.io/oauth/v2/keys

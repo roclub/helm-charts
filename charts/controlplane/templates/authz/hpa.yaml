@@ -1,0 +1,32 @@
+{{- if .Values.authZ.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "controlplane.authZName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "controlplane.authZName" . }}
+  minReplicas: {{ .Values.authZ.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.authZ.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.authZ.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.authZ.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.authZ.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.authZ.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
