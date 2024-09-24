@@ -1,12 +1,17 @@
-{{- if .Values.frontend.ingress.enabled -}}
+{{- if .Values.httpRoute.enabled -}}
+{{- $stage := .Values.httpRoute.stage -}}
+{{- $fullName := include "conference.fullname" . -}}
+{{- range .Values.httpRoute.tls.hosts -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
-  name: conference2
+  name: {{ . }}
 spec:
-  providerConfigName: "conference2-dns-record"
-  recordName: {{ .Values.frontend.ingress.recordName }}
-  zoneName: {{ .Values.frontend.ingress.zoneName }}
-  stage: {{ .Values.frontend.ingress.stage }}
-  loadBalancerSelector: {{ .Values.frontend.ingress.loadBalancerSelector }}
-{{- end }}
+  providerConfigName: conference-dns-record
+  recordName: {{ . }}
+  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" . ) }}.
+  stage: {{ $stage }}
+  loadBalancerSelector: {{ $fullName }}
+---
+{{- end -}}
+{{- end -}}

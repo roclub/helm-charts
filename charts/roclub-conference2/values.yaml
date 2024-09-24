@@ -19,6 +19,17 @@ serviceAccount:
   tolerations: []
   affinity: {}
 
+httpRoute:
+  enabled: true
+  stage: dev
+  tls:
+    secretName: "conference2-tls"
+    hosts: 
+    - "conference12.dev.roclub.io"
+  oidc:
+    clientID: "285637959913375059"
+    clientSecret: Lm128lLLOW2AT1yqG4Cj2EmQTLdtJl5oDClWz13B7Ibd62bMqpixGxrlfsWnJ1vf
+
 frontend:
   image:
     repository: ghcr.io/roclub/livekit-remote-control-conference-development
@@ -30,24 +41,6 @@ frontend:
     type: ClusterIP
     port: 8080
 
-  ingress:
-    enabled: true
-    className: "dev-cluster-bootstrap-traefik"
-    annotations:
-        cert-manager.io/cluster-issuer: "dev.roclub.io"
-    recordName: conference2.dev.roclub.io 
-    zoneName: dev.roclub.io.
-    stage: dev
-    loadBalancerSelector: default/dev-cluster-bootstrap-traefik
-    hosts:
-    - host: "conference2.dev.roclub.io"
-      paths:
-        - path: /
-          pathType: Prefix
-    tls:
-      secretName: "conference2-tls"
-      hosts: 
-      - "conference2.dev.roclub.io"
 
   resources: {}
 
