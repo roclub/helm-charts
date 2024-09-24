@@ -23,7 +23,7 @@ spec:
             type: 'PathPrefix'
             value: '/'
       backendRefs:
-        - name: {{ $fullName }}-conference-frontend
+        - name: {{ $fullName }}-frontend
           port: {{ $svcPort }}
 ---
 {{- end }}
