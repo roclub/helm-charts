@@ -2,7 +2,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: jwt-authentication
+  name: {{ $gatewayName }}-jwt-authentication
 spec:
   targetRef:
     group: gateway.networking.k8s.io
@@ -13,3 +13,39 @@ spec:
     - name: zitadel
       remoteJWKS:
         uri: https://identity.{{ .Values.stg }}.roclub.io/oauth/v2/keys
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $gatewayName }}-cors
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway 
+    name: {{ $gatewayName }}
+  cors:
+    allowOrigins:
+    - "https://conference.{{ .Values.stage }}.roclub.io"
+{{- if eq .Values.stage "prd" -}}
+    - "https://conference.roclub.io"
+{{- end }}
+    allowMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - PATCH
+    allowHeaders:
+    - "Origin"
+    - "Authorization"
+    - "Content-Type"
+    - "Accept"
+    - "Content-Length"
+    exposeHeaders:
+    - "Content-Length"
+    # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
+    maxAge:
+    - 7200
+    allowCredentials: true
+
+
