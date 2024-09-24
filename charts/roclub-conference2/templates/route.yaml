@@ -27,4 +27,32 @@ spec:
       backendRefs:
         - name: {{ $fullName }}-conference-frontend
           port: {{ $svcPort }}
+---
+{{- range .Values.httpRoute.tls.hosts }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $fullName }}-{{ . }}-oidc
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ $fullName }}-oidc
+  oidc:
+    provider:
+      issuer: "https://identity.{{ $stage }}.roclub.io"
+    clientID:  "{{ $clientID }}"
+    clientSecret: 
+      name: "{{ $fullName }}-oauth-secret"
+    redirectURL: "https://{{ . }}/oauth2/callback"
+    logoutPath: "https://{{ . }}/"
+    cookieDomain: "identity.{{ $stage }}.roclub.io"
+---
+{{- end }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "{{ $fullName }}-oauth-secret"
+data:
+  client-secret: {{ $clientSecret }}
 {{- end }}
