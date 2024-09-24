@@ -1,5 +1,5 @@
 {{- $stage := .Values.stage }}
-{{- $gatewayName := include "controlplane.name" . -}}
+{{- $gatewayName := include "controlplane.fullname" . -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:

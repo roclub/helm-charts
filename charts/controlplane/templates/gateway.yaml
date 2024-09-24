@@ -1,4 +1,4 @@
-{{- $gatewayName := include "controlplane.name" . -}}
+{{- $gatewayName := include "controlplane.fullname" . -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:

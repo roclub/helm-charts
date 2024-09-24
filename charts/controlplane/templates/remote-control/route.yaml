@@ -1,4 +1,4 @@
-{{- $gatewayName := include "controlplane.name" . -}}
+{{- $gatewayName := include "controlplane.fullname" . -}}
 {{- $name := include "controlplane.remoteControlName" . -}}
 {{- $svcPort := .Values.remoteControl.service.httpPort -}}
 ---
