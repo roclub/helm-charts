@@ -1,4 +1,4 @@
-{{- $influxName := include "controlplane.name" . -}}
+{{- $influxName := include "controlplane.fullname" . -}}
 {{- $token := include "controlplane.influxdb2.secrets.token" . }}
 {{- $password := include "controlplane.influxdb2.secrets.password" . }}
 apiVersion: v1

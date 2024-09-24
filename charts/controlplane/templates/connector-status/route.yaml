@@ -1,4 +1,4 @@
-{{- $gatewayName := include "controlplane.name" . -}}
+{{- $gatewayName := include "controlplane.fullname" . -}}
 {{- $name := include "controlplane.connectorStatusName" . -}}
 {{- $svcPort := .Values.connectorStatus.service.httpPort -}}
 apiVersion: gateway.networking.k8s.io/v1

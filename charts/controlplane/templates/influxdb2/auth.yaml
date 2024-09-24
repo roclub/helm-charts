@@ -1,4 +1,4 @@
-{{- $name := include "controlplane.name" . -}}
+{{- $name := include "controlplane.fullname" . -}}
 apiVersion: v1
 data:
   admin-password: Tm9ZZWU1b2V0aG81VmFpSm9uZ3VpczRBbHU5QmVpTmcwZWFUaGFpMEFoVm9obDlpcGg=
