@@ -44,8 +44,7 @@ spec:
     exposeHeaders:
     - "Content-Length"
     # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
-    maxAge:
-    - 7200
+    maxAge: "7200"
     allowCredentials: true
 
 
