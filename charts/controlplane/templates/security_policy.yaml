@@ -12,7 +12,7 @@ spec:
     providers:
     - name: zitadel
       remoteJWKS:
-        uri: https://identity.{{ .Values.stg }}.roclub.io/oauth/v2/keys
+        uri: https://identity.{{ .Values.stage }}.roclub.io/oauth/v2/keys
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
