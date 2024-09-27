@@ -50,33 +50,33 @@ spec:
   rules:
     - matches:
         - path:
-            type: RegularExpression
-            value: 'handbook'
+            type: PathPrefix
+            value: '/en-en/handbook/'
         - path:
-            type: RegularExpression
-            value: 'onboarding'
+            type: PathPrefix
+            value: '/en-en/onboarding/'
         - path:
-            type: RegularExpression
-            value: 'privacy_and_security/'
+            type: PathPrefix
+            value: '/en-en/privacy_and_security/'
         - path:
-            type: RegularExpression
-            value: 'requirements'
+            type: PathPrefix
+            value: '/en-en/requirements/'
       backendRefs:
         - name: {{ $fullname }}-en
           port: {{ $svcPort }}
     - matches:
         - path:
-            type: RegularExpression
-            value: 'handbook'
+            type: PathPrefix
+            value: '/de-de/handbook/'
         - path:
-            type: RegularExpression
-            value: 'onboarding'
+            type: PathPrefix
+            value: '/de-de/onboarding/'
         - path:
-            type: RegularExpression
-            value: 'privacy_and_security/'
+            type: PathPrefix
+            value: '/de-de/privacy_and_security/'
         - path:
-            type: RegularExpression
-            value: 'requirements'
+            type: PathPrefix
+            value: '/de-de/requirements/'
       backendRefs:
         - name: {{ $fullname }}-de
           port: {{ $svcPort }}
@@ -100,29 +100,4 @@ spec:
           requestRedirect:
             scheme: https
 ---
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: {{ $fullname }}-oauth-callback
-spec:
-  parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: {{ $fullname }}
-  hostnames:
-  {{- range .Values.httpRoute.hosts }}
-    - {{ .host }}
-  {{- end }}
-  rules:
-    - matches:
-      - path:
-          type: PathPrefix
-          value: /oauth2/callback
-      filters:
-      - type: URLRewrite 
-        urlRewrite:
-          path:
-            type: ReplaceFullPath
-            replaceFullPath: /en-en/
-          statusCode: 302
 {{- end -}}         
