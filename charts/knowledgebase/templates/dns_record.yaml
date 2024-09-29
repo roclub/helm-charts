@@ -7,7 +7,7 @@ kind: dnsrecord
 metadata:
   name: {{ .host }}
 spec:
-  providerConfigName: knowledgebase-dns-record
+  providerConfigName: {{ $fullname }}-dns-record
   recordName: {{ .host }}
   zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .host) }}.
   stage: {{ $stage }}
