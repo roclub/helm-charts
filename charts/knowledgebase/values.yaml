@@ -30,8 +30,8 @@ httpRoute:
   enabled: true
   stage: dev
   oidc:
-    clientID: "285510806332835155"
-    clientSecret: "gBy4gj8nbHI5WAKMFnXb8p3SUfkorlAaqLvCZMIzNwKVKFgIGfgJicGA7PgNBaaK"
+    clientID: "285474337715194832"
+    clientSecret: "kuwQhvfqxfMfwnK2jng3p7NTIcDwn2sEEh0z2iahaFMJtdJtrfQXJqqvEHVw0zZB"
   hosts:
     - host: kb.dev.roclub.io 
   tls:
