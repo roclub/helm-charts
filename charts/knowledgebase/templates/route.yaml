@@ -20,6 +20,9 @@ spec:
     - matches:
         - path:
             type: 'PathPrefix'
+            value: '/'
+        - path:
+            type: 'PathPrefix'
             value: '/en-en/'
       backendRefs:
         - name: {{ $fullname }}-en
@@ -51,78 +54,33 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: '/en-en/handbook/'
+            value: '/en-en/handbook'
         - path:
             type: PathPrefix
-            value: '/en-en/onboarding/'
+            value: '/en-en/onboarding'
         - path:
             type: PathPrefix
-            value: '/en-en/privacy_and_security/'
+            value: '/en-en/privacy_and_security'
         - path:
-            type: PathPrefix
-            value: '/en-en/requirements/'
+            type: PathPrefix 
+            value: '/en-en/requirements'
       backendRefs:
         - name: {{ $fullname }}-en
           port: {{ $svcPort }}
     - matches:
         - path:
             type: PathPrefix
-            value: '/de-de/handbook/'
+            value: '/de-de/handbook'
         - path:
             type: PathPrefix
-            value: '/de-de/onboarding/'
+            value: '/de-de/onboarding'
         - path:
             type: PathPrefix
-            value: '/de-de/privacy_and_security/'
+            value: '/de-de/privacy_and_security'
         - path:
             type: PathPrefix
-            value: '/de-de/requirements/'
+            value: '/de-de/requirements'
       backendRefs:
         - name: {{ $fullname }}-de
           port: {{ $svcPort }}
----
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: HTTPRoute
-# metadata:
-#   name: {{ $fullname }}-tls-redirect
-# spec:
-#   parentRefs:
-#     - name: {{ $fullname }}
-#       group: gateway.networking.k8s.io
-#       kind: Gateway
-#   hostnames:
-#   {{- range .Values.httpRoute.hosts }}
-#     - {{ .host }}
-#   {{- end }}
-#   rules:
-#     - filters:
-#         - type: RequestRedirect
-#           requestRedirect:
-#             scheme: https
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: http-filter-path-redirect
-spec:
-  parentRefs:
-    - name: {{ $fullname }}
-      group: gateway.networking.k8s.io
-      kind: Gateway
-  hostnames:
-  {{- range .Values.httpRoute.hosts }}
-    - {{ .host }}
-  {{- end }}
-  rules:
-    - matches:
-      - path:
-          type: PathPrefix
-          value: /
-      filters:
-      - type: RequestRedirect
-        requestRedirect:
-          path:
-            type: ReplaceFullPath
-            replaceFullPath: /en-en/
-          statusCode: 301
 {{- end -}}         
