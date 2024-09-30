@@ -16,11 +16,11 @@ spec:
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
     redirectURL: "https://knowledgebase.{{ .Values.httpRoute.stage }}.roclub.io/oauth2/callback/"
-    logoutPath: "https://knowledebase.{{ .Values.httpRoute.stage }}.roclub.io/"
+    logoutPath: "https://knowledgebase.{{ .Values.httpRoute.stage }}.roclub.io/"
 ---
 apiVersion: v1
 data:
-  client-secret: {{ .Values.httpRoute.oidc.clientSecret }} 
+  client-secret: {{ .Values.httpRoute.oidc.clientSecret | b64enc }} 
 kind: Secret
 metadata:
   name: "{{ $fullname }}-oauth-secret"
