@@ -12,8 +12,8 @@ spec:
       kind: Gateway
       name: {{ $gatewayName }}
   hostnames:
-  {{- range .Values.connectorControl.gatewayAPI.hosts }}
-    - {{ .host }}
+  {{- range .Values.recordNames }}
+    - {{ . }}
   {{- end }}
   rules:
   {{- range .Values.connectorControl.gatewayAPI.hosts }}
