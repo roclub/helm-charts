@@ -2,7 +2,9 @@ nameOverride: ""
 fullnameOverride: ""
 
 stage: "dev"
-recordName: "controlplane.dev.roclub.io"
+recordNames:
+  - controlplane.dev.roclub.io
+  - cp.dev.roclub.io
 
 remoteControl:
   image:
@@ -34,8 +36,7 @@ remoteControl:
 
   gatewayAPI:
     hosts:
-      - host: controlplane.dev.roclub.io
-        paths:
+      - paths:
           - path: /v2/sessions/
             pathType: PathPrefix
 
@@ -123,8 +124,7 @@ connectorStatus:
   
   gatewayAPI:
     hosts:
-      - host: controlplane.dev.roclub.io
-        paths:
+      - paths:
           - path: /v2/connectors/status/
             pathType: PathPrefix
 
@@ -147,8 +147,7 @@ connectorControl:
 
   gatewayAPI:
     hosts:
-      - host: controlplane.dev.roclub.io
-        paths:
+      - paths:
           - path: /v2/connectors/control/
             pathType: PathPrefix
 
@@ -208,8 +207,7 @@ authZ:
 
   gatewayAPI:
     hosts:
-      - host: controlplane.dev.roclub.io
-        paths:
+      - paths:
           - path: /v2/authz/
             pathType: PathPrefix
 

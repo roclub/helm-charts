@@ -1,12 +1,15 @@
 {{- $stage := .Values.stage }}
 {{- $gatewayName := include "controlplane.fullname" . -}}
+{{- range .Values.recordNames }}
+---
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
-  name: {{ .Values.recordName }}
+  name: {{ . }}
 spec:
-  providerConfigName: controlplane-dns-record
-  recordName: {{ .Values.recordName }}
-  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .Values.recordName) }}.
+  providerConfigName: {{ . }}-provider-config
+  recordName: {{ . }}
+  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .) }}.
   stage: {{ $stage }}
   loadBalancerSelector: {{ $gatewayName }}
+{{- end }}
