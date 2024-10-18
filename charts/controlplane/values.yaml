@@ -6,6 +6,50 @@ recordNames:
   - controlplane.dev.roclub.io
   - cp.dev.roclub.io
 
+
+conferenceWebsocket:
+  image:
+    repository: ghcr.io/roclub/conference-websocket-prod
+    pullPolicy: Always
+
+  imagePullSecrets:
+    - name: dockerconfigjson-github-com
+
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  resources: {}
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "conference-websocket"
+
+  gatewayAPI:
+    hosts:
+      - paths:
+          - path: /v2/websocket/
+            pathType: PathPrefix
+
+  env:
+    - name: TOKEN
+      value: ""
+    - name: ALLOWED_ORIGIN
+      value: ""
+
 remoteControl:
   image:
     repository: ghcr.io/roclub/controlplane-session-control
