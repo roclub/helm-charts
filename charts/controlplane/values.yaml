@@ -9,7 +9,8 @@ recordNames:
 
 conferenceWebsocket:
   image:
-    repository: ghcr.io/roclub/conference-websocket-prod
+    repository: ghcr.io/roclub/conference-websocket-development
+    tag: 0.0.2
     pullPolicy: Always
 
   imagePullSecrets:
@@ -23,7 +24,9 @@ conferenceWebsocket:
 
   resources: {}
 
-  nodeSelector: {}
+  nodeSelector:
+    beta.kubernetes.io/arch: arm64
+
   tolerations: []
   affinity: {}
 

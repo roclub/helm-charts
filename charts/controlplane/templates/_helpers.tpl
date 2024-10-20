@@ -225,17 +225,6 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "controlplane.serviceAccountConferenceWebsocketName" -}}
-{{- if .Values.conferenceWebsocket.serviceAccount.create }}
-{{- default (include "controlplane.fullname" .) .Values.conferenceWebsocket.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.conferenceWebsocket.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 Selector labels
 */}}
 {{- define "controlplane.selectorLabelsConferenceWebsocketGateway" -}}
