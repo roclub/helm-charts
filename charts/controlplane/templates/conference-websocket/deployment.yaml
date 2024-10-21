@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.conferenceWebsocketName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.conferenceWebsocket.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabelsConferenceWebsocket" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.conferenceWebsocket.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.selectorLabelsConferenceWebsocket" . | nindent 8 }}
+        {{- with .Values.conferenceWebsocket.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.conferenceWebsocket.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountConferenceWebsocketName" . }}
+      securityContext:
+        {{- toYaml .Values.conferenceWebsocket.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.conferenceWebsocket.securityContext | nindent 12 }}
+          image: "{{ .Values.conferenceWebsocket.image.repository }}:{{ .Values.conferenceWebsocket.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.conferenceWebsocket.image.pullPolicy }}
+          env:
+          {{- range .Values.conferenceWebsocket.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.conferenceWebsocket.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.conferenceWebsocket.resources | nindent 12 }}
+      {{- with .Values.conferenceWebsocket.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.conferenceWebsocket.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.conferenceWebsocket.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

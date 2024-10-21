@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "controlplane.conferenceWebsocketName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.conferenceWebsocket.service.type }}
+  ports:
+    - port: {{ .Values.conferenceWebsocket.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "controlplane.selectorLabelsConferenceWebsocket" . | nindent 4 }}

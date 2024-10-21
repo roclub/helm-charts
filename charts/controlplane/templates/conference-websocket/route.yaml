@@ -1,13 +1,11 @@
 {{- $gatewayName := include "controlplane.fullname" . -}}
-{{- $name := include "controlplane.remoteControlName" . -}}
-{{- $svcPort := .Values.remoteControl.service.httpPort -}}
+{{- $name := include "controlplane.conferenceWebsocketName" . -}}
+{{- $svcPort := .Values.conferenceWebsocket.service.port -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ $gatewayName }}-remote-control
-  labels:
-    authentication/zitadel: jwt
+  name: {{ $gatewayName }}-conference-websocket
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
@@ -18,7 +16,7 @@ spec:
     - {{ . }}
   {{- end }}
   rules:
-  {{- range .Values.remoteControl.gatewayAPI.hosts }}
+  {{- range .Values.conferenceWebsocket.gatewayAPI.hosts }}
     - matches:
       {{- range .paths }}
         - path:
