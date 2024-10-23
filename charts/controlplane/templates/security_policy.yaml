@@ -4,10 +4,11 @@ kind: SecurityPolicy
 metadata:
   name: {{ $gatewayName }}-jwt-authentication
 spec:
-  targetRef:
+  targetSelector:
     group: gateway.networking.k8s.io
-    kind: Gateway 
-    name: {{ $gatewayName }}
+    kind: HTTPRoute
+    matchLabels:
+      authentication/zitadel: jwt
   jwt:
     providers:
     - name: zitadel
