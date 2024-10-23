@@ -35,6 +35,7 @@ spec:
     - DELETE
     - PUT
     - PATCH
+    - OPTIONS
     allowHeaders:
     - "Origin"
     - "Authorization"
@@ -46,5 +47,3 @@ spec:
     # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
     maxAge: "7200s"
     allowCredentials: true
-
-

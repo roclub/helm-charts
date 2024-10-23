@@ -21,6 +21,23 @@ spec:
         - path:
             type: {{ .pathType }}
             value: {{ .path }}
+          method: GET
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+          method: POST
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+          method: DELETE
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+          method: PATCH
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+          method: PUT
       {{- end }}
       backendRefs:
         - name: {{ $name }}
