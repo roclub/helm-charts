@@ -50,18 +50,6 @@ app.kubernetes.io/name: {{ include "conference.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/* Selector labels for the frontend service */}}
-{{- define "conference.selectorLabelsFrontend" -}}
-app.kubernetes.io/name: {{ include "conference.frontend" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/* Selector labels for the backend service */}}
-{{- define "conference.selectorLabelsBackend" -}}
-app.kubernetes.io/name: {{ include "conference.backendName" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
 {{/*
 Create the name of the service account to use
 */}}
@@ -90,30 +78,3 @@ Create the name for the  certtificate issuer
 {{- end }}
 {{- end }}
 
-{{/*
-Define the name for all api related resources
-*/}}
-{{- define "conference.frontend" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- printf "%s-%s-frontend" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-
-{{/*
-Define the name for all api related resources
-*/}}
-{{- define "conference.backendName" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s-backend" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
