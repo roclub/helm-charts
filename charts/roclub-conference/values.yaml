@@ -1,52 +1,39 @@
 imagePullSecrets:
 - name: dockerconfigjson-github-com
+
 nameOverride: ""
 fullnameOverride: ""
 
 stage: "dev"
+recordNames:
+- "conference-1.dev.roclub.io"
+- "conference-2.dev.roclub.io"
 
 serviceAccount:
   create: true
   annotations: {}
   name: ""
 
-  resources: {}
+resources: {}
 
-  podAnnotations: {}
-  podSecurityContext: {}
-  securityContext: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector:
+  beta.kubernetes.io/arch: arm64 
+tolerations: []
+affinity: {}
 
 httpRoute:
   enabled: true
-  stage: dev
-  tls:
-    secretName: "conference2-tls"
-    hosts: 
-    - "conference12.dev.roclub.io"
-  oidc:
-    clientID: "285637959913375059"
-    clientSecret: Lm128lLLOW2AT1yqG4Cj2EmQTLdtJl5oDClWz13B7Ibd62bMqpixGxrlfsWnJ1vf
 
-frontend:
-  image:
-    repository: ghcr.io/roclub/livekit-remote-control-conference-development
-    pullPolicy: Always
-    
-  replicaCount: 1
+image:
+  repository: ghcr.io/roclub/livekit-remote-control-conference-development
+  pullPolicy: Always
+  
+replicaCount: 1
 
-  service:
-    type: ClusterIP
-    port: 8080
+service:
+  type: ClusterIP
+  port: 8080
 
-
-  resources: {}
-
-  podAnnotations: {}
-  podSecurityContext: {}
-  securityContext: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
