@@ -4,7 +4,7 @@ kind: SecurityPolicy
 metadata:
   name: {{ $gatewayName }}-jwt-authentication
 spec:
-  targetSelector:
+  targetSelectors:
     group: gateway.networking.k8s.io
     kind: HTTPRoute
     matchLabels:
