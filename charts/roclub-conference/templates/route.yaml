@@ -1,20 +1,18 @@
-{{- if .Values.httpRoute.enabled -}}
-{{- $fullName := include "conference.fullname" . -}}
-{{- $svcPort := .Values.frontend.service.port -}}
-{{- $stage := .Values.httpRoute.stage -}}
+{{- $gatewayName := include "conference.fullname" . -}}
+{{- $name := include "conference.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ $fullName }}-oidc
-  labels:
-    {{- include "conference.labels" . | nindent 4 }}
+  name: {{ $gatewayName }}-conference
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: {{ $fullName }}
+      name: {{ $gatewayName }}
   hostnames:
-  {{- range .Values.httpRoute.tls.hosts }}
+  {{- range .Values.recordNames }}
     - {{ . }}
   {{- end }}
   rules:
@@ -23,7 +21,6 @@ spec:
             type: 'PathPrefix'
             value: '/'
       backendRefs:
-        - name: {{ $fullName }}-frontend
+        - name: {{ $name }}
           port: {{ $svcPort }}
----
-{{- end }}
+

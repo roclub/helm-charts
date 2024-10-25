@@ -41,11 +41,12 @@ metadata:
 spec:
   gatewayClassName: {{ $fullName }}
   listeners:
-  {{- range .Values.httpRoute.tls.hosts }}
-    - name: http
+  {{- range .Values.recordNames }}
+    - name: {{ . }}-http
+      hostname: {{ . }}
       protocol: HTTP
       port: 80
-    - name: https
+    - name: {{ . }}-https
       hostname: {{ . }}
       protocol: HTTPS
       port: 443
