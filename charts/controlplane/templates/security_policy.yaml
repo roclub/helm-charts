@@ -5,7 +5,7 @@ metadata:
   name: {{ $gatewayName }}-jwt-authentication
 spec:
   targetSelectors:
-    group: gateway.networking.k8s.io
+  - group: gateway.networking.k8s.io
     kind: HTTPRoute
     matchLabels:
       authentication/zitadel: jwt
