@@ -53,3 +53,13 @@ spec:
             type: PathPrefix
             value: "/v2/connectors/control/"
           method: OPTIONS
+    - backendRefs:
+        - name: {{.Values.stage }}-controlplane-conference-websocket
+          port: 8081
+          group: ""
+          kind: Service
+      matches:
+        - path:
+            type: PathPrefix
+            value: "/v2/websocket/"
+          method: OPTIONS
