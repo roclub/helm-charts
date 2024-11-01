@@ -39,11 +39,11 @@ spec:
   listeners:
   {{- range .Values.recordNames }}
     - name: {{ . }}-http
-      hostname: {{ . }}-http
+      hostname: {{ . }}
       protocol: HTTP
       port: 80
     - name: {{ . }}-https
-      hostname: {{ . }}-https
+      hostname: {{ . }}
       protocol: HTTPS
       port: 443
       tls:
