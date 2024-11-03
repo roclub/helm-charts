@@ -14,7 +14,7 @@ spec:
       name: {{ $fullname }}
   hostnames:
   {{- range .Values.httpRoute.hosts }}
-    - {{ .host }}
+    - {{ . }}
   {{- end }}
   rules:
     - matches:
@@ -45,7 +45,7 @@ spec:
       name: {{ $fullname }}
   hostnames:
   {{- range .Values.httpRoute.hosts }}
-    - {{ .host }}
+    - {{ . }}
   {{- end }}
   rules:
     - matches:
@@ -92,7 +92,7 @@ spec:
       name: {{ $fullname }}
   hostnames:
   {{- range .Values.httpRoute.hosts }}
-    - {{ .host }}
+    - {{ . }}
   {{- end }}
   rules:
     - matches:

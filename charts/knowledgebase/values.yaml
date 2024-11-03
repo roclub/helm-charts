@@ -33,7 +33,8 @@ httpRoute:
     clientID: "285474337715194832"
     clientSecret: "kuwQhvfqxfMfwnK2jng3p7NTIcDwn2sEEh0z2iahaFMJtdJtrfQXJqqvEHVw0zZB"
   hosts:
-    - host: kb.dev.roclub.io 
+    - kb.dev.roclub.io 
+    - kb1.dev.roclub.io
   tls:
     - secretName: knowledgebase-tls
       hosts: [ kb.dev.roclub.io ]

@@ -42,18 +42,19 @@ spec:
   gatewayClassName: {{ $fullname }}
   listeners:
   {{- range .Values.httpRoute.hosts }}
-    - name: http
+    - name: {{ . }}-http
+      hostname: {{ . }}
       protocol: HTTP
       port: 80
-    - name: https
-      hostname: {{ .host  }}
+    - name: {{ . }}-https
+      hostname: {{ . }}
       protocol: HTTPS
       port: 443
       tls:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: {{ .host }}-https
+            name: {{ . }}-https
   {{- end }}
 ---
 apiVersion: cert-manager.io/v1
