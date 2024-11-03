@@ -1,15 +1,15 @@
 {{- if .Values.httpRoute.enabled -}}
 {{- $stage := .Values.httpRoute.stage -}}
 {{- $fullname := include "knowledgebase.fullname" . -}}
-{{- range .Values.httpRoute.hosts -}}
+{{- range .Values.httpRoute.s -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
-  name: {{ .host }}
+  name: {{ . }}
 spec:
   providerConfigName: {{ $fullname }}-dns-record
-  recordName: {{ .host }}
-  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .host) }}.
+  recordName: {{ . }}
+  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .) }}.
   stage: {{ $stage }}
   loadBalancerSelector: {{ $fullname }}
 ---
