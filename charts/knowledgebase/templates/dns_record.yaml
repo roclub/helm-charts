@@ -1,7 +1,7 @@
 {{- if .Values.httpRoute.enabled -}}
 {{- $stage := .Values.httpRoute.stage -}}
 {{- $fullname := include "knowledgebase.fullname" . -}}
-{{- range .Values.httpRoute.s -}}
+{{- range .Values.httpRoute.hosts -}}
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
