@@ -176,6 +176,21 @@ entries:
   controlplane:
   - apiVersion: v2
     appVersion: 2.6.3
+    created: "2024-11-13T16:01:14.741694254Z"
+    dependencies:
+    - name: influxdb2
+      repository: https://helm.influxdata.com/
+      version: 2.1.2
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: e3a5aaa280af9bad109c1972a218ea43c8a90c987992e8e5edcec851d41e1b3a
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.8.5/controlplane-2.8.5.tgz
+    version: 2.8.5
+  - apiVersion: v2
+    appVersion: 2.6.3
     created: "2024-11-07T08:24:17.456876345Z"
     dependencies:
     - name: influxdb2
@@ -1976,4 +1991,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-12T12:50:04.750447836Z"
+generated: "2024-11-13T16:01:14.742135621Z"
