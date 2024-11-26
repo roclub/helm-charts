@@ -64,6 +64,8 @@ remoteControl:
   replicaCount: 1
 
   config:
+    env: "dev"
+
     iotDataplane:
       key: ""
       secret: ""
@@ -125,6 +127,8 @@ connectorStatus:
   replicaCount: 1
 
   config:
+    env: "dev"
+    
     kafka:
       bootstrapServers: []
       saslUsername: ""
@@ -186,6 +190,8 @@ connectorControl:
   replicaCount: 1
 
   config:
+    env: "dev"
+    
     iotDataplane:
       key: ""
       secret: ""
@@ -240,6 +246,8 @@ authZ:
   replicaCount: 1
 
   config:
+    env: "dev"
+    
     openfga:
       url: "http://openfga-dev.openfga.svc.cluster.local:8080"
       storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
