@@ -7,6 +7,9 @@ metadata:
 data:
   config.toml: |-
     [connector_control]
+    env: "dev"
+    serviceAccounts: []
+    
     [connector_control.iot_dataplane]
     key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
     secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"

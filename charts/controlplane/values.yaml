@@ -65,6 +65,7 @@ remoteControl:
 
   config:
     env: "dev"
+    serviceAccounts: []
 
     iotDataplane:
       key: ""
@@ -128,6 +129,7 @@ connectorStatus:
 
   config:
     env: "dev"
+    serviceAccounts: []
     
     kafka:
       bootstrapServers: []
@@ -191,6 +193,7 @@ connectorControl:
 
   config:
     env: "dev"
+    serviceAccounts: []
     
     iotDataplane:
       key: ""
@@ -247,6 +250,7 @@ authZ:
 
   config:
     env: "dev"
+    serviceAccounts: []
     
     openfga:
       url: "http://openfga-dev.openfga.svc.cluster.local:8080"

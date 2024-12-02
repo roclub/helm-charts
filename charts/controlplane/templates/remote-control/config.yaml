@@ -7,6 +7,9 @@ metadata:
 data:
   config.toml: |-
     [session_control]
+    env: "dev"
+    serviceAccounts: []
+    
     [session_control.iot_dataplane]
     key    = "{{ .Values.remoteControl.config.iotDataplane.key }}"
     secret = "{{ .Values.remoteControl.config.iotDataplane.secret }}"

@@ -7,6 +7,9 @@ metadata:
 data:
   config.toml: |-
     [authz]
+    env: "dev"
+    serviceAccounts: []
+    
     [authz.openfga]
     url = "{{ .Values.authZ.config.openfga.url }}"
     store_id = "{{ .Values.authZ.config.openfga.storeId }}"
