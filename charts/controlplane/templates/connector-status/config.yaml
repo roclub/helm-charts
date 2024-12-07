@@ -10,6 +10,9 @@ metadata:
 data:
   config.toml: |-
     [connector_status]
+    env: "{{ .Values.connectorStatus.config.env }}"
+    serviceAccounts: "{{ .Values.connectorStatus.config.serviceAccounts }}"
+    
     [connector_status.connector_status_repository]
     influxdb_org = "{{ .Values.connectorStatus.config.influx.org }}"
     influxdb_url = "http://{{ $influxName }}-influxdb2"
