@@ -8,7 +8,7 @@ data:
   config.toml: |-
     [connector_control]
     env = "{{ .Values.connectorControl.config.env }}"
-    serviceAccounts = "{{ .Values.connectorControl.config.serviceAccounts }}"
+    service_accounts = {{ .Values.connectorControl.config.serviceAccounts }}
     
     [connector_control.iot_dataplane]
     key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
