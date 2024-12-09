@@ -8,7 +8,7 @@ data:
   config.toml: |-
     [authz]
     env = "{{ .Values.authZ.config.env }}"
-    serviceAccounts =  "{{ .Values.authZ.config.serviceAccounts }}"
+    service_accounts = {{ .Values.authZ.config.serviceAccounts }}
     
     [authz.openfga]
     url = "{{ .Values.authZ.config.openfga.url }}"
