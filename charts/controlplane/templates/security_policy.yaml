@@ -13,7 +13,11 @@ spec:
     providers:
     - name: zitadel
       remoteJWKS:
+{{- if eq .Values.stage "prd" }}
+        uri: https://identity.roclub.io/oauth/v2/keys
+{{- else }}
         uri: https://identity.{{ .Values.stage }}.roclub.io/oauth/v2/keys
+{{- end }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
