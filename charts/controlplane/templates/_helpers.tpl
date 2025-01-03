@@ -265,3 +265,32 @@ Create the name of the service account to use
 {{- default "default" .Values.conferenceWebsocket.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{- define "controlplane.notificationsName" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-notifications" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-notifications" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.selectorLabelsNotifications" -}}
+app.kubernetes.io/name: {{ include "controlplane.notificationsName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "controlplane.serviceAccountNotificationsName" -}}
+{{- if .Values.notifications.serviceAccount.create }}
+{{- default (include "controlplane.fullname" .) .Values.notifications.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.notifications.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+

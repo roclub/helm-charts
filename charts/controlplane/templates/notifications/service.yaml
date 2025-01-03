@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "controlplane.notificationsName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.notifications.service.type }}
+  ports:
+    - port: {{ .Values.notifications.service.gRPCPort }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+    - port: {{ .Values.notifications.service.httpPort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "controlplane.selectorLabelsNotifications" . | nindent 4 }}
