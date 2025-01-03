@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.notificationsName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.notifications.autoscaling.enabled }}
+  replicas: {{ .Values.notifications.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabelsNotifications" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.notifications.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.selectorLabelsNotifications" . | nindent 8 }}
+        {{- with .Values.notifications.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.notifications.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountNotificationsName" . }}
+      securityContext:
+        {{- toYaml .Values.notifications.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.notifications.securityContext | nindent 12 }}
+          image: "{{ .Values.notifications.image.repository }}:{{ .Values.notifications.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.notifications.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.notifications.service.httpPort }}
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: v1/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: v1/health
+              port: http
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: v1/ready
+              port: http
+            failureThreshold: 2
+            periodSeconds: 30
+          resources:
+            {{- toYaml .Values.notifications.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/edged/
+          env:
+          - name: INFLUXDB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "controlplane.fullname" . }}-influxdb2-auth 
+                key: admin-token
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane.notificationsName" . }}-config"
+      {{- with .Values.notifications.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.notifications.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.notifications.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
