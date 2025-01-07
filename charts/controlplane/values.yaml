@@ -3,7 +3,6 @@ fullnameOverride: ""
 
 stage: "dev"
 recordNames:
-  - controlplane.dev.roclub.io
   - cp.dev.roclub.io
 
 
@@ -315,3 +314,57 @@ influxdb2:
     size: 50Gi
     mountPath: /var/lib/influxdb2
     subPath: ""
+
+notifications:
+  image:
+    repository: ghcr.io/roclub/controlplane-notifications
+    pullPolicy: Always
+
+  imagePullSecrets: 
+    - name: dockerconfigjson-github-com
+
+  replicaCount: 1
+
+  config:
+    logger: "debug"
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "notifications"
+
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+  
+  gatewayAPI:
+    hosts:
+      - paths:
+          - path: /v2/notifications/register
+            pathType: PathPrefix
+
+
