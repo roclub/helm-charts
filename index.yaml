@@ -94,6 +94,16 @@ entries:
     version: 0.1.0
   conference:
   - apiVersion: v2
+    appVersion: 0.10.3
+    created: "2025-01-17T12:04:50.673640517Z"
+    description: Deploys the roclub conference using livekit
+    digest: 49d6bbfb4fccde38c4bdd742159ec8bdb7d74f80b73361f3f67f42a063cd6c3a
+    name: conference
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/conference-0.9.3/conference-0.9.3.tgz
+    version: 0.9.3
+  - apiVersion: v2
     appVersion: 0.10.2
     created: "2025-01-17T11:21:24.862174918Z"
     description: Deploys the roclub conference using livekit
@@ -2304,4 +2314,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-17T11:21:24.862611628Z"
+generated: "2025-01-17T12:04:50.674066627Z"
