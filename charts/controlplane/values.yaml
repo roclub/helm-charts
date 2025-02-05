@@ -366,5 +366,5 @@ notifications:
       - paths:
           - path: /v2/notifications/register
             pathType: PathPrefix
-
-
+          - path: /v2/notifications/vapid
+            pathType: PathPrefix
