@@ -48,18 +48,21 @@ spec:
               path: v1/health
               port: http
             failureThreshold: 30
+            timeoutSeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: v1/health
               port: http
             failureThreshold: 3
+            timeoutSeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: v1/ready
               port: http
             failureThreshold: 2
+            timeoutSeconds: 10
             periodSeconds: 30
           resources:
             {{- toYaml .Values.connectorControl.resources | nindent 12 }}
