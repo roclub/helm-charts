@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: "{{ .Values.iotKafkaInterfaceCronjob.name }}"
+  namespace: "{{ .Values.iotKafkaInterfaceCronjob.namespace }}"
+spec:
+  schedule: "{{ .Values.iotKafkaInterfaceCronjob.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                    - arm64
+          serviceAccountName: "{{ .Values.iotKafkaInterfaceCronjob.serviceAccount.name }}"
+          containers:
+          - name: "{{ .Values.iotKafkaInterfaceCronjob.container.name }}"
+            image: "{{ .Values.iotKafkaInterfaceCronjob.container.image }}"
+            imagePullPolicy: "{{ .Values.iotKafkaInterfaceCronjob.container.imagePullPolicy }}"
+
+            command: ["/bin/bash", "-c", "{{ .Values.iotKafkaInterfaceCronjob.container.command }}"]
+            env:
+              - name: AWS_REGION
+                value: "{{ .Values.iotKafkaInterfaceCronjob.container.env.AWS_REGION }}"
+          {{- with .Values.notifications.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+
+          imagePullSecrets:
+            - name: "{{ .Values.iotKafkaInterfaceCronjob.imagePullSecrets }}"
+          restartPolicy: "{{ .Values.iotKafkaInterfaceCronjob.restartPolicy }}"
