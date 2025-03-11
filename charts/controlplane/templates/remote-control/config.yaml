@@ -25,3 +25,6 @@ data:
 
     [session_control.logger]
     level = "{{ .Values.remoteControl.config.logger }}"
+
+    [session_control.notification_service]
+    address = "http://{{ include "controlplane.notificationsName" . }}:8080"
