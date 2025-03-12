@@ -37,6 +37,9 @@ spec:
           image: "{{ .Values.notifications.image.repository }}:{{ .Values.notifications.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.notifications.image.pullPolicy }}
           ports:
+            - name: grpc
+              containerPort: {{ .Values.notifications.service.gRPCPort }}
+              protocol: TCP
             - name: http
               containerPort: {{ .Values.notifications.service.httpPort }}
               protocol: TCP
