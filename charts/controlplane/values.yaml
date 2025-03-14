@@ -368,3 +368,16 @@ notifications:
             pathType: PathPrefix
           - path: /v2/notifications/vapid
             pathType: PathPrefix
+
+iotKafkaInterfaceCronjob:
+  name: iot-kafka-interface-cronjob
+  schedule: "*/15 * * * *" # Runs every 15 minutes
+  serviceAccount:
+    automount: true
+    roleArn: arn:aws:iam::172771008158:role/EKSServiceAccountIotKafkaAttachInterfaceRole
+  container:
+    name: iot-kafka-interface-script-container
+    image: ghcr.io/roclub/controlplane-connector-status-interface-script-image:latest
+    imagePullPolicy: Always
+  imagePullSecrets: dockerconfigjson-github-com
+  restartPolicy: OnFailure
