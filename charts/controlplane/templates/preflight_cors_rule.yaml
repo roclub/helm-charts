@@ -54,6 +54,16 @@ spec:
             value: "/v2/connectors/control/"
           method: OPTIONS
     - backendRefs:
+        - name: {{.Values.stage }}-controlplane-notifications
+          port: 8081
+          group: ""
+          kind: Service
+      matches:
+        - path:
+            type: PathPrefix
+            value: "/v2/notifications/"
+          method: OPTIONS
+    - backendRefs:
         - name: {{.Values.stage }}-controlplane-conference-websocket
           port: 8081
           group: ""
