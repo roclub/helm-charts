@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: "{{ .Values.iotKafkaInterfaceCronjob.name }}"
-  namespace: "{{ .Values.iotKafkaInterfaceCronjob.namespace }}"
 spec:
   schedule: "{{ .Values.iotKafkaInterfaceCronjob.schedule }}"
   jobTemplate:
@@ -23,6 +22,7 @@ spec:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.iotKafkaInterfaceCronjob.container.image }}"
             imagePullPolicy: "{{ .Values.iotKafkaInterfaceCronjob.container.imagePullPolicy }}"
+            command: ["/bin/bash", "-c", "./network_interface_script.sh"]
             env:
               - name: AWS_REGION
                 value: "eu-central-1"
