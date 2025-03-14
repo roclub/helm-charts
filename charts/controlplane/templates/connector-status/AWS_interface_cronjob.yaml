@@ -18,21 +18,18 @@ spec:
                     operator: In
                     values:
                     - arm64
-          serviceAccountName: "{{ .Values.iotKafkaInterfaceCronjob.serviceAccount.name }}"
+          serviceAccountName: aws-interface-sa
           containers:
-          - name: "{{ .Values.iotKafkaInterfaceCronjob.container.name }}"
+          - name: {{ .Chart.Name }}
             image: "{{ .Values.iotKafkaInterfaceCronjob.container.image }}"
             imagePullPolicy: "{{ .Values.iotKafkaInterfaceCronjob.container.imagePullPolicy }}"
-
-            command: ["/bin/bash", "-c", "{{ .Values.iotKafkaInterfaceCronjob.container.command }}"]
             env:
               - name: AWS_REGION
-                value: "{{ .Values.iotKafkaInterfaceCronjob.container.env.AWS_REGION }}"
+                value: "eu-central-1"
           {{- with .Values.notifications.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 8 }}
           {{- end }}
-
           imagePullSecrets:
             - name: "{{ .Values.iotKafkaInterfaceCronjob.imagePullSecrets }}"
           restartPolicy: "{{ .Values.iotKafkaInterfaceCronjob.restartPolicy }}"
