@@ -26,10 +26,6 @@ spec:
             env:
               - name: AWS_REGION
                 value: "eu-central-1"
-          {{- with .Values.notifications.nodeSelector }}
-          nodeSelector:
-            {{- toYaml . | nindent 8 }}
-          {{- end }}
           imagePullSecrets:
             - name: "{{ .Values.iotKafkaInterfaceCronjob.imagePullSecrets }}"
           restartPolicy: "{{ .Values.iotKafkaInterfaceCronjob.restartPolicy }}"
