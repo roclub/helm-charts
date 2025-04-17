@@ -95,8 +95,8 @@ spec:
             type: PathPrefix
             value: '/de-de/privacy_and_security'
         - path:
-        type: PathPrefix 
-        value: '/en-en/compliance'
+            type: PathPrefix 
+            value: '/en-en/compliance'
         - path:
             type: PathPrefix
             value: '/de-de/requirements'
