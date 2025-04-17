@@ -96,7 +96,7 @@ spec:
             value: '/de-de/privacy_and_security'
         - path:
             type: PathPrefix 
-            value: '/en-en/compliance'
+            value: '/de-de/compliance'
         - path:
             type: PathPrefix
             value: '/de-de/requirements'
