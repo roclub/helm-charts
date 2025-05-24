@@ -1385,6 +1385,15 @@ entries:
     version: 2.0.12
   knowledgebase:
   - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2025-05-24T15:25:47.536181298Z"
+    description: Deploys the roclub knowledgebase stack to Kubernetes
+    digest: 3d228f3bcc91e2c8f62fd6785db2244c7c61168b93a991407305fb2c096d2901
+    name: knowledgebase
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/knowledgebase-1.1.1/knowledgebase-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
     appVersion: 1.1.0
     created: "2025-05-05T13:47:58.656401132Z"
     description: Deploys the roclub knowledgebase stack to Kubernetes
@@ -2946,4 +2955,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-20T07:59:32.704355791Z"
+generated: "2025-05-24T15:25:47.537081311Z"
