@@ -18,16 +18,6 @@ spec:
 {{- else }}
         uri: https://identity.{{ .Values.stage }}.roclub.io/oauth/v2/keys
 {{- end }}
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: {{ $gatewayName }}-cors
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway 
-    name: {{ $gatewayName }}
   cors:
     allowOrigins:
     - "https://conference.{{ .Values.stage }}.roclub.io"
@@ -55,3 +45,4 @@ spec:
     # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
     maxAge: "7200s"
     allowCredentials: true
+
