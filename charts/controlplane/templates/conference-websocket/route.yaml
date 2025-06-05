@@ -39,6 +39,10 @@ spec:
             type: {{ .pathType }}
             value: {{ .path }}
           method: PUT
+        - path:
+            type: {{ .pathType }}
+            value: {{ .path }}
+          method: OPTIONS
       {{- end }}
       backendRefs:
         - name: {{ $name }}
