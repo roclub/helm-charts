@@ -18,15 +18,11 @@ spec:
 {{- else }}
         uri: https://identity.{{ .Values.stage }}.roclub.io/oauth/v2/keys
 {{- end }}
-        timeout: "2s"
-        asyncFetch:
-          fastListener: true
-          failedRefetchDuration: "1s"
-        retryPolicy:
-          numRetries: 3
-          retryBackOff:
-            baseInterval: "0.2s"
-            maxInterval: "5s"
+        backendSettings:
+          retry:
+            numRetries: 5
+            retryPolicy:
+              timeout: 2
   cors:
     allowOrigins:
     - "https://conference.{{ .Values.stage }}.roclub.io"
