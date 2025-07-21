@@ -2,5 +2,5 @@ apiVersion: v2
 name: conference
 description: Deploys the roclub conference using livekit
 type: application
-version: 0.18.0
-appVersion: 0.18.1
+version: 0.18.1
+appVersion: 0.18.2
