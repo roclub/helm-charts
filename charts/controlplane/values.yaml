@@ -301,6 +301,9 @@ authZ:
 influxdb2:
   enabled: true
 
+  image:
+    tag: 2.7.12-alpine
+
   adminUser:
     organization: "roclub"
     bucket: "connector-status"
