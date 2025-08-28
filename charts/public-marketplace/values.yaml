@@ -1,0 +1,38 @@
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+
+nameOverride: ""
+fullnameOverride: ""
+
+stage: "dev"
+recordNames:
+- "marketplace.dev.roclub.io"
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+resources: {}
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector:
+  beta.kubernetes.io/arch: arm64 
+tolerations: []
+affinity: {}
+
+httpRoute:
+  enabled: true
+
+image:
+  repository: ghcr.io/roclub/public-marketplace
+  pullPolicy: Always
+  
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8080
+
