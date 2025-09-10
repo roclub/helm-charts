@@ -21,8 +21,6 @@ spec:
         backendSettings:
           retry:
             numRetries: 5
-            retryPolicy:
-              timeout: 2
   cors:
     allowOrigins:
     - "https://conference.{{ .Values.stage }}.roclub.io"
