@@ -27,12 +27,36 @@ httpRoute:
   enabled: true
 
 image:
-  repository: ghcr.io/roclub/public-marketplace
+  repository: ghcr.io/roclub/public-marketplace-development
   pullPolicy: Always
-  
 replicaCount: 1
 
 service:
   type: ClusterIP
   port: 8080
 
+envSecrets:
+  - name: AUTH_SECRET
+    secretName: public-marketplace-secrets
+    secretKey: auth_secret
+  - name: ZITADEL_ISSUER
+    secretName: public-marketplace-secrets
+    secretKey: zitadel_issuer
+  - name: ZITADEL_CLIENT_ID
+    secretName: public-marketplace-secrets
+    secretKey: zitadel_client_id
+  - name: ZITADEL_CLIENT_SECRET
+    secretName: public-marketplace-secrets
+    secretKey: zitadel_client_secret
+  - name: NEXTAUTH_URL
+    secretName: public-marketplace-secrets
+    secretKey: nextauth_url
+  - name: NEXT_ZITADEL_USER_SA
+    secretName: public-marketplace-secrets
+    secretKey: next_zitadel_user_sa
+  - name: NEXT_ZITADEL_SECRET_SA
+    secretName: public-marketplace-secrets
+    secretKey: next_zitadel_secret_sa
+  - name: ACTIONS_RUNTIME_TOKEN
+    secretName: public-marketplace-secrets
+    secretKey: actions_runtime_token
