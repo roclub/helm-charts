@@ -1,0 +1,24 @@
+{{- $gatewayName := include "controlplane.fullname" . -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyPatchPolicy
+metadata:
+  name: {{ $gatewayName }}-jwks-cache-patch
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: {{ $gatewayName }}
+  type: JSONPatch
+  jsonPatches:
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "jwt-authn-patch"
+    operation:
+      op: replace
+      path: "/filter_chains/0/filters/0/typed_config/providers/zitadel/remote_jwks/async_fetch"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "jwt-cache-patch"
+    operation:
+      op: replace
+      path: "/filter_chains/0/filters/0/typed_config/providers/zitadel/remote_jwks/cache_duration"
+      value: "5s"
