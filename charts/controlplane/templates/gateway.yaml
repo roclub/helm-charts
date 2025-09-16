@@ -5,6 +5,8 @@ metadata:
   name: {{ $gatewayName }}-proxy-config
   namespace: envoy-gateway-system
 spec:
+  extensionApis:
+    enableEnvoyPatchPolicy: true
   provider:
     type: Kubernetes
     kubernetes:
