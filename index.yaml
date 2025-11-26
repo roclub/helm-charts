@@ -3,6 +3,15 @@ entries:
   app:
   - apiVersion: v2
     appVersion: 0.0.0-dev.10
+    created: "2025-11-26T13:52:32.864299575Z"
+    digest: 404086147becf99bc6334f200ce775a003613ac59bb965d43495ab65da7b3277
+    name: app
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/app-0.0.0-dev.12/app-0.0.0-dev.12.tgz
+    version: 0.0.0-dev.12
+  - apiVersion: v2
+    appVersion: 0.0.0-dev.10
     created: "2025-11-26T13:41:52.80300526Z"
     digest: 19645ad56dbf88746c058005dc093b7d4acb2d2edbdaff51b959f32b9fc288ce
     name: app
@@ -3524,4 +3533,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-26T13:41:52.803477034Z"
+generated: "2025-11-26T13:52:32.864922018Z"
