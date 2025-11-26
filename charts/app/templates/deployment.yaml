@@ -81,11 +81,6 @@ spec:
                 secretKeyRef:
                   name: app-nextjs
                   key: next_public_zitadel_base_url
-            - name: ACTIONS_RUNTIME_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: app-nextjs
-                  key: actions_runtime_token
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
