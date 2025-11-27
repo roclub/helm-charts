@@ -1,0 +1,59 @@
+imagePullSecrets:
+- name: dockerconfigjson-github-com
+
+nameOverride: ""
+fullnameOverride: ""
+
+stage: "dev"
+recordNames:
+- "app.dev.roclub.io"
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+resources: {}
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector:
+  beta.kubernetes.io/arch: arm64 
+tolerations: []
+affinity: {}
+
+httpRoute:
+  enabled: true
+
+appSecrets:
+  authSecret:
+    secretKey: ""
+  zitadelIssuer:
+    secretKey: ""
+  zitadelClientId:
+    secretKey: ""
+  zitadelClientSecret:
+    secretKey: ""
+  nextauthUrl:
+    secretKey: ""
+  nextZitadelUserSa:
+    secretKey: ""
+  nextZitadelSecretSa:
+    secretKey: ""
+  nextPublicBaseUrl:
+    secretKey: ""
+  nextPublicZitadelBaseUrl:
+    secretKey: ""
+
+image:
+  tag: ""
+  repository: ghcr.io/roclub/app-development
+  pullPolicy: Always
+  
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8080
+

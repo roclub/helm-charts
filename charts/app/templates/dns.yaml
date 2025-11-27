@@ -1,0 +1,15 @@
+{{- $stage := .Values.stage }}
+{{- $gatewayName := include "app.fullname" . -}}
+{{- range .Values.recordNames }}
+---
+apiVersion: aws.roclub.io/v1alpha1
+kind: dnsrecord
+metadata:
+  name: {{ . }}
+spec:
+  providerConfigName: {{ . }}-provider-config
+  recordName: {{ . }}
+  zoneName: {{ trimPrefix "." (mustRegexFind "\\.([[:alnum:].]*)" .) }}.
+  stage: {{ $stage }}
+  loadBalancerSelector: {{ $gatewayName }}
+{{- end }}
