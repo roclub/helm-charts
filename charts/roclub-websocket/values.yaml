@@ -1,12 +1,11 @@
 nameOverride: ""
 fullnameOverride: ""
-imagePullSecrets:
-- name: dockerconfigjson-github-com
+imagePullSecrets: []
 
 replicaCount: 1
 
 image:
-  repository: ghcr.io/roclub/roclub-websocket-prod
+  repository: harbor.mgt.roclub.io/roclub/roclub/roclub-websocket-prod
   pullPolicy: IfNotPresent
   tag: ""
 
