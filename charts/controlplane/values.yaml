@@ -8,12 +8,11 @@ recordNames:
 
 conferenceWebsocket:
   image:
-    repository: ghcr.io/roclub/conference-websocket-development
+    repository: harbor.mgt.roclub.io/roclub/roclub/conference-websocket-development
     tag: 0.0.2
     pullPolicy: Always
 
-  imagePullSecrets:
-    - name: dockerconfigjson-github-com
+  imagePullSecrets: []
 
   replicaCount: 1
 
