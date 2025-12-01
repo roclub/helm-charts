@@ -37,13 +37,13 @@ appSecrets:
     secretKey: ""
   nextauthUrl:
     secretKey: ""
-  nextZitadelUserSa:
+  zitadelUserSa:
     secretKey: ""
-  nextZitadelSecretSa:
+  zitadelSecretSa:
     secretKey: ""
-  nextPublicBaseUrl:
+  zitadelBaseUrl:
     secretKey: ""
-  nextPublicZitadelBaseUrl:
+  zitadelProjectID:
     secretKey: ""
 
 image:
