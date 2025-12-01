@@ -39,48 +39,48 @@ spec:
             - name: AUTH_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
+                  name: {{ include "app.fullname" . }}-app-nextjs
                   key: auth_secret
             - name: ZITADEL_ISSUER
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
+                  name: {{ include "app.fullname" . }}-app-nextjs
                   key: zitadel_issuer
             - name: ZITADEL_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
+                  name: {{ include "app.fullname" . }}-app-nextjs
                   key: zitadel_client_id
             - name: ZITADEL_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
+                  name: {{ include "app.fullname" . }}-app-nextjs
                   key: zitadel_client_secret
             - name: NEXTAUTH_URL
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
+                  name: {{ include "app.fullname" . }}-app-nextjs
                   key: nextauth_url
-            - name: NEXT_ZITADEL_USER_SA
+            - name: ZITADEL_USER_SA
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
-                  key: next_zitadel_user_sa
-            - name: NEXT_ZITADEL_SECRET_SA
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_user_sa
+            - name: ZITADEL_SECRET_SA
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
-                  key: next_zitadel_secret_sa
-            - name: NEXT_PUBLIC_BASE_URL
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_secret_sa
+            - name: ZITADEL_PROJECT_ID
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
-                  key: next_public_base_url
-            - name: NEXT_PUBLIC_ZITADEL_BASE_URL
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_project_id
+            - name: ZITADEL_BASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: app-nextjs
-                  key: next_public_zitadel_base_url
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_base_url
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

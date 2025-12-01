@@ -5,7 +5,7 @@
 apiVersion: aws.roclub.io/v1alpha1
 kind: dnsrecord
 metadata:
-  name: {{ . }}
+  name: {{ $gatewayName }}-{{ . }}
 spec:
   providerConfigName: {{ . }}-provider-config
   recordName: {{ . }}
