@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/roclub/knowledgebase
+  repository: habor.mgt.roclub.io/roclub/roclub/knowledgbase
   pullPolicy: IfNotPresent
   tag: ""
 
-imagePullSecrets:
-- name: dockerconfigjson-github-com
+imagePullSecrets: []
+
 
 nameOverride: ""
 fullnameOverride: ""
