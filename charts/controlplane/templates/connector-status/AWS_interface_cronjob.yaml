@@ -4,6 +4,8 @@ metadata:
   name: "{{ .Values.iotKafkaInterfaceCronjob.name }}"
 spec:
   schedule: "{{ .Values.iotKafkaInterfaceCronjob.schedule }}"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
