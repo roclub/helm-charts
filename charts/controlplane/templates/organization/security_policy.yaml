@@ -1,0 +1,52 @@
+{{- $gatewayName := include "controlplane.fullname" . -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $gatewayName }}-organization-authentication
+spec:
+  targetSelectors:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    matchLabels:
+      authentication/zitadel: organization
+  jwt:
+    providers:
+    - name: zitadel
+      remoteJWKS:
+{{- if eq .Values.stage "prd" }}
+        uri: https://identity.roclub.io/oauth/v2/keys
+{{- else }}
+        uri: https://identity.{{ .Values.stage }}.roclub.io/oauth/v2/keys
+{{- end }}
+        backendSettings:
+          retry:
+            numRetries: 5
+
+  cors:
+    allowOrigins:
+    - "https://conference.{{ .Values.stage }}.roclub.io"
+{{- if eq .Values.stage "dev" }}
+    - "http://localhost:3000"
+{{- end }}
+{{- if eq .Values.stage "prd" }}
+    - "https://conference.roclub.io"
+{{- end }}
+    allowMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - PATCH
+    - OPTIONS
+    allowHeaders:
+    - "Origin"
+    - "Authorization"
+    - "Content-Type"
+    - "Accept"
+    - "Content-Length"
+    exposeHeaders:
+    - "Content-Length"
+    # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
+    maxAge: "7200s"
+    allowCredentials: true
+

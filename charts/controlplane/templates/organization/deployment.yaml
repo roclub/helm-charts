@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "controlplane.organizationName" . }}
+  labels:
+    {{- include "controlplane.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.organization.autoscaling.enabled }}
+  replicas: {{ .Values.organization.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "controlplane.selectorLabelsOrganization" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.organization.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "controlplane.selectorLabelsOrganization" . | nindent 8 }}
+        {{- with .Values.organization.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.organization.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane.serviceAccountOrganizationName" . }}
+      securityContext:
+        {{- toYaml .Values.organization.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.organization.securityContext | nindent 12 }}
+          image: "{{ .Values.organization.image.repository }}:{{ .Values.organization.image.tag}}"
+          imagePullPolicy: {{ .Values.organization.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.organization.service.httpPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.organization.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/edged
+          - name: zitadel-secrets
+            readOnly: true
+            mountPath: /etc/zitadel
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane.organizationName" . }}-config"
+        - name: zitadel-secrets
+          projected:
+            sources:
+            - secret:
+                name: {{ .Values.organization.config.zitadel.serviceAccountSecret.secretName }}
+                items:
+                - key: {{ .Values.organization.config.zitadel.serviceAccountSecret.secretKey }}
+                  path: serviceaccount.json
+            - secret:
+                name: {{ .Values.organization.config.zitadel.introspectionSecret.secretName }}
+                items:
+                - key: {{ .Values.organization.config.zitadel.introspectionSecret.secretKey }}
+                  path: introspectionkey.json
+      {{- with .Values.organization.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.organization.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.organization.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
