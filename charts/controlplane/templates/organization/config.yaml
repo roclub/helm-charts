@@ -15,6 +15,6 @@ data:
 
     [organization.zitadel]
     instance_url = "{{ .Values.organization.config.zitadel.instanceUrl }}"
-    introspection_key_path = "{{ .Values.organization.config.zitadel.introspectionSecret.keyPath }}"
-    service_key_path = "{{ .Values.organization.config.zitadel.serviceAccountSecret.keyPath }}"
+    introspection_key = {{ .Values.organization.config.zitadel.introspectionKey }}
+    service_key = {{ .Values.organization.config.zitadel.serviceAccountKey }}
     jwt_issuer = "{{ .Values.organization.config.zitadel.jwtIssuer }}"

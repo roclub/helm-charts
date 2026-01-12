@@ -45,26 +45,10 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/edged
-          - name: zitadel-secrets
-            readOnly: true
-            mountPath: /etc/zitadel
       volumes:
         - name: config-volume
           configMap:
             name: "{{ include "controlplane.organizationName" . }}-config"
-        - name: zitadel-secrets
-          projected:
-            sources:
-            - secret:
-                name: {{ .Values.organization.config.zitadel.serviceAccountSecret.secretName }}
-                items:
-                - key: {{ .Values.organization.config.zitadel.serviceAccountSecret.secretKey }}
-                  path: serviceaccount.json
-            - secret:
-                name: {{ .Values.organization.config.zitadel.introspectionSecret.secretName }}
-                items:
-                - key: {{ .Values.organization.config.zitadel.introspectionSecret.secretKey }}
-                  path: introspectionkey.json
       {{- with .Values.organization.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

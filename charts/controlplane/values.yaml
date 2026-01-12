@@ -138,17 +138,10 @@ organization:
     serviceAccounts: []
     logger: "debug"
     zitadel:
-      instanceUrl: "identity.dev.roclub.io"
-      jwtIssuer: "https://identity.dev.roclub.io"
-      serviceAccountSecret:
-        secretName: zitadel-service-auth-key
-        keyPath: "/etc/zitadel/serviceaccount.json"
-        secretKey: "serviceaccount.json"
-      introspectionSecret:
-        secretName: zitadel-introspection-auth-key
-        keyPath: "/etc/zitadel/introspectionkey.json"
-        secretKey: "introspectionkey.json"
-
+      instanceUrl: "" # Zitadel Instance URL (e.g. identity.dev.roclub.io)
+      jwtIssuer: "" # Zitadel JWT Issuer URL (needs https:// Prefix) (https://identity.dev.roclub.io)
+      introspectionKey: "" # Key for JWT Introspection. Make sure to use multine line string with ''' ''' for keys in JSON format. Find it in <Organization Name> -> <Projects> -> <Apps> -> <API>
+      serviceAccountKey: "" # Key for service account. Make sure to use multine line string with ''' ''' for keys in JSON format. Find it in <Organization Name> -> <User> -> <Service Accounts> -> <Service Account>
 
   gatewayAPI:
     hosts:
