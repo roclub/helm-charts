@@ -7,7 +7,6 @@ metadata:
 data:
   config.toml: |-
     [organization]
-    env = "{{ .Values.organization.config.env }}"
     service_accounts = {{ .Values.organization.config.serviceAccounts }}
 
     [organization.logger]
