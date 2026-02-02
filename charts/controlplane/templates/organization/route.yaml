@@ -33,26 +33,6 @@ spec:
             type: {{ .pathType }}
             value: {{ .path }}
           method: GET
-        - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
-          method: POST
-        - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
-          method: DELETE
-        - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
-          method: PATCH
-        - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
-          method: PUT
-        - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
-          method: OPTIONS
       {{- end }}
       backendRefs:
         - name: {{ $name }}

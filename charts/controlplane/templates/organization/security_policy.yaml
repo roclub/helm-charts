@@ -36,11 +36,6 @@ spec:
 {{- end }}
     allowMethods:
     - GET
-    - POST
-    - DELETE
-    - PUT
-    - PATCH
-    - OPTIONS
     allowHeaders:
     - "Origin"
     - "Authorization"
