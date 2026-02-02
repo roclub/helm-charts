@@ -19,19 +19,19 @@ spec:
   {{- end }}
   rules:
   {{- range .Values.organization.gatewayAPI.hosts }}
-    {{- range .paths }}
+    {{- range $p.paths }}
     - matches:
-      {{- if .methods }}
-        {{- range .methods }}
+      {{- if $p.methods }}
+        {{- range $p.methods }}
         - path:
-            type: {{ $.pathType }}
-            value: {{ $.path }}
+            type: {{ $p.pathType }}
+            value: {{ $p.path }}
           method: {{ . }}
         {{- end }}
       {{- else }}
         - path:
-            type: {{ .pathType }}
-            value: {{ .path }}
+            type: {{ $p.pathType }}
+            value: {{ $p.path }}
           method: GET
       {{- end }}
       backendRefs:
