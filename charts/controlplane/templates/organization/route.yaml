@@ -19,7 +19,7 @@ spec:
   {{- end }}
   rules:
   {{- range .Values.organization.gatewayAPI.hosts }}
-    {{- range $p.paths }}
+    {{- range $p := .paths }}
     - matches:
       {{- if $p.methods }}
         {{- range $p.methods }}

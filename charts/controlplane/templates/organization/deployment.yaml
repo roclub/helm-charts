@@ -29,11 +29,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "controlplane.serviceAccountOrganizationName" . }}
       securityContext:
-        {{- toYaml default dict .Values.organization.podSecurityContext | nindent 8 }}
+        {{- toYaml (default dict .Values.organization.podSecurityContext) | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml default dict .Values.organization.securityContext | nindent 12 }}
+            {{- toYaml (default dict .Values.organization.securityContext) | nindent 12 }}
           image: "{{ .Values.organization.image.repository }}:{{ .Values.organization.image.tag}}"
           imagePullPolicy: {{ .Values.organization.image.pullPolicy }}
           ports:
