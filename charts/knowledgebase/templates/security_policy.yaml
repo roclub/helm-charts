@@ -1,0 +1,45 @@
+{{- $fullname := include "knowledgebase.fullname" . -}}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $fullname }}-oidc-zitadel
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ $fullname }}-oidc
+  oidc:
+    provider:
+      issuer: "https://identity.roclub.io"
+    clientID: "{{ .Values.httpRoute.oidc.clientID }}"
+    clientSecret: 
+      name: "{{ $fullname }}-oauth-secret"
+    redirectURL: "https://knowledgebase.roclub.io/en-en/requirements/oauth2/callback"
+    logoutPath: "https://knowledgebase.roclub.io/"
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ $fullname }}-oidc-zitadel-de
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ $fullname }}-oidc-de
+  oidc:
+    provider:
+      issuer: "https://identity.roclub.io"
+    clientID: "{{ .Values.httpRoute.oidc.clientID }}"
+    clientSecret: 
+      name: "{{ $fullname }}-oauth-secret"
+    redirectURL: "https://knowledgebase.roclub.io/de-de/requirements/oauth2/callback"
+    logoutPath: "https://knowledgebase.roclub.io/"
+---
+apiVersion: v1
+data:
+  client-secret: {{ .Values.httpRoute.oidc.clientSecret | b64enc }} 
+kind: Secret
+metadata:
+  name: "{{ $fullname }}-oauth-secret"
+
