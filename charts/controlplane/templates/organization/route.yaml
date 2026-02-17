@@ -19,24 +19,15 @@ spec:
   {{- end }}
   rules:
   {{- range .Values.organization.gatewayAPI.hosts }}
-    {{- range $p := .paths }}
     - matches:
-      {{- if $p.methods }}
-        {{- range $p.methods }}
+      {{- range .paths }}
         - path:
-            type: {{ $p.pathType }}
-            value: {{ $p.path }}
-          method: {{ . }}
-        {{- end }}
-      {{- else }}
-        - path:
-            type: {{ $p.pathType }}
-            value: {{ $p.path }}
+            type: {{ .pathType }}
+            value: {{ .path }}
           method: GET
       {{- end }}
       backendRefs:
         - name: {{ $name }}
           port: {{ $svcPort }}
-    {{- end }}
   {{- end }}
 
