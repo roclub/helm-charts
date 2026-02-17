@@ -29,7 +29,7 @@ spec:
     - "http://localhost:3000"
 {{- end }}
 {{- if eq .Values.stage "stg" }}
-    - "https://conference.stg.roclub.io"
+    - "http://localhost:3000"
 {{- end }}
 {{- if eq .Values.stage "prd" }}
     - "https://conference.roclub.io"
