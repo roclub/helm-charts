@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   app:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2026-02-19T13:16:33.423323486Z"
+    description: Deploys the roclub main application to Kubernetes
+    digest: 90768bbeabfc3fe61faf12565e2322fc54266e36473333a610e5a66ee8692551
+    name: app
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/app-0.4.0/app-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     appVersion: 0.3.0
     created: "2026-01-14T12:55:16.494358393Z"
     description: Deploys the roclub main application to Kubernetes
@@ -177,6 +187,16 @@ entries:
     - https://github.com/roclub/helm-charts/releases/download/bootstrap-0.1.0/bootstrap-0.1.0.tgz
     version: 0.1.0
   conference:
+  - apiVersion: v2
+    appVersion: 0.26.3
+    created: "2026-02-19T13:16:33.641851499Z"
+    description: Deploys the roclub conference using livekit
+    digest: 5d4a0b61c01a36e98141ba979cf073ae3d88d70bdde670ea7f3577b483dfc1fe
+    name: conference
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/conference-0.26.3/conference-0.26.3.tgz
+    version: 0.26.3
   - apiVersion: v2
     appVersion: 0.26.2
     created: "2026-02-13T16:28:51.244624816Z"
@@ -3696,4 +3716,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-13T16:28:51.247104733Z"
+generated: "2026-02-19T13:16:33.642550646Z"
