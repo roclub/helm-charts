@@ -36,6 +36,7 @@ spec:
 {{- end }}
     allowMethods:
     - GET
+    - OPTIONS
     allowHeaders:
     - "Origin"
     - "Authorization"
