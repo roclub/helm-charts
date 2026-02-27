@@ -2,4 +2,4 @@ apiVersion: v2
 name: knowledgebase
 description: Deploys the roclub knowledgebase stack to Kubernetes
 version: 1.5.1
-appVersion: "1.4.1"
+appVersion: "1.5.0"
