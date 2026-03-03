@@ -116,6 +116,53 @@ remoteControl:
   tolerations: []
   affinity: {}
 
+organization:
+  image:
+    repository: ghcr.io/roclub/controlplane-organization
+    tag: test
+    pullPolicy: Always
+
+  imagePullSecrets:
+    - name: dockerconfigjson-github-com
+
+  replicaCount: 1
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "organization"
+
+  config:
+    env: "dev"
+    serviceAccounts: []
+    logger: "debug"
+    zitadel:
+      instanceUrl: "" # Zitadel Instance URL (e.g. identity.dev.roclub.io)
+      jwtIssuer: "" # Zitadel JWT Issuer URL (needs https:// Prefix) (https://identity.dev.roclub.io)
+      introspectionKey: "" # Key for JWT Introspection. Make sure to use multine line string with ''' ''' for keys in JSON format. Find it in <Organization Name> -> <Projects> -> <Apps> -> <API>
+      serviceAccountKey: "" # Key for service account. Make sure to use multine line string with ''' ''' for keys in JSON format. Find it in <Organization Name> -> <User> -> <Service Accounts> -> <Service Account>
+
+  gatewayAPI:
+    hosts:
+      - paths:
+          - path: /v2/organizations/
+            pathType: PathPrefix
+
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
+
+  resources: {}
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
 connectorStatus:
   image:
     repository: ghcr.io/roclub/controlplane-connector-status
