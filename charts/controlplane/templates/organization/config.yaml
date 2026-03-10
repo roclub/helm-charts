@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "controlplane.organizationName" . }}-config"
+  labels:
+    {{- include "controlplane.selectorLabelsOrganization" . | nindent 4 }}
+data:
+  config.toml: |-
+    [organization]
+    service_accounts = {{ .Values.organization.config.serviceAccounts }}
+
+    [organization.logger]
+    level = "{{ .Values.organization.config.logger }}"
+
+    [organization.zitadel]
+    instance_url = "{{ .Values.organization.config.zitadel.instanceUrl }}"
+    introspection_key = {{ .Values.organization.config.zitadel.introspectionKey }}
+    service_key = {{ .Values.organization.config.zitadel.serviceAccountKey }}
+    jwt_issuer = "{{ .Values.organization.config.zitadel.jwtIssuer }}"
