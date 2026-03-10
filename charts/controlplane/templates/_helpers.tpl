@@ -293,4 +293,28 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 {{- end }}
 
+{{- define "controlplane.selectorLabelsOrganization" -}}
+app.kubernetes.io/name: {{ include "controlplane.organizationName" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
 
+{{- define "controlplane.organizationName" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-organization" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-organization" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "controlplane.serviceAccountOrganizationName" -}}
+{{- if .Values.organization.serviceAccount.create }}
+{{- default (include "controlplane.fullname" .) .Values.organization.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.organization.serviceAccount.name }}
+{{- end }}
+{{- end }}
