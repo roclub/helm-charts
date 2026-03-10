@@ -81,6 +81,21 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: zitadel_base_url
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: redis_password
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: redis_host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: redis_port
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
