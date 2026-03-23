@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   app:
   - apiVersion: v2
+    appVersion: 0.5.10
+    created: "2026-03-23T12:39:53.374180198Z"
+    description: Deploys the roclub main application to Kubernetes
+    digest: 1b9bce5507e78a1105e386f0bb91d6ef4d9c85de220ad60b903c2568e3939391
+    name: app
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/app-0.5.9/app-0.5.9.tgz
+    version: 0.5.9
+  - apiVersion: v2
     appVersion: 0.5.8
     created: "2026-03-16T11:48:20.581768117Z"
     description: Deploys the roclub main application to Kubernetes
@@ -3811,4 +3821,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-16T11:48:20.583362895Z"
+generated: "2026-03-23T12:39:53.375056726Z"
