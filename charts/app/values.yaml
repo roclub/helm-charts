@@ -58,9 +58,23 @@ service:
   port: 8080
 
 redis:
+  architecture: standalone
   auth:
     enabled: true
     password: "ieheithahNue3booqui7eifaoGoo1thahl1oabai"
-  replica:
-    replicaCount: 1
+  master:
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: ''
 
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 500m
+  
+  metrics:
+    enabled: true
