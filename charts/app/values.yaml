@@ -45,6 +45,12 @@ appSecrets:
     secretKey: ""
   zitadelProjectID:
     secretKey: ""
+  redisPassword:
+    secretKey: ""
+  redisHost:
+    secretKey: ""
+  redisPort:
+    secretKey: ""
 
 image:
   tag: ""
