@@ -63,4 +63,3 @@ redis:
     password: "ieheithahNue3booqui7eifaoGoo1thahl1oabai"
   replica:
     replicaCount: 1
-
