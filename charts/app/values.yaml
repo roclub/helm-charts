@@ -57,3 +57,9 @@ service:
   type: ClusterIP
   port: 8080
 
+redis:
+  auth:
+    enabled: true
+    password: "ieheithahNue3booqui7eifaoGoo1thahl1oabai"
+  replica:
+    replicaCount: 1
