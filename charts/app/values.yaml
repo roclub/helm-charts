@@ -45,6 +45,8 @@ appSecrets:
     secretKey: ""
   zitadelProjectID:
     secretKey: ""
+  conferenceProjectID:
+    secretKey: ""
 
 image:
   tag: ""
