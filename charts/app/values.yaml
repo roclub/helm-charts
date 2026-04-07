@@ -47,6 +47,32 @@ appSecrets:
     secretKey: ""
   conferenceProjectID:
     secretKey: ""
+  zitadelSaAppCsmUser:
+    secretKey: ""
+  zitadelSaAppCsmSecret:
+    secretKey: ""
+  zitadelSaAppAdminUser:
+    secretKey: ""
+  zitadelSaAppAdminSecret:
+    secretKey: ""
+  zitadelSaAppDispatcherUser:
+    secretKey: ""
+  zitadelSaAppDispatcherSecret:
+    secretKey: ""
+  zitadelSaAppUserUser:
+    secretKey: ""
+  zitadelSaAppUserSecret:
+    secretKey: ""
+  zitadelSaControlplaneUser:
+    secretKey: ""
+  zitadelSaControlplaneSecret:
+    secretKey: ""
+  zitadelSaAppAdminUserID:
+    secretKey: ""
+  zitadelSaAppDispatcherUserID:
+    secretKey: ""
+  zitadelSaAppUserUserID:
+    secretKey: ""
 
 image:
   tag: ""

@@ -92,6 +92,71 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: conference_project_id
+            - name: ZITADEL_SA_APP_CSM_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_csm_user
+            - name: ZITADEL_SA_APP_CSM_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_csm_secret
+            - name: ZITADEL_SA_APP_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_admin_user
+            - name: ZITADEL_SA_APP_ADMIN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_admin_secret
+            - name: ZITADEL_SA_APP_DISPATCHER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_dispatcher_user
+            - name: ZITADEL_SA_APP_DISPATCHER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_dispatcher_secret
+            - name: ZITADEL_SA_APP_USER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_user_user
+            - name: ZITADEL_SA_APP_USER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_user_secret
+            - name: ZITADEL_SA_CONTROLPLANE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_controlplane_user
+            - name: ZITADEL_SA_CONTROLPLANE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_controlplane_secret
+            - name: ZITADEL_SA_APP_ADMIN_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_admin_user_id
+            - name: ZITADEL_SA_APP_DISPATCHER_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_dispatcher_user_id
+            - name: ZITADEL_SA_APP_USER_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: zitadel_sa_app_user_user_id
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
