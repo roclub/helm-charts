@@ -67,16 +67,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: nextauth_url
-            - name: ZITADEL_USER_SA
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "app.fullname" . }}-app-nextjs
-                  key: zitadel_user_sa
-            - name: ZITADEL_SECRET_SA
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "app.fullname" . }}-app-nextjs
-                  key: zitadel_secret_sa
             - name: ZITADEL_PROJECT_ID
               valueFrom:
                 secretKeyRef:
