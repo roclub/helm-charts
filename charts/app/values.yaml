@@ -37,10 +37,6 @@ appSecrets:
     secretKey: ""
   nextauthUrl:
     secretKey: ""
-  zitadelUserSa:
-    secretKey: ""
-  zitadelSecretSa:
-    secretKey: ""
   zitadelBaseUrl:
     secretKey: ""
   zitadelProjectID:
