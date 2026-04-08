@@ -1,41 +1,14 @@
 name: "\U0001F527 Bug Report"
 description: Create an issue for a bug report.
-labels: ["triage/needed", "time/needed"]
+labels: ["triage/needed"]
 type: bug
-projects: ["roclub/9", "roclub/21"]
 body:
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: A clear and concise description. Include version, if not most recent one.
+      description: A clear and concise description. Include firmware/software version if not on the latest release.
       placeholder: Insert here...
-    validations:
-      required: true
-  - type: dropdown
-    id: connector-version
-    attributes:
-      label: Connector Version
-      description: Indicate if this bug is related to a specific connector version. You can choose multiple entries.
-      options:
-        - n/a - no relation to connector version
-        - v1.0
-        - v1.2
-        - v2.0
-      default: 0
-      multiple: true
-    validations:
-      required: true
-  - type: dropdown
-    id: severity-classification
-    attributes:
-      label: Severity classification
-      description: Indicates if the bug causes or changes risks to patients. See [risk database](https://www.notion.so/roclub/01552c2bd23c4267a3e29a41780692c6?v=092725438261472eb711d26305a6e948)
-      options:
-        - low - No change to risks
-        - medium - May cause new or changed risks to patients which are acceptable
-        - high - Causes new or changed risks to patients which are unacceptable
-      default: 0
     validations:
       required: true
   - type: textarea
@@ -43,7 +16,7 @@ body:
     attributes:
       label: Steps to reproduce
       description: Steps to reproduce the behavior
-      placeholder: Insert here...
+      value: "1. \n2. \n3. "
     validations:
       required: true
   - type: textarea
@@ -62,7 +35,35 @@ body:
       placeholder: Insert here...
     validations:
       required: true
-  - type: input
+  - type: textarea
+    id: hubspot-tickets
+    attributes:
+      label: HubSpot Customer Tickets
+      description: Link any related HubSpot customer tickets here.
+      placeholder: "- [Ticket #12345](https://app.hubspot.com/contacts/...)"
+    validations:
+      required: false
+  - type: textarea
+    id: grafana-links
+    attributes:
+      label: Grafana Links
+      description: Link relevant Grafana dashboards, log queries, or metric panels that help verify or investigate this bug.
+      placeholder: "- [Logs](https://grafana.../explore?...)\n- [Metrics](https://grafana.../d/...)"
+    validations:
+      required: false
+  - type: dropdown
+    id: severity-classification
+    attributes:
+      label: Severity classification
+      description: Indicates if the bug causes or changes risks to patients. See [risk database](https://www.notion.so/roclub/01552c2bd23c4267a3e29a41780692c6?v=092725438261472eb711d26305a6e948)
+      options:
+        - low - No change to risks
+        - medium - May cause new or changed risks to patients which are acceptable
+        - high - Causes new or changed risks to patients which are unacceptable
+      default: 0
+    validations:
+      required: true
+  - type: textarea
     id: additional-context
     attributes:
       label: Additional Context
