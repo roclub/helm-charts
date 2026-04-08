@@ -37,15 +37,37 @@ appSecrets:
     secretKey: ""
   nextauthUrl:
     secretKey: ""
-  zitadelUserSa:
-    secretKey: ""
-  zitadelSecretSa:
-    secretKey: ""
   zitadelBaseUrl:
     secretKey: ""
   zitadelProjectID:
     secretKey: ""
   conferenceProjectID:
+    secretKey: ""
+  zitadelSaAppCsmUser:
+    secretKey: ""
+  zitadelSaAppCsmSecret:
+    secretKey: ""
+  zitadelSaAppAdminUser:
+    secretKey: ""
+  zitadelSaAppAdminSecret:
+    secretKey: ""
+  zitadelSaAppDispatcherUser:
+    secretKey: ""
+  zitadelSaAppDispatcherSecret:
+    secretKey: ""
+  zitadelSaAppUserUser:
+    secretKey: ""
+  zitadelSaAppUserSecret:
+    secretKey: ""
+  zitadelSaControlplaneUser:
+    secretKey: ""
+  zitadelSaControlplaneSecret:
+    secretKey: ""
+  zitadelSaAppAdminUserID:
+    secretKey: ""
+  zitadelSaAppDispatcherUserID:
+    secretKey: ""
+  zitadelSaAppUserUserID:
     secretKey: ""
 
 image:
