@@ -1,4 +1,4 @@
-{{- $gatewayName := include "controlplane.fullname" . -}}
+{{- $gatewayName := include "controlplane-authz.fullname" . -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyPatchPolicy
 metadata:

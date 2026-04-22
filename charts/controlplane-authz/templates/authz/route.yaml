@@ -1,5 +1,5 @@
-{{- $gatewayName := include "controlplane.fullname" . -}}
-{{- $name := include "controlplane.authZName" . -}}
+{{- $gatewayName := include "controlplane-authz.fullname" . -}}
+{{- $name := include "controlplane-authz.fullname" . -}}
 {{- $svcPort := .Values.authZ.service.httpPort -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1

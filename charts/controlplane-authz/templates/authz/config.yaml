@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ include "controlplane.authZName" . }}-config"
+  name: "{{ include "controlplane-authz.fullname" . }}-config"
   labels:
-    {{- include "controlplane.selectorLabelsAuthZ" . | nindent 4 }}
+    {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
 data:
   config.toml: |-
     [authz]

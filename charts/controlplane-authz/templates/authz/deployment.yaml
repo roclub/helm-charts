@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "controlplane.authZName" . }}
+  name: {{ include "controlplane-authz.fullname" . }}
   labels:
-    {{- include "controlplane.labels" . | nindent 4 }}
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.authZ.autoscaling.enabled }}
   replicas: {{ .Values.authZ.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "controlplane.selectorLabelsAuthZ" . | nindent 6 }}
+      {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.authZ.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "controlplane.selectorLabelsAuthZ" . | nindent 8 }}
+        {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
         {{- with .Values.authZ.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "controlplane.serviceAccountAuthZName" . }}
+      serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
       securityContext:
         {{- toYaml .Values.authZ.podSecurityContext | nindent 8 }}
       containers:
@@ -72,7 +72,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: "{{ include "controlplane.authZName" . }}-config"
+            name: "{{ include "controlplane-authz.fullname" . }}-config"
       {{- with .Values.authZ.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

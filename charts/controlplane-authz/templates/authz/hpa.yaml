@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "controlplane.authZName" . }}
+  name: {{ include "controlplane-authz.fullname" . }}
   labels:
-    {{- include "controlplane.labels" . | nindent 4 }}
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "controlplane.authZName" . }}
+    name: {{ include "controlplane-authz.fullname" . }}
   minReplicas: {{ .Values.authZ.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.authZ.autoscaling.maxReplicas }}
   metrics:
