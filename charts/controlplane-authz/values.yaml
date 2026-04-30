@@ -1,64 +1,73 @@
 nameOverride: ""
 fullnameOverride: ""
 
-authZ:
-  image:
-    repository: ghcr.io/roclub/controlplane-authz
-    pullPolicy: Always
+image:
+  repository: ghcr.io/roclub/controlplane-authz
+  pullPolicy: Always
+  tag: ""
 
-  imagePullSecrets: 
-    - name: dockerconfigjson-github-com
+imagePullSecrets: 
+  - name: dockerconfigjson-github-com
 
-  replicaCount: 1
+replicaCount: 1
 
-  config:
-    env: "dev"
-    serviceAccounts: []
-    
-    openfga:
-      url: "http://openfga-dev.openfga.svc.cluster.local:8080"
-      storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
-      modelId: "01J7BE0N8AQ9XST88B4XXT7KJT"
+config:
+  env: "dev"
+  serviceAccounts: []
+  
+  openfga:
+    url: "http://openfga-dev.openfga.svc.cluster.local:8080"
+    storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
+    modelId: "01J7BE0N8AQ9XST88B4XXT7KJT"
 
-    logger: "debug"
+  logger: "debug"
 
-  service:
-    type: ClusterIP
-    httpPort: 8081
-    gRPCPort: 8080
+service:
+  type: ClusterIP
+  httpPort: 8081
+  gRPCPort: 8080
 
-  gatewayAPI:
-    hosts:
-      - paths:
-          - path: /v2/authz/
-            pathType: PathPrefix
+domainNames: 
+  - "controlplane.dev.roclub.io"
 
-  serviceAccount:
-    create: true
-    automount: true
-    annotations: {}
-    name: "authz"
+gatewayAPI:
+  gatewayName: "dev-controlplane"
+  hosts:
+    - paths:
+        - path: /v2/authz/
+          pathType: PathPrefix
 
-  podAnnotations: {}
-  podLabels: {}
-  podSecurityContext: {}
-  securityContext: {}
+securityPolicy:
+  allowedOrigins:
+    - "https://conference.dev.roclub.io"
+    - "https://beta.dev.roclub.io"
 
-  resources: {}
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: "authz-dev"
 
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
 
-  # Additional volumes on the output Deployment definition.
-  volumes: []
-  volumeMounts: []
+resources: {}
 
-  nodeSelector: {}
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
-  tolerations: []
-  affinity: {}
+# Additional volumes on the output Deployment definition.
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+affinity: {}
 

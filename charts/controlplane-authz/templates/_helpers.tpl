@@ -58,5 +58,5 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Service account name for AuthZ.
 */}}
 {{- define "controlplane-authz.serviceAccountAuthZName" -}}
-{{- default (include "controlplane-authz.fullname" .) .Values.authZ.serviceAccount.name }}
+{{- default (include "controlplane-authz.fullname" .) .Values.serviceAccount.name }}
 {{- end }}

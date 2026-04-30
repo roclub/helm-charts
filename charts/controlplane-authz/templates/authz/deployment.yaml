@@ -5,43 +5,43 @@ metadata:
   labels:
     {{- include "controlplane-authz.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.authZ.autoscaling.enabled }}
-  replicas: {{ .Values.authZ.replicaCount }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.authZ.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
-        {{- with .Values.authZ.podLabels }}
+        {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.authZ.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
       securityContext:
-        {{- toYaml .Values.authZ.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.authZ.securityContext | nindent 12 }}
-          image: "{{ .Values.authZ.image.repository }}:{{ .Values.authZ.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.authZ.image.pullPolicy }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: grpc
-              containerPort: {{ .Values.connectorControl.service.gRPCPort }}
+              containerPort: {{ .Values.service.gRPCPort }}
               protocol: TCP
             - name: http
-              containerPort: {{ .Values.connectorControl.service.httpPort }}
+              containerPort: {{ .Values.service.httpPort }}
               protocol: TCP
           startupProbe:
             httpGet:
@@ -65,7 +65,7 @@ spec:
             timeoutSeconds: 10
             periodSeconds: 30
           resources:
-            {{- toYaml .Values.authZ.resources | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - name: config-volume
             mountPath: /etc/edged/
@@ -73,15 +73,15 @@ spec:
         - name: config-volume
           configMap:
             name: "{{ include "controlplane-authz.fullname" . }}-config"
-      {{- with .Values.authZ.nodeSelector }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.authZ.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.authZ.tolerations }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

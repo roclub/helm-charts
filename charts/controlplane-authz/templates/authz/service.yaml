@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "controlplane-authz.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.authZ.service.type }}
+  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.authZ.service.gRPCPort }}
+    - port: {{ .Values.service.gRPCPort }}
       targetPort: grpc
       protocol: TCP
       name: grpc
-    - port: {{ .Values.authZ.service.httpPort }}
+    - port: {{ .Values.service.httpPort }}
       targetPort: http
       protocol: TCP
       name: http

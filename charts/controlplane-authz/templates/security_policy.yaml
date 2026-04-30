@@ -1,8 +1,8 @@
-{{- $gatewayName := include "controlplane-authz.fullname" . -}}
+{{- $name := include "controlplane-authz.fullname" . -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: {{ $gatewayName }}-jwt-authentication
+  name: {{ $name}}-jwt-authentication
 spec:
   targetSelectors:
   - group: gateway.networking.k8s.io
@@ -23,13 +23,9 @@ spec:
             numRetries: 5
   cors:
     allowOrigins:
-    - "https://conference.{{ .Values.stage }}.roclub.io"
-{{- if eq .Values.stage "dev" }}
-    - "http://localhost:3000"
-{{- end }}
-{{- if eq .Values.stage "prd" }}
-    - "https://conference.roclub.io"
-{{- end }}
+  {{- range .Values.securityPolicy.allowedOrigins}}
+    - {{ . }}
+  {{- end }}
     allowMethods:
     - GET
     - POST

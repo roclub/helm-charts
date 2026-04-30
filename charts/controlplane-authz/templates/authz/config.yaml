@@ -7,13 +7,13 @@ metadata:
 data:
   config.toml: |-
     [authz]
-    env = "{{ .Values.authZ.config.env }}"
-    service_accounts = {{ .Values.authZ.config.serviceAccounts }}
+    env = "{{ .Values.config.env }}"
+    service_accounts = {{ .Values.config.serviceAccounts }}
     
     [authz.openfga]
-    url = "{{ .Values.authZ.config.openfga.url }}"
-    store_id = "{{ .Values.authZ.config.openfga.storeId }}"
-    model_id = "{{ .Values.authZ.config.openfga.modelId }}"
+    url = "{{ .Values.config.openfga.url }}"
+    store_id = "{{ .Values.config.openfga.storeId }}"
+    model_id = "{{ .Values.config.openfga.modelId }}"
 
     [authz.logger]
-    level = "{{ .Values.authZ.config.logger }}"
+    level = "{{ .Values.config.logger }}"
