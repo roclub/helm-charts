@@ -1,6 +1,9 @@
 * @holgerson97 @pkgl
-charts/controlplane/ @marceljonik @PavelLysiankou-Roclub
-charts/roclub-conference @dlange82
-charts/knowledgebase @manueleckarth
+
+charts/knowledgebase @manueleckarth @holgerson97
+
+charts/controlplane/ @roclub/core-team
+charts/roclub-conference @roclub/core-team
 
 charts/app @roclub/app-team
+charts/controlplane-authz @roclub/app-team
