@@ -285,6 +285,8 @@ connectorControl:
   tolerations: []
 
 authZ:
+  enabled: true
+
   image:
     repository: ghcr.io/roclub/controlplane-authz
     pullPolicy: Always

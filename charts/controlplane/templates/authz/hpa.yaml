@@ -1,4 +1,4 @@
-{{- if .Values.authZ.autoscaling.enabled }}
+{{- if and .Values.authZ.enabled .Values.authZ.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

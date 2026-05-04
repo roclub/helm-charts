@@ -1,3 +1,4 @@
+{{- if .Values.authZ.enabled }}
 {{- $gatewayName := include "controlplane.fullname" . -}}
 {{- $name := include "controlplane.authZName" . -}}
 {{- $svcPort := .Values.authZ.service.httpPort -}}
@@ -50,4 +51,4 @@ spec:
         - name: {{ $name }}
           port: {{ $svcPort }}
   {{- end }}
-
+{{- end }}
