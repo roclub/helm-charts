@@ -432,6 +432,16 @@ entries:
     version: 0.1.0
   conference:
   - apiVersion: v2
+    appVersion: 0.27.4
+    created: "2026-05-05T16:34:56.756395351Z"
+    description: Deploys the roclub conference using livekit
+    digest: f97c497355125e1d588be6be8fdc9ada9305db43df2fae7d55a3755e93a2ba4c
+    name: conference
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/conference-0.27.4/conference-0.27.4.tgz
+    version: 0.27.4
+  - apiVersion: v2
     appVersion: 0.27.3
     created: "2026-04-29T13:02:59.746040661Z"
     description: Deploys the roclub conference using livekit
@@ -2461,6 +2471,17 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/controlplane-2.0.12/controlplane-2.0.12.tgz
     version: 2.0.12
+  controlplane-authz:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-05-05T16:34:56.970221752Z"
+    description: Deploys the AuthZ micro service
+    digest: 61a07e5cb3f06dbd421821a65fe4e5045afe8d451cc1665fa4c778c9ce99c6a3
+    name: controlplane-authz
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-authz-0.1.0/controlplane-authz-0.1.0.tgz
+    version: 0.1.0
   knowledgebase:
   - apiVersion: v2
     appVersion: 1.5.1
@@ -4123,4 +4144,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-29T13:02:59.746754623Z"
+generated: "2026-05-05T16:34:56.970898756Z"
