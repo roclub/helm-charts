@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: harbor.mgt.roclub.io/roclub/roclub/knowledgebase-de
+  repository: harbor.mgt.roclub.io/roclub/roclub/knowledgebase
   pullPolicy: IfNotPresent
   tag: ""
 
 imagePullSecrets:
-- name: dockerconfigjson-github-com
+- name: harbor-pull-secret-roclub
 
 nameOverride: ""
 fullnameOverride: ""
@@ -26,6 +26,13 @@ service:
   type: ClusterIP
   port: 8080
 
+cloudfront:
+  enabled: true
+  cachePolicyId: ""
+  originRequestPolicyId: ""
+  responseHeadersPolicyId: ""
+  hostedZoneId: Z014743627GZM6VTA9N24
+
 httpRoute:
   enabled: true
   stage: dev
@@ -33,11 +40,8 @@ httpRoute:
     clientID: "285474337715194832"
     clientSecret: "kuwQhvfqxfMfwnK2jng3p7NTIcDwn2sEEh0z2iahaFMJtdJtrfQXJqqvEHVw0zZB"
   hosts:
-    - kb.dev.roclub.io 
-    - kb1.dev.roclub.io
-  tls:
-    - secretName: knowledgebase-tls
-      hosts: [ kb.dev.roclub.io ]
+    - knowledgebase-local.dev.roclub.io
+    - origin-knowledgebase-local.dev.roclub.io
 
 resources: {}
 

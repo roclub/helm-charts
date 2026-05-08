@@ -1,5 +1,6 @@
 {{- if .Values.httpRoute.enabled -}}
 {{- $fullname := include "knowledgebase.fullname" . -}}
+{{- $primaryRecord := index .Values.httpRoute.hosts 0 -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
@@ -36,8 +37,6 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: {{ $fullname }}
-  annotations:
-    cert-manager.io/cluster-issuer: {{ $fullname }}-letsencrypt
 spec:
   gatewayClassName: {{ $fullname }}
   listeners:
@@ -46,6 +45,18 @@ spec:
       hostname: {{ . }}
       protocol: HTTP
       port: 80
+  {{- end }}
+  {{- if .Values.cloudfront.enabled }}
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: {{ $primaryRecord }}-https
+  {{- else }}
+  {{- range .Values.httpRoute.hosts }}
     - name: {{ . }}-https
       hostname: {{ . }}
       protocol: HTTPS
@@ -55,6 +66,7 @@ spec:
         certificateRefs:
           - kind: Secret
             name: {{ . }}-https
+  {{- end }}
   {{- end }}
 ---
 apiVersion: cert-manager.io/v1
@@ -69,9 +81,23 @@ spec:
     privateKeySecretRef:
       name: {{ $fullname }}-letsencrypt
     solvers:
-    - http01:
-        gatewayHTTPRoute:
-          parentRefs:
-          - kind: Gateway
-            name: {{ $fullname }}
+    - dns01:
+        route53:
+          region: eu-central-1
+          hostedZoneID: {{ .Values.cloudfront.hostedZoneID }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $primaryRecord }}
+spec:
+  secretName: {{ $primaryRecord }}-https
+  dnsNames:
+  {{- range .Values.httpRoute.hosts }}
+    - {{ . }}
+  {{- end }}
+  issuerRef:
+    name: {{ $fullname }}-letsencrypt
+    kind: ClusterIssuer
 {{- end -}}
+
