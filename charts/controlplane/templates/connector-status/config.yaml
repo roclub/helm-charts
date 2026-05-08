@@ -23,7 +23,7 @@ data:
     sasl_password     = "{{ .Values.connectorStatus.config.kafka.saslPassword }}"
 
     [connector_status.authz_service]
-    address = "http://{{ include "controlplane.authZName" . }}:8080"
+    address = "http://{{ .Values.authZ.service.name}}:8080"
 
     [connector_status.logger]
     level = "debug"
