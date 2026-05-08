@@ -1,0 +1,14 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": { "Federated": "arn:aws:iam::172771008158:oidc-provider/oidc.eks.eu-central-1.amazonaws.com/id/675D4A0D12C3008EC74A6E52B203C701" },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.eu-central-1.amazonaws.com/id/675D4A0D12C3008EC74A6E52B203C701:sub": "system:serviceaccount:cert-manager:dev-cluster-bootstrap-cert-manager",
+          "oidc.eks.eu-central-1.amazonaws.com/id/675D4A0D12C3008EC74A6E52B203C701:aud": "sts.amazonaws.com"
+        }
+      }
+    }]
+  }
