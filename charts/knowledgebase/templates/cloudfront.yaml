@@ -19,5 +19,15 @@ spec:
   originRequestPolicyId: {{ .Values.cloudfront.originRequestPolicyId }}
   responseHeadersPolicyId: {{ .Values.cloudfront.responseHeadersPolicyId }}
 
+  {{- if .Values.cloudfront.additionalAliases }}
+  additionalAliases:
+  {{- range .Values.cloudfront.additionalAliases }}
+    - fqdn: {{ .fqdn | quote }}
+      {{- if .hostedZoneId }}
+      hostedZoneId: {{ .hostedZoneId | quote }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+
   deletionPolicy: {{ .Values.cloudfront.deletionPolicy | default "Delete" }}
 {{- end }}

@@ -32,7 +32,8 @@ cloudfront:
   originRequestPolicyId: ""
   responseHeadersPolicyId: ""
   hostedZoneId: Z014743627GZM6VTA9N24
-
+  additionalAliases: []
+  
 httpRoute:
   enabled: true
   stage: dev
