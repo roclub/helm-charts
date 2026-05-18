@@ -47,16 +47,14 @@ spec:
             - configMapRef:
                 name: "{{ include "controlplane-app.fullname" . }}-config"
           startupProbe:
-            httpGet:
-              path: v1/health
-              port: http
+            grpc:
+              port: 50051
             failureThreshold: 30
             timeoutSeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: v1/health
-              port: http
+            grpc:
+              port: 50051
             failureThreshold: 3
             timeoutSeconds: 5
             periodSeconds: 10
