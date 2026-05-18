@@ -62,7 +62,7 @@ spec:
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: v1/ready
+              path: v1/health
               port: http
             failureThreshold: 2
             timeoutSeconds: 10
