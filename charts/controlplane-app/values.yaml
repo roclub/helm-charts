@@ -28,7 +28,7 @@ gatewayAPI:
   gatewayName: "dev-controlplane"
   hosts:
     - paths:
-        - path: /v2/app/
+        - path: /v1/app/
           pathType: PathPrefix
 
 securityPolicy:
