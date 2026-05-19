@@ -7,7 +7,12 @@ recordNames:
 
 authZ:
   service:
-    name: dev-controlplane-authz
+    name: ""
+    nameByStage:
+      dev: dev-controlplane-authz
+      stg: stg-controlplane-authz
+      prd: prd-controlplane-authz
+    port: 8080
 
 conferenceWebsocket:
   image:

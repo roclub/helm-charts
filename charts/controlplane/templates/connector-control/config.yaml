@@ -26,7 +26,7 @@ data:
     max_retries = {{ .Values.connectorControl.config.redis.maxRetries }}
 
     [connector_control.authz_service]
-    address = "http://{{ .Values.authZ.service.name}}:8080"
+    address = "http://{{ include "controlplane.authZServiceName" . }}:{{ .Values.authZ.service.port }}"
 
     [connector_control.logger]
     level = "debug"
