@@ -172,6 +172,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 {{- end }}
 
+{{- define "controlplane.authZServiceName" -}}
+{{- if .Values.authZ.service.name }}
+{{- .Values.authZ.service.name }}
+{{- else }}
+{{- index .Values.authZ.service.nameByStage .Values.stage | default (printf "%s-controlplane-authz" .Values.stage) }}
+{{- end }}
+{{- end }}
+
 {{- define "controlplane.influxdb2.secrets.token" -}}
 {{- randAlphaNum 32 | b64enc }}
 {{- end }}
