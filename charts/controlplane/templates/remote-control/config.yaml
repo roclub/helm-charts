@@ -31,6 +31,21 @@ data:
     host = "{{ .Values.remoteControl.config.liveKit.host }}"
     ttl = "{{ .Values.remoteControl.config.liveKit.ttl }}"
 
+    [session_control.openfga]
+    url = "{{ .Values.remoteControl.config.openfga.url }}"
+    store_id = "{{ .Values.remoteControl.config.openfga.storeId }}"
+    model_id = "{{ .Values.remoteControl.config.openfga.modelId }}"
+
+    [session_control.cinify]
+    api_url = "{{ .Values.remoteControl.config.cinify.apiUrl }}"
+    api_key = "{{ .Values.remoteControl.config.cinify.apiKey }}"
+    table_name = "{{ .Values.remoteControl.config.cinify.tableName }}"
+    batch_size = {{ .Values.remoteControl.config.cinify.batchSize }}
+    failed_count_threshold = {{ .Values.remoteControl.config.cinify.failedCountThreshold }}
+    global_cooldown = "{{ .Values.remoteControl.config.cinify.globalCooldown }}"
+    grace_period = "{{ .Values.remoteControl.config.cinify.gracePeriod }}"
+    session_usage_ttl = "{{ .Values.remoteControl.config.cinify.sessionUsageTTL }}"
+
     [session_control.authz_service]
     address = "http://{{ include "controlplane.authZServiceName" . }}:{{ .Values.authZ.service.port }}"
 
