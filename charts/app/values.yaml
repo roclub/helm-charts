@@ -26,6 +26,18 @@ affinity: {}
 httpRoute:
   enabled: true
 
+cloudfront:
+  enabled: false
+  cachePolicyId: ""
+  originRequestPolicyId: ""
+  responseHeadersPolicyId: ""
+  hostedZoneId: Z014743627GZM6VTA9N24
+  additionalAliases: []
+  waf:
+    visibility:
+      enabled: true
+    rules: []
+
 appSecrets:
   authSecret:
     secretKey: ""
