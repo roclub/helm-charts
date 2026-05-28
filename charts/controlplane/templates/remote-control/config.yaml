@@ -14,6 +14,17 @@ data:
     key    = "{{ .Values.remoteControl.config.iotDataplane.key }}"
     secret = "{{ .Values.remoteControl.config.iotDataplane.secret }}"
 
+    [session_control.redis]
+    enabled = {{ .Values.remoteControl.config.redis.enabled }}
+    url = "{{ .Values.remoteControl.config.redis.url }}"
+    username = "{{ .Values.remoteControl.config.redis.username }}"
+    password = "{{ .Values.remoteControl.config.redis.password }}"
+    db = {{ .Values.remoteControl.config.redis.db }}
+    ttl_seconds = {{ .Values.remoteControl.config.redis.ttlSeconds }}
+    negative_ttl_seconds = {{ .Values.remoteControl.config.redis.negativeTtlSeconds }}
+    timeout_ms = {{ .Values.remoteControl.config.redis.timeoutMs }}
+    max_retries = {{ .Values.remoteControl.config.redis.maxRetries }}
+
     [session_control.liveKit]
     key = "{{ .Values.remoteControl.config.liveKit.key }}"
     secret = "{{ .Values.remoteControl.config.liveKit.secret }}"
@@ -21,7 +32,7 @@ data:
     ttl = "{{ .Values.remoteControl.config.liveKit.ttl }}"
 
     [session_control.authz_service]
-    address = "http://{{ .Values.authZ.service.name}}:8080"
+    address = "http://{{ include "controlplane.authZServiceName" . }}:{{ .Values.authZ.service.port }}"
 
     [session_control.logger]
     level = "{{ .Values.remoteControl.config.logger }}"

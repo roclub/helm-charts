@@ -7,7 +7,12 @@ recordNames:
 
 authZ:
   service:
-    name: dev-controlplane-authz
+    name: ""
+    nameByStage:
+      dev: dev-controlplane-authz
+      stg: stg-controlplane-authz
+      prd: prd-controlplane-authz
+    port: 8080
 
 conferenceWebsocket:
   image:
@@ -72,6 +77,17 @@ remoteControl:
     iotDataplane:
       key: ""
       secret: ""
+
+    redis:
+      enabled: false
+      url: ""
+      username: ""
+      password: ""
+      db: 0
+      ttlSeconds: 300
+      negativeTtlSeconds: 10
+      timeoutMs: 2000
+      maxRetries: 3
 
     liveKit:
       key: ""
@@ -200,6 +216,17 @@ connectorControl:
     iotDataplane:
       key: ""
       secret: ""
+
+    redis:
+      enabled: false
+      url: ""
+      username: ""
+      password: ""
+      db: 0
+      ttlSeconds: 300
+      negativeTtlSeconds: 10
+      timeoutMs: 2000
+      maxRetries: 3
 
     logger: "debug"
 

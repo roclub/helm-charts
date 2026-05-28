@@ -14,8 +14,19 @@ data:
     key    = "{{ .Values.connectorControl.config.iotDataplane.key }}"
     secret = "{{ .Values.connectorControl.config.iotDataplane.secret }}"
 
+    [connector_control.redis]
+    enabled = {{ .Values.connectorControl.config.redis.enabled }}
+    url = "{{ .Values.connectorControl.config.redis.url }}"
+    username = "{{ .Values.connectorControl.config.redis.username }}"
+    password = "{{ .Values.connectorControl.config.redis.password }}"
+    db = {{ .Values.connectorControl.config.redis.db }}
+    ttl_seconds = {{ .Values.connectorControl.config.redis.ttlSeconds }}
+    negative_ttl_seconds = {{ .Values.connectorControl.config.redis.negativeTtlSeconds }}
+    timeout_ms = {{ .Values.connectorControl.config.redis.timeoutMs }}
+    max_retries = {{ .Values.connectorControl.config.redis.maxRetries }}
+
     [connector_control.authz_service]
-    address = "http://{{ .Values.authZ.service.name}}:8080"
+    address = "http://{{ include "controlplane.authZServiceName" . }}:{{ .Values.authZ.service.port }}"
 
     [connector_control.logger]
     level = "debug"
