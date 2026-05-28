@@ -1,5 +1,5 @@
 {{- $name := include "controlplane-app.fullname" . -}}
-{{- $svcPort := .Values.service.httpPort -}}
+{{- $svcPort := .Values.app.service.httpPort -}}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -11,13 +11,13 @@ spec:
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: {{ .Values.gatewayAPI.gatewayName }}
+      name: {{ .Values.app.gatewayAPI.gatewayName }}
   hostnames:
-  {{- range .Values.domainNames}}
+  {{- range .Values.app.domainNames}}
     - {{ . }}
   {{- end }}
   rules:
-  {{- range .Values.gatewayAPI.hosts }}
+  {{- range .Values.app.gatewayAPI.hosts }}
     - matches:
       {{- range .paths }}
         - path:

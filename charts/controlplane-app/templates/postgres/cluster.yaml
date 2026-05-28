@@ -1,0 +1,44 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-postgres-cluster
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+  namespace: controlplane-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: {{ .Values.postgres.cluster.instances }}
+  description: "controlplane-app Postgres Cluster"
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.0
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: {{ include "controlplane-app.fullname" . }}-pg-superuser
+
+  bootstrap:
+    initdb:
+      database: controlplane_app
+      owner: controlplane_app_user
+      secret:
+        name: {{ include "controlplane-app.fullname" . }}-pg-superuser
+
+  storage:
+    storageClass: aws-gp3-daily-backup
+    size: {{ .Values.postgres.cluster.storage.size }}
+
+  certificates:
+    serverTLSSecret: {{ include "controlplane-app.fullname" . }}-postgres-cert
+    serverCASecret: {{ include "controlplane-app.fullname" . }}-postgres-cert
+
+  resources:
+    {{- toYaml .Values.postgres.cluster.resources | nindent 4 }}
+
+  affinity:
+    {{- toYaml .Values.postgres.cluster.affinity | nindent 4 }}
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: aws-s3-{{ include "controlplane-app.fullname" . }}-postgres-backup

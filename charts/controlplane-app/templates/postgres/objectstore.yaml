@@ -1,0 +1,23 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: aws-s3-{{ include "controlplane-app.fullname" . }}-postgres-backup
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+  namespace: controlplane-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  configuration:
+    destinationPath: {{ .Values.postgres.objectStore.destinationPath | quote }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ include "controlplane-app.fullname" . }}-postgres-backup-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: {{ include "controlplane-app.fullname" . }}-postgres-backup-creds
+        key: ACCESS_SECRET_KEY
+    wal:
+      compression: gzip
+    data:
+      compression: gzip

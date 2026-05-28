@@ -1,65 +1,86 @@
 nameOverride: ""
 fullnameOverride: ""
 
-image:
-  repository: ghcr.io/roclub/controlplane-app
-  pullPolicy: Always
-  tag: ""
+app:
+  stage: ""
 
-imagePullSecrets: 
-  - name: dockerconfigjson-github-com
+  image:
+    repository: ghcr.io/roclub/controlplane-app
+    pullPolicy: Always
+    tag: ""
 
-replicaCount: 1
+  imagePullSecrets:
+    - name: dockerconfigjson-github-com
 
-config:
-  postgresUrl: ""
-  logLevel: ""
-  env: ""
+  replicaCount: 1
 
-service:
-  type: ClusterIP
-  httpPort: 8081
-  gRPCPort: 8080
+  config:
+    postgresUrl: ""
+    logLevel: ""
+    env: ""
 
-domainNames: 
-  - "controlplane.dev.roclub.io"
+  service:
+    type: ClusterIP
+    httpPort: 8081
+    gRPCPort: 8080
 
-gatewayAPI:
-  gatewayName: "dev-controlplane"
-  hosts:
-    - paths:
-        - path: /v1/app/
-          pathType: PathPrefix
+  domainNames:
+    - "controlplane.dev.roclub.io"
 
-securityPolicy:
-  allowedOrigins:
-    - "https://beta.dev.roclub.io"
+  gatewayAPI:
+    gatewayName: "dev-controlplane"
+    hosts:
+      - paths:
+          - path: /app/v1/
+            pathType: PathPrefix
 
-serviceAccount:
-  create: true
-  automount: true
-  annotations: {}
-  name: "app-dev"
+  securityPolicy:
+    allowedOrigins:
+      - "https://beta.dev.roclub.io"
 
-podAnnotations: {}
-podLabels: {}
-podSecurityContext: {}
-securityContext: {}
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: "app-dev"
 
-resources: {}
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  resources: {}
 
-# Additional volumes on the output Deployment definition.
-volumes: []
-volumeMounts: []
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  volumeMounts: []
 
-tolerations: []
-affinity: {}
+  nodeSelector: {}
+
+  tolerations: []
+  affinity: {}
+
+postgres:
+  cluster:
+    instances: 1
+    storage:
+      size: 50Gi
+    resources: {}
+    affinity: {}
+
+  objectStore:
+    destinationPath: ""
+
+  secrets:
+    backupCredentials:
+      accessKeyId: ""
+      secretAccessKey: ""
+    superuser:
+      password: ""

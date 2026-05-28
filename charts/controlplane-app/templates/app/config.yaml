@@ -5,6 +5,6 @@ metadata:
   labels:
     {{- include "controlplane-app.selectorLabelsApp" . | nindent 4 }}
 data:
-  POSTGRES_URL: {{ .Values.config.postgresUrl | quote }}
-  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
-  ENV: {{ .Values.config.env | quote }}
+  POSTGRES_URL: {{ .Values.app.config.postgresUrl | quote }}
+  LOG_LEVEL: {{ .Values.app.config.logLevel | quote }}
+  ENV: {{ .Values.app.config.env | quote }}

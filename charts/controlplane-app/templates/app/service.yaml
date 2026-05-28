@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.app.service.type }}
   ports:
-    - port: {{ .Values.service.gRPCPort }}
+    - port: {{ .Values.app.service.gRPCPort }}
       targetPort: grpc
       protocol: TCP
       name: grpc
-    - port: {{ .Values.service.httpPort }}
+    - port: {{ .Values.app.service.httpPort }}
       targetPort: http
       protocol: TCP
       name: http

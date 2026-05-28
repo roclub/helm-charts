@@ -58,5 +58,5 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Service account name for App.
 */}}
 {{- define "controlplane-app.serviceAccountAppName" -}}
-{{- default (include "controlplane-app.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "controlplane-app.fullname" .) .Values.app.serviceAccount.name }}
 {{- end }}
