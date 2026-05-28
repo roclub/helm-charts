@@ -1,0 +1,44 @@
+{{- if .Values.certificates.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "postgres.issuerName" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+  {{- include "postgres.namespace" . | nindent 2 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  selfSigned: {}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "postgres.certificateSecretName" . }}
+  labels:
+    cnpg.io/reload: ""
+    {{- include "postgres.labels" . | nindent 4 }}
+  {{- include "postgres.namespace" . | nindent 2 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "postgres.certificateSecretName" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
+  {{- include "postgres.namespace" . | nindent 2 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  secretName: {{ include "postgres.certificateSecretName" . }}
+  usages:
+    - server auth
+  dnsNames:
+    {{- toYaml .Values.certificates.dnsNames | nindent 4 }}
+  issuerRef:
+    name: {{ include "postgres.issuerName" . }}
+    kind: Issuer
+    group: cert-manager.io
+{{- end }}

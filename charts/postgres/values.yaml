@@ -1,0 +1,33 @@
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
+
+cluster:
+  instances: 1
+
+  storage:
+    size: 50Gi
+
+  resources: {}
+  affinity: {}
+
+certificates:
+  enabled: true
+  dnsNames: []
+
+objectStore:
+  enabled: true
+  destinationPath: ""
+
+secrets:
+  backupCredentials:
+    create: true
+    accessKeyId: ""
+    secretAccessKey: ""
+  superuser:
+    create: true
+    username: ""
+    password: ""
+
+scheduledBackup:
+  enabled: true
