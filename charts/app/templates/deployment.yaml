@@ -147,6 +147,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: zitadel_sa_app_user_user_id
+            - name: REDIS_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: redis_encryption_key
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
