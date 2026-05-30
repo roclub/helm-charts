@@ -69,6 +69,8 @@ appSecrets:
     secretKey: ""
   zitadelSaAppUserUserID:
     secretKey: ""
+  redisEncryptionKey:
+    secretKey: ""
 
 image:
   tag: ""
