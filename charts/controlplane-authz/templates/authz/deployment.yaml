@@ -30,6 +30,24 @@ spec:
       serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: openfga-model-writer
+          image: "{{ .Values.provisioning.image.repository }}:{{ .Values.provisioning.image.tag }}"
+          imagePullPolicy: {{ .Values.provisioning.image.pullPolicy }}
+          args:
+            - model
+            - write
+            - --file
+            - /etc/openfga/model.fga
+          env:
+            - name: FGA_API_URL
+              value: "{{ .Values.config.openfga.url }}"
+            - name: FGA_STORE_ID
+              value: "{{ .Values.config.openfga.storeId }}"
+          volumeMounts:
+            - name: openfga-model
+              mountPath: /etc/openfga/model.fga
+              subPath: model.fga
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -71,6 +89,9 @@ spec:
             mountPath: /etc/edged/
       volumes:
         - name: config-volume
+          configMap:
+            name: "{{ include "controlplane-authz.fullname" . }}-config"
+        - name: openfga-model
           configMap:
             name: "{{ include "controlplane-authz.fullname" . }}-config"
       {{- with .Values.nodeSelector }}

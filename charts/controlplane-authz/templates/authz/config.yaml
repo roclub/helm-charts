@@ -13,7 +13,8 @@ data:
     [authz.openfga]
     url = "{{ .Values.config.openfga.url }}"
     store_id = "{{ .Values.config.openfga.storeId }}"
-    model_id = "{{ .Values.config.openfga.modelId }}"
 
     [authz.logger]
     level = "{{ .Values.config.logger }}"
+  model.fga: |-
+    {{ .Values.provisioning.model | nindent 4 }}
