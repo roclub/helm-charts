@@ -4,10 +4,6 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
-stage: "dev"
-recordNames:
-- "app.dev.roclub.io"
-
 serviceAccount:
   create: true
   annotations: {}
@@ -25,6 +21,9 @@ affinity: {}
 
 httpRoute:
   enabled: true
+  hosts:
+    - "app.dev.roclub.io"
+
 
 cloudfront:
   enabled: false
