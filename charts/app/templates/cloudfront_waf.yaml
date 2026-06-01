@@ -1,0 +1,37 @@
+{{- $primaryRecord := index .Values.httpRoute.hosts 0 -}}
+{{- if .Values.cloudfront.enabled }}
+apiVersion: aws.roclub.io/v1alpha1
+kind: CloudfrontWafClaim
+metadata:
+  name: {{ $primaryRecord }}
+  namespace: {{ .Release.Namespace }} 
+spec:
+
+  providerConfigName: {{ .Values.cloudfront.providerConfigName | default "default" }}
+
+  recordName: {{ regexFind "[a-zA-Z0-9\\-]*" $primaryRecord }}
+  zoneName: {{ (splitn "." 2 $primaryRecord)._1 }}
+  loadBalancerName: {{ include "app.fullname" . }}
+  loadBalancerNamespace: {{ .Release.Namespace }}
+  hostedZoneId: {{ .Values.cloudfront.hostedZoneId }}
+
+  cachePolicyId: {{ .Values.cloudfront.cachePolicyId }}
+  originRequestPolicyId: {{ .Values.cloudfront.originRequestPolicyId }}
+  responseHeadersPolicyId: {{ .Values.cloudfront.responseHeadersPolicyId }}
+
+  {{- if .Values.cloudfront.additionalAliases }}
+  additionalAliases:
+  {{- range .Values.cloudfront.additionalAliases }}
+    - fqdn: {{ .fqdn | quote }}
+      {{- if .hostedZoneId }}
+      hostedZoneId: {{ .hostedZoneId | quote }}
+      {{- end }}
+  {{- end }}
+  {{- end }}
+
+  deletionPolicy: {{ .Values.cloudfront.deletionPolicy | default "Delete" }}
+
+  wafVisibilityEnabled: {{ .Values.cloudfront.waf.visibility.enabled | default "true" }}
+  wafRules:
+    {{- toYaml .Values.cloudfront.waf.rules | nindent 4 }}
+{{- end }}

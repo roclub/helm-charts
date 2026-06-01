@@ -4,10 +4,6 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
-stage: "dev"
-recordNames:
-- "app.dev.roclub.io"
-
 serviceAccount:
   create: true
   annotations: {}
@@ -25,6 +21,21 @@ affinity: {}
 
 httpRoute:
   enabled: true
+  hosts:
+    - "app.dev.roclub.io"
+
+
+cloudfront:
+  enabled: false
+  cachePolicyId: ""
+  originRequestPolicyId: ""
+  responseHeadersPolicyId: ""
+  hostedZoneId: Z014743627GZM6VTA9N24
+  additionalAliases: []
+  waf:
+    visibility:
+      enabled: true
+    rules: []
 
 appSecrets:
   authSecret:
@@ -68,6 +79,8 @@ appSecrets:
   zitadelSaAppDispatcherUserID:
     secretKey: ""
   zitadelSaAppUserUserID:
+    secretKey: ""
+  redisEncryptionKey:
     secretKey: ""
 
 image:
