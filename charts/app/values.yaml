@@ -108,6 +108,9 @@ redis:
   tls:
     enabled: true
     existingSecret: "redis-server-tls"
+    certFilename: "tls.crt"
+    certKeyFilename: "tls.key"
+    certCAFilename: "ca.crt"
 
   replica:
     # Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if master.resources is set (master.resources is recommended for production).
