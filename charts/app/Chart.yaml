@@ -3,7 +3,7 @@ name: app
 description: Deploys the roclub main application to Kubernetes
 type: application
 version: 0.15.4
-appVersion: 0.15.0
+appVersion: 0.15.1
 
 dependencies:
   - name: redis
