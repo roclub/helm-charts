@@ -95,6 +95,7 @@ service:
   port: 8080
 
 redis:
+  caCertPath: /opt/cert.ca
   auth:
     enabled: true
     password: "ieheithahNue3booqui7eifaoGoo1thahl1oabai"

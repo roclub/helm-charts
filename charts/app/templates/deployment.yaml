@@ -38,6 +38,8 @@ spec:
               value: {{ .Release.Name }}-redis-headless
             - name: REDIS_PORT
               value: "6379"
+            - name: REDIS_CA_CERT_PATH
+              value: {{ .Values.redis.caCertPath }}
           {{- range .Values.env }}
             - name: {{ .name }}
               value: {{ .value | quote }}
