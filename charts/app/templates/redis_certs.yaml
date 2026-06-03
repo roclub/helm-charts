@@ -1,0 +1,65 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: roclub-pki
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: roclub-pki
+spec:
+  isCA: true
+  commonName: roclub-selfsigned-ca
+  secretName: root-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: roclub-pki
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: redis-server-tls-ca
+spec:
+  ca:
+    secretName: root-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: redis-server-tls
+spec:
+  secretName: redis-server-tls
+
+  privateKey:
+    algorithm: ECDSA
+    encoding: PKCS1
+    size: 256
+
+  signatureAlgorithm: ECDSAWithSHA256
+
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+
+  isCA: false
+  usages:
+    - server auth
+    - client auth
+
+  subject:
+    organizations:
+      - cert-manager
+
+  # At least one of commonName (possibly through literalSubject), dnsNames, uris, emailAddresses, ipAddresses or otherNames is required.
+  dnsNames:
+    - example.com
+
+  issuerRef:
+    name: redis-server-tls-ca
+    kind: Issuer
