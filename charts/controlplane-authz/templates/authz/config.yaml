@@ -17,4 +17,4 @@ data:
     [authz.logger]
     level = "{{ .Values.config.logger }}"
   model.fga: |-
-    {{ .Values.provisioning.model | nindent 4 }}
+{{- .Values.provisioning.model | trim | nindent 4 }}
