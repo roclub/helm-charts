@@ -98,6 +98,19 @@ redis:
   caCertPath: /opt/cert.ca
   auth:
     enabled: true
+    sentinel: true
     password: "ieheithahNue3booqui7eifaoGoo1thahl1oabai"
+
+  architecture: "replication"
+
+  sentinel:
+    enabled: true
+
+  tls:
+    enabled: true
+    existingSecret: ""
+
   replica:
+    # Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if master.resources is set (master.resources is recommended for production).
+    resourcesPreset: "nano"
     replicaCount: 1
