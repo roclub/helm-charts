@@ -95,7 +95,6 @@ service:
   port: 8080
 
 redis:
-  caCertPath: /opt/cert.ca
   auth:
     enabled: true
     sentinel: true
