@@ -367,19 +367,25 @@ redis:
   replica:
     replicaCount: 1
     automountServiceAccountToken: true
+    persistence:
+      enabled: true
+      storageClass: "gp3"
+      size: 10Gi
   sentinel:
     enabled: true
     service:
       createMaster: true
     masterService:
       enabled: true
-  persistence:
-    enabled: true
-    size: 10Gi
+  master:
+    persistence:
+      enabled: true
+      storageClass: "gp3"
+      size: 10Gi
   metrics:
     enabled: true
     serviceMonitor:
-      enabled: true
+      enabled: false
   resources:
     requests:
       cpu: 500m
