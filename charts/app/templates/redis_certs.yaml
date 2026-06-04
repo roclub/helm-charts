@@ -56,9 +56,19 @@ spec:
     organizations:
       - cert-manager
 
-  # At least one of commonName (possibly through literalSubject), dnsNames, uris, emailAddresses, ipAddresses or otherNames is required.
+  # SANs for the Redis server certificate. Must include every hostname
+  # the app dials Redis through, otherwise Node TLS rejects the cert
+  # with ERR_TLS_CERT_ALTNAME_INVALID. The app uses the
+  # <release>-redis-headless service (see deployment.yaml -> REDIS_HOST);
+  # we also list the FQDN and master/replicas names so future config
+  # changes don't require reissuing the cert.
   dnsNames:
-    - example.com
+    - {{ .Release.Name }}-redis-headless
+    - {{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.cluster.local
+    - {{ .Release.Name }}-redis-master
+    - {{ .Release.Name }}-redis-master.{{ .Release.Namespace }}.svc.cluster.local
+    - {{ .Release.Name }}-redis-replicas
+    - {{ .Release.Name }}-redis-replicas.{{ .Release.Namespace }}.svc.cluster.local
 
   issuerRef:
     name: redis-server-tls-ca
