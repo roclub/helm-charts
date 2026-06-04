@@ -352,3 +352,40 @@ iotKafkaInterfaceCronjob:
     imagePullPolicy: Always
   imagePullSecrets: dockerconfigjson-github-com
   restartPolicy: OnFailure
+
+redis:
+  architecture: replication
+  auth:
+    enabled: true
+    sentinel: true
+    password: ""
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+  replica:
+    replicaCount: 1
+    automountServiceAccountToken: true
+  sentinel:
+    enabled: true
+    service:
+      createMaster: true
+    masterService:
+      enabled: true
+  persistence:
+    enabled: true
+    size: 10Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+  tls:
+    enabled: false
