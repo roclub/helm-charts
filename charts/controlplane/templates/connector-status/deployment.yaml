@@ -1,3 +1,5 @@
+{{- $name := printf "%s-auth" "influxdb2" }}
+{{- $influxToken := lookup "v1" "Secret" .Release.Namespace $name }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -68,10 +70,7 @@ spec:
             mountPath: /etc/edged/
           env:
           - name: INFLUXDB_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "controlplane.fullname" . }}-influxdb2-auth 
-                key: admin-token
+            value: {{ index $influxToken.data "admin-token" }}
       volumes:
         - name: config-volume
           configMap:
