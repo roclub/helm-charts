@@ -156,7 +156,6 @@ connectorStatus:
 
     influx:
       org: "roclub"
-      token: ""
 
     logger: "debug"
 
