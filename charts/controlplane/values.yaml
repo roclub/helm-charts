@@ -395,7 +395,7 @@ redis:
       memory: 2Gi
   tls:
     enabled: true
-    existingSecret: "redis-server-tls"
+    existingSecret: "controlplane-redis-tls"
     certFilename: "tls.crt"
     certKeyFilename: "tls.key"
     certCAFilename: "ca.crt"

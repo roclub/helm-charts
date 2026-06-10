@@ -25,7 +25,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: redis-server-tls-ca
+  name: controlplane-redis-tls-ca
 spec:
   ca:
     secretName: root-secret
@@ -33,9 +33,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: redis-server-tls
+  name: controlplane-redis-tls
 spec:
-  secretName: redis-server-tls
+  secretName: controlplane-redis-tls
 
   privateKey:
     algorithm: ECDSA
@@ -56,12 +56,7 @@ spec:
     organizations:
       - cert-manager
 
-  # SANs for the Redis server certificate. Must include every hostname
-  # the app dials Redis through, otherwise Node TLS rejects the cert
-  # with ERR_TLS_CERT_ALTNAME_INVALID. The app uses the
-  # <release>-redis-headless service (see deployment.yaml -> REDIS_HOST);
-  # we also list the FQDN and master/replicas names so future config
-  # changes don't require reissuing the cert.
+  # SANs for controlplane Redis service names.
   dnsNames:
     - {{ .Release.Name }}-redis-headless
     - {{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.cluster.local
@@ -71,5 +66,5 @@ spec:
     - {{ .Release.Name }}-redis-replicas.{{ .Release.Namespace }}.svc.cluster.local
 
   issuerRef:
-    name: redis-server-tls-ca
+    name: controlplane-redis-tls-ca
     kind: Issuer
