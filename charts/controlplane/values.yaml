@@ -354,7 +354,7 @@ iotKafkaInterfaceCronjob:
   restartPolicy: OnFailure
 
 redis:
-  architecture: replication
+  architecture: "replication"
   auth:
     enabled: true
     sentinel: true
@@ -394,4 +394,9 @@ redis:
       cpu: 1000m
       memory: 2Gi
   tls:
-    enabled: false
+    enabled: true
+    existingSecret: "redis-server-tls"
+    certFilename: "tls.crt"
+    certKeyFilename: "tls.key"
+    certCAFilename: "ca.crt"
+    authClients: false

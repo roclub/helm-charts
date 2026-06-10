@@ -9,5 +9,5 @@ dependencies:
   version: 2.1.2
   repository: https://helm.influxdata.com/
 - name: redis
-  version: 25.5.3
+  version: 23.1.1
   repository: https://charts.bitnami.com/bitnami
