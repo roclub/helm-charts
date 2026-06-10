@@ -43,6 +43,7 @@ spec:
     - "Content-Type"
     - "Accept"
     - "Content-Length"
+    - "X-Request-ID"
     exposeHeaders:
     - "Content-Length"
     # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
