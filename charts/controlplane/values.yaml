@@ -88,6 +88,13 @@ remoteControl:
       negativeTtlSeconds: 10
       timeoutMs: 2000
       maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
 
     liveKit:
       key: ""
@@ -226,6 +233,13 @@ connectorControl:
       negativeTtlSeconds: 10
       timeoutMs: 2000
       maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
 
     logger: "debug"
 
@@ -399,4 +413,7 @@ redis:
     certFilename: "tls.crt"
     certKeyFilename: "tls.key"
     certCAFilename: "ca.crt"
-    authClients: false
+    authClients: true
+
+redisClientTLS:
+  existingSecret: "controlplane-redis-client-tls"

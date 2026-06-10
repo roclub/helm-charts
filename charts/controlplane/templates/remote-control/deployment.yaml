@@ -66,10 +66,16 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/edged/
+          - name: redis-client-tls
+            mountPath: /etc/redis/tls
+            readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: "{{ include "controlplane.remoteControlName" . }}-config"
+        - name: redis-client-tls
+          secret:
+            secretName: {{ .Values.redisClientTLS.existingSecret | quote }}
       {{- with .Values.remoteControl.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
