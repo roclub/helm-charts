@@ -22,3 +22,15 @@ spec:
       op: replace
       path: "/filter_chains/0/filters/0/typed_config/providers/zitadel/remote_jwks/cache_duration"
       value: "5s"
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "preserve-external-request-id-patch"
+    operation:
+      op: add
+      path: "/filter_chains/0/filters/0/typed_config/preserve_external_request_id"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "use-remote-address-patch"
+    operation:
+      op: add
+      path: "/filter_chains/0/filters/0/typed_config/use_remote_address"
+      value: true
