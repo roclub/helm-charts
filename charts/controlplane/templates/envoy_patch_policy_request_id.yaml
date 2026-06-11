@@ -1,0 +1,36 @@
+{{- $gatewayName := include "controlplane.fullname" . -}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyPatchPolicy
+metadata:
+  name: {{ $gatewayName }}-request-id-patch
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: {{ $gatewayName }}
+  type: JSONPatch
+  jsonPatches:
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "{{ .Release.Namespace }}/{{ $gatewayName }}/http"
+    operation:
+      op: add
+      path: "/default_filter_chain/filters/0/typed_config/use_remote_address"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "{{ .Release.Namespace }}/{{ $gatewayName }}/http"
+    operation:
+      op: add
+      path: "/default_filter_chain/filters/0/typed_config/preserve_external_request_id"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "{{ .Release.Namespace }}/{{ $gatewayName }}/https"
+    operation:
+      op: add
+      path: "/filter_chains/0/filters/0/typed_config/use_remote_address"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "{{ .Release.Namespace }}/{{ $gatewayName }}/https"
+    operation:
+      op: add
+      path: "/filter_chains/0/filters/0/typed_config/preserve_external_request_id"
+      value: true
