@@ -24,6 +24,12 @@ data:
     negative_ttl_seconds = {{ .Values.remoteControl.config.redis.negativeTtlSeconds }}
     timeout_ms = {{ .Values.remoteControl.config.redis.timeoutMs }}
     max_retries = {{ .Values.remoteControl.config.redis.maxRetries }}
+    tls_enabled = {{ .Values.remoteControl.config.redis.tls.enabled }}
+    tls_insecure_skip_verify = {{ .Values.remoteControl.config.redis.tls.insecureSkipVerify }}
+    tls_server_name = "{{ .Values.remoteControl.config.redis.tls.serverName }}"
+    tls_ca_cert_path = "{{ .Values.remoteControl.config.redis.tls.caCertPath }}"
+    tls_cert_path = "{{ .Values.remoteControl.config.redis.tls.certPath }}"
+    tls_key_path = "{{ .Values.remoteControl.config.redis.tls.keyPath }}"
 
     [session_control.liveKit]
     key = "{{ .Values.remoteControl.config.liveKit.key }}"

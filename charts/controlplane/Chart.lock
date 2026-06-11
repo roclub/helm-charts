@@ -2,5 +2,8 @@ dependencies:
 - name: influxdb2
   repository: https://helm.influxdata.com/
   version: 2.1.2
-digest: sha256:2f089e18a29c280064674c344e22f400b4877982842b5b9442b5a0223583092a
-generated: "2024-06-08T17:34:17.114262+02:00"
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 23.1.1
+digest: sha256:a765d353536e0ce724611c4275f713ac6e7ae2e1375dd930fb0ea741e2d172b8
+generated: "2026-06-10T14:57:41.331064+02:00"
