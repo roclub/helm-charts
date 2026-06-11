@@ -379,7 +379,7 @@ redis:
     create: true
     automountServiceAccountToken: true
   replica:
-    replicaCount: 1
+    replicaCount: 2
     automountServiceAccountToken: true
     persistence:
       enabled: true
