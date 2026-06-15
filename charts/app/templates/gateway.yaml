@@ -69,9 +69,8 @@ spec:
     privateKeySecretRef:
       name: {{ $fullName }}-letsencrypt
     solvers:
-    - http01:
-        gatewayHTTPRoute:
-          parentRefs:
-          - kind: Gateway
-            name: {{ $fullName }}
+    - dns01:
+        route53:
+          region: eu-central-1
+          hostedZoneID: {{ .Values.cloudfront.hostedZoneID }}
 {{- end -}}
