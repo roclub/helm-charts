@@ -75,6 +75,7 @@ metadata:
   name: controlplane-redis-client-tls
 spec:
   secretName: controlplane-redis-client-tls
+  commonName: {{ .Release.Name }}-redis-client
 
   privateKey:
     algorithm: ECDSA
