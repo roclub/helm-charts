@@ -26,7 +26,7 @@ data:
     max_retries = {{ .Values.remoteControl.config.redis.maxRetries }}
     tls_enabled = {{ .Values.remoteControl.config.redis.tls.enabled }}
     tls_insecure_skip_verify = {{ .Values.remoteControl.config.redis.tls.insecureSkipVerify }}
-    tls_server_name = "{{ .Values.remoteControl.config.redis.tls.serverName }}"
+    tls_server_name = "{{ if .Values.remoteControl.config.redis.tls.serverName }}{{ .Values.remoteControl.config.redis.tls.serverName }}{{ else }}{{ .Release.Name }}-redis-headless{{ end }}"
     tls_ca_cert_path = "{{ .Values.remoteControl.config.redis.tls.caCertPath }}"
     tls_cert_path = "{{ .Values.remoteControl.config.redis.tls.certPath }}"
     tls_key_path = "{{ .Values.remoteControl.config.redis.tls.keyPath }}"
