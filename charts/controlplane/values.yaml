@@ -313,6 +313,27 @@ notifications:
   config:
     logger: "debug"
 
+    redis:
+      enabled: true
+      url: ""
+      username: ""
+      password: ""
+      db: 0
+      timeoutMs: 2000
+      maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
+
+    vapid:
+      publicKey: ""
+      privateKey: ""
+      keyId: ""
+
   serviceAccount:
     create: true
     automount: true

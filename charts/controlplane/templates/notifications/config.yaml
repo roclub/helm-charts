@@ -7,5 +7,26 @@ metadata:
 data:
   config.toml: |-
     [notification]
+
+    [notification.redis]
+    enabled = {{ .Values.notifications.config.redis.enabled }}
+    url = "{{ .Values.notifications.config.redis.url }}"
+    username = "{{ .Values.notifications.config.redis.username }}"
+    password = "{{ .Values.notifications.config.redis.password }}"
+    db = {{ .Values.notifications.config.redis.db }}
+    timeout_ms = {{ .Values.notifications.config.redis.timeoutMs }}
+    max_retries = {{ .Values.notifications.config.redis.maxRetries }}
+    tls_enabled = {{ .Values.notifications.config.redis.tls.enabled }}
+    tls_insecure_skip_verify = {{ .Values.notifications.config.redis.tls.insecureSkipVerify }}
+    tls_server_name = "{{ if .Values.notifications.config.redis.tls.serverName }}{{ .Values.notifications.config.redis.tls.serverName }}{{ else }}{{ .Release.Name }}-redis-headless{{ end }}"
+    tls_ca_cert_path = "{{ .Values.notifications.config.redis.tls.caCertPath }}"
+    tls_cert_path = "{{ .Values.notifications.config.redis.tls.certPath }}"
+    tls_key_path = "{{ .Values.notifications.config.redis.tls.keyPath }}"
+
+    [notification.vapid]
+    public_key = "{{ .Values.notifications.config.vapid.publicKey }}"
+    private_key = "{{ .Values.notifications.config.vapid.privateKey }}"
+    key_id = "{{ .Values.notifications.config.vapid.keyId }}"
+
     [notification.logger]
     level = "debug"

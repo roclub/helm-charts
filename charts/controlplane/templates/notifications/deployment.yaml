@@ -69,10 +69,16 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/edged/
+          - name: controlplane-redis-client-tls
+            mountPath: /etc/redis/tls
+            readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: "{{ include "controlplane.notificationsName" . }}-config"
+        - name: controlplane-redis-client-tls
+          secret:
+            secretName: {{ .Values.redisClientTLS.existingSecret | quote }}
       {{- with .Values.notifications.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
