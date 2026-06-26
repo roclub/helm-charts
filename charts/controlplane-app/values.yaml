@@ -68,6 +68,10 @@ app:
   affinity: {}
 
 postgres:
+  users:
+    runtime: controlplane_app_runtime
+    migration: controlplane_app_migration
+
   cluster:
     instances: 1
     storage:
@@ -84,3 +88,8 @@ postgres:
       secretAccessKey: ""
     superuser:
       password: ""
+    users:
+      runtime:
+        password: ""
+      migration:
+        password: ""

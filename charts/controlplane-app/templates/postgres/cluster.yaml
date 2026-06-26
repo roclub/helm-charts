@@ -17,11 +17,34 @@ spec:
     name: {{ include "controlplane-app.fullname" . }}-pg-superuser
 
   bootstrap:
-    initdb:
-      database: controlplane_app
-      owner: controlplane_app_user
-      secret:
-        name: {{ include "controlplane-app.fullname" . }}-pg-superuser
+     initdb:
+       database: controlplane_app
+       owner: {{ .Values.postgres.users.migration }}
+       secret:
+         name: {{ include "controlplane-app.fullname" . }}-pg-superuser
+       postInitSQL:
+         - GRANT CONNECT ON DATABASE controlplane_app TO "{{ .Values.postgres.users.runtime }}";
+         - GRANT USAGE ON SCHEMA public TO "{{ .Values.postgres.users.runtime }}";
+         - GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO "{{ .Values.postgres.users.runtime }}";
+         - GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO "{{ .Values.postgres.users.runtime }}";
+         - ALTER DEFAULT PRIVILEGES FOR ROLE "{{ .Values.postgres.users.migration }}" IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO "{{ .Values.postgres.users.runtime }}";
+         - ALTER DEFAULT PRIVILEGES FOR ROLE "{{ .Values.postgres.users.migration }}" IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO "{{ .Values.postgres.users.runtime }}";
+
+
+  managed:
+    roles:
+      - name: {{ .Values.postgres.users.runtime }}
+        ensure: present
+        login: true
+        superuser: false
+        passwordSecret:
+          name: {{ include "controlplane-app.fullname" . }}-pg-runtime
+      - name: {{ .Values.postgres.users.migration }}
+        ensure: present
+        login: true
+        superuser: false
+        passwordSecret:
+          name: {{ include "controlplane-app.fullname" . }}-pg-migration
 
   storage:
     storageClass: aws-gp3-daily-backup
