@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "controlplane-app.fullname" . }}
   labels:
-    {{ include "controlplane-app.labels" . | nindent 4 }}
+    {{- include "controlplane-app.labels" . | nindent 4 }}
 data:
   config.yaml: |
     dependencies:

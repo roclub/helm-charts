@@ -4,6 +4,7 @@ kind: HTTPRoute
 metadata:
   name: {{ include "controlplane-app.fullname" . }}
   labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
     authentication/zitadel: jwt
 spec:
   parentRefs:
