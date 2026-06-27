@@ -1,23 +1,18 @@
-nameOverride: ""
-fullnameOverride: ""
-
 app:
-  stage: ""
+  stage: "dev"
 
   image:
     repository: ghcr.io/roclub/controlplane-app
-    pullPolicy: Always
-    tag: ""
 
   imagePullSecrets:
     - name: dockerconfigjson-github-com
 
-  replicaCount: 1
-
   config:
     postgresUrl: ""
-    logLevel: ""
-    env: ""
+    calCom:
+      apiKey: ""
+      apiVersion: "2024-08-13"
+      baseURL: "https://api.cal.eu/v2"
 
   service:
     type: ClusterIP
@@ -31,41 +26,29 @@ app:
     gatewayName: "dev-controlplane"
     hosts:
       - paths:
-          - path: /app/v1/
+          - path: /api/core/v1/
             pathType: PathPrefix
+            methods: ["GET", "POST", "DELETE", "PATCH", "PUT", "OPTIONS"]
 
   securityPolicy:
     allowedOrigins:
       - "https://beta.dev.roclub.io"
 
-  serviceAccount:
-    create: true
-    automount: true
-    annotations: {}
-    name: "app-dev"
-
-  podAnnotations: {}
-  podLabels: {}
-  podSecurityContext: {}
-  securityContext: {}
-
-  resources: {}
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "400m"
+      memory: "512Mi"
 
   autoscaling:
     enabled: false
     minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
+    maxReplicas: 1
 
-  # Additional volumes on the output Deployment definition.
-  volumes: []
-  volumeMounts: []
-
-  nodeSelector: {}
-
-  tolerations: []
-  affinity: {}
+  nodeSelector:
+    kubernetes.io/arch: arm64
 
 postgres:
   users:
@@ -76,7 +59,13 @@ postgres:
     instances: 1
     storage:
       size: 50Gi
-    resources: {}
+    resources:
+      requests:
+        cpu: ""
+        memory: ""
+      limits:
+        cpu: ""
+        memory: ""
     affinity: {}
 
   objectStore:

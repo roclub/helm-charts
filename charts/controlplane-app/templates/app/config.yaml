@@ -1,10 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ include "controlplane-app.fullname" . }}-config"
+  name: {{ include "controlplane-app.fullname" . }}
   labels:
-    {{- include "controlplane-app.selectorLabelsApp" . | nindent 4 }}
+    {{ include "controlplane-app.labels" . | nindent 4 }}
 data:
-  POSTGRES_URL: {{ .Values.app.config.postgresUrl | quote }}
-  LOG_LEVEL: {{ .Values.app.config.logLevel | quote }}
-  ENV: {{ .Values.app.config.env | quote }}
+  config.yaml: |
+    dependencies:
+      postgres:
+        url: {{ .Values.app.config.postgresUrl }}
+      calCom:
+        apiKey: {{ .Values.app.config.calCom.apiKey }}
+        apiVersion: {{ .Values.app.config.calCom.apiVersion }}
+        baseURL: {{ .Values.app.config.calCom.baseURL }}

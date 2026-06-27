@@ -5,37 +5,23 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.app.autoscaling.enabled }}
-  replicas: {{ .Values.app.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
-      {{- include "controlplane-app.selectorLabelsApp" . | nindent 6 }}
+      {{- include "controlplane-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.app.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "controlplane-app.selectorLabelsApp" . | nindent 8 }}
-        {{- with .Values.app.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "controlplane-app.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.app.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "controlplane-app.serviceAccountAppName" . }}
-      securityContext:
-        {{- toYaml .Values.app.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.app.imagePullSecrets | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.app.securityContext | nindent 12 }}
-          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          image: "{{ .Values.app.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          args:
+            - "--config"
+            - "/app/config.yaml"
           ports:
             - name: grpc
               containerPort: {{ .Values.app.service.gRPCPort }}
@@ -43,41 +29,42 @@ spec:
             - name: http
               containerPort: {{ .Values.app.service.httpPort }}
               protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: "{{ include "controlplane-app.fullname" . }}-config"
+          volumeMounts:
+            - name: app-config
+              mountPath: /app/config.yaml
+              subPath: config.yaml
+              readOnly: true
           startupProbe:
             httpGet:
               path: /health
               port: http
-            failureThreshold: 30
+            failureThreshold: 5
             periodSeconds: 10
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            failureThreshold: 3
+            failureThreshold: 5
             periodSeconds: 10
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health
               port: http
-            failureThreshold: 2
+            failureThreshold: 5
             periodSeconds: 10
             timeoutSeconds: 5
           resources:
-            {{- toYaml .Values.app.resources | nindent 12 }}
-      {{- with .Values.app.nodeSelector }}
+            requests:
+              cpu: {{ .Values.app.resources.requests.cpu }}
+              memory: {{ .Values.app.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.app.resources.limits.cpu }}
+              memory: {{ .Values.app.resources.limits.memory }}
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.app.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.app.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml .Values.app.nodeSelector | nindent 8 }}
