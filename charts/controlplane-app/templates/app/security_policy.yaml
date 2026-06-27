@@ -1,8 +1,7 @@
-{{- $name := .Chart.Name -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: {{ $name}}-jwt-authentication
+  name: {{ .Chart.Name }}-jwt-authentication
 spec:
   targetSelectors:
   - group: gateway.networking.k8s.io
@@ -13,19 +12,19 @@ spec:
     providers:
     - name: zitadel
       remoteJWKS:
-{{- if eq .Values.app.stage "prd" }}
+        {{- if eq .Values.app.stage "prd" }}
         uri: https://identity.roclub.io/oauth/v2/keys
-{{- else }}
+        {{- else }}
         uri: https://identity.{{ .Values.app.stage }}.roclub.io/oauth/v2/keys
-{{- end }}
+        {{- end }}
         backendSettings:
           retry:
             numRetries: 5
   cors:
     allowOrigins:
-  {{- range .Values.app.securityPolicy.allowedOrigins}}
-    - {{ . }}
-  {{- end }}
+    {{- range $allowedOrigin := .Values.app.securityPolicy.allowedOrigins}}
+    - {{ $allowedOrigin }}
+    {{- end }}
     allowMethods:
     - GET
     - POST
