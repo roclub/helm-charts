@@ -1,4 +1,4 @@
-{{- $name := include "controlplane-app.fullname" . -}}
+{{- $name := .Chart.Name -}}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:

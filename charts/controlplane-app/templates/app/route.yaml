@@ -11,8 +11,8 @@ spec:
       kind: Gateway
       name: {{ .Values.app.gatewayAPI.gatewayName }}
   hostnames:
-  {{- range .Values.app.domainNames}}
-    - {{ . }}
+  {{- range $domainName := .Values.app.domainNames }}
+    - {{ $domainName }}
   {{- end }}
   rules:
   {{- range .Values.app.gatewayAPI.hosts }}

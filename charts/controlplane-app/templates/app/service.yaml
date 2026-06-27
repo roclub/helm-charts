@@ -16,4 +16,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "controlplane-app.selectorLabels" . | nindent 4}}
+    {{- include "controlplane-app.selectorLabels" . | nindent 4 }}
