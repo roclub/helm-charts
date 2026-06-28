@@ -34,13 +34,14 @@ app:
     allowedOrigins:
       - "https://beta.dev.roclub.io"
 
-  resources:
-    requests:
-      cpu: "200m"
-      memory: "256Mi"
-    limits:
-      cpu: "400m"
-      memory: "512Mi"
+  deployment:
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "256Mi"
+      limits:
+        cpu: "400m"
+        memory: "512Mi"
 
   autoscaling:
     enabled: false
@@ -52,6 +53,7 @@ app:
 
 postgres:
   users:
+    superuser: postgres
     runtime: controlplane_app_runtime
     migration: controlplane_app_migration
 
@@ -61,15 +63,18 @@ postgres:
       size: 50Gi
     resources:
       requests:
-        cpu: ""
-        memory: ""
+        cpu: "100m"
+        memory: "256Mi"
       limits:
-        cpu: ""
-        memory: ""
-    affinity: {}
+        cpu: "200m"
+        memory: "512Mi"
+
+  backup:
+    schedule: "0 0 2 * * *"
+    retentionPolicy: "7d"
 
   objectStore:
-    destinationPath: ""
+    destinationPath: "s3://controlplane-app-dev-postgres-backups"
 
   secrets:
     backupCredentials:
