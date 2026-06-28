@@ -57,11 +57,11 @@ spec:
             timeoutSeconds: 5
           resources:
             requests:
-              cpu: {{ .Values.app.resources.requests.cpu }}
-              memory: {{ .Values.app.resources.requests.memory }}
+              cpu: {{ .Values.app.deployment.resources.requests.cpu }}
+              memory: {{ .Values.app.deployment.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.app.resources.limits.cpu }}
-              memory: {{ .Values.app.resources.limits.memory }}
+              cpu: {{ .Values.app.deployment.resources.limits.cpu }}
+              memory: {{ .Values.app.deployment.resources.limits.memory }}
       volumes:
         - name: app-config
           configMap:
