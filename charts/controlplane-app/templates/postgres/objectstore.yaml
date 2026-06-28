@@ -1,10 +1,9 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: aws-s3-{{ include "controlplane-app.fullname" . }}-postgres-backup
+  name: {{ include "controlplane-app.fullname" . }}-aws-s3-postgres-backup
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  namespace: controlplane-app
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
