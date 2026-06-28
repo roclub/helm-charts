@@ -26,15 +26,15 @@ spec:
   usages:
     - server auth
   dnsNames:
-    - {{ .Chart.Name }}-postgres-cluster-rw
-    - {{ .Chart.Name }}-postgres-cluster-rw.controlplane-app
-    - {{ .Chart.Name }}-postgres-cluster-rw.controlplane-app.svc
-    - {{ .Chart.Name }}-postgres-cluster-r
-    - {{ .Chart.Name }}-postgres-cluster-r.controlplane-app
-    - {{ .Chart.Name }}-postgres-cluster-r.controlplane-app.svc
-    - {{ .Chart.Name }}-postgres-cluster-ro
-    - {{ .Chart.Name }}-postgres-cluster-ro.controlplane-app
-    - {{ .Chart.Name }}-postgres-cluster-ro.controlplane-app.svc
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}.svc
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}.svc
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}.svc
   issuerRef:
     name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
     kind: Issuer

@@ -10,8 +10,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
-  backoffLimit: {{ .Values.app.migration.backoffLimit }}
-  activeDeadlineSeconds: {{ .Values.app.migration.activeDeadlineSeconds }}
+  backoffLimit: {{ .Values.migration.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migration.activeDeadlineSeconds }}
   template:
     metadata:
       labels:
@@ -21,11 +21,11 @@ spec:
       restartPolicy: Never
       automountServiceAccountToken: false
       imagePullSecrets:
-        {{- toYaml .Values.app.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
         - name: migration
-          image: "{{ .Values.app.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /usr/local/bin/backend
           args:
@@ -50,15 +50,10 @@ spec:
               subPath: config.yaml
               readOnly: true
           resources:
-            requests:
-              cpu: {{ .Values.app.migration.resources.requests.cpu }}
-              memory: {{ .Values.app.migration.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.app.migration.resources.limits.cpu }}
-              memory: {{ .Values.app.migration.resources.limits.memory }}
+            {{- toYaml .Values.migration.resources | nindent 12 }}
       volumes:
         - name: migration-config
           configMap:
             name: {{ include "controlplane-app.fullname" . }}-migration-config
       nodeSelector:
-        {{- toYaml .Values.app.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

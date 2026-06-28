@@ -7,9 +7,9 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
-  retentionPolicy: {{ .Values.postgres.backup.retentionPolicy }}
+  retentionPolicy: {{ .Values.postgres.backup.retentionPolicy | quote }}
   configuration:
-    destinationPath: {{ .Values.postgres.objectStore.destinationPath | quote }}
+    destinationPath: {{ .Values.postgres.backup.objectStore.destinationPath | quote }}
     s3Credentials:
       accessKeyId:
         name: {{ include "controlplane-app.fullname" . }}-postgres-backup-creds

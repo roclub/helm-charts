@@ -8,8 +8,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   instances: {{ .Values.postgres.cluster.instances }}
-  description: "controlplane-app Postgres Cluster"
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.0
+  description: {{ printf "%s PostgreSQL cluster" (include "controlplane-app.fullname" .) | quote }}
+  imageName: {{ .Values.postgres.cluster.imageName | quote }}
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
   superuserSecret:
@@ -17,16 +17,16 @@ spec:
 
   bootstrap:
     initdb:
-      database: controlplane_app
-      owner: {{ .Values.postgres.users.migration }}
+      database: {{ .Values.postgres.connection.database }}
+      owner: {{ .Values.postgres.users.migration.name }}
       secret:
         name: {{ include "controlplane-app.fullname" . }}-pg-migration
 
   managed:
     roles:
-      - name: {{ .Values.postgres.users.migration }}
+      - name: {{ .Values.postgres.users.migration.name }}
         ensure: present
-        comment: Schema migration user and owner of the controlplane_app database
+        comment: {{ printf "Schema migration user and owner of the %s database" .Values.postgres.connection.database | quote }}
         login: true
         superuser: false
         createdb: false
@@ -35,7 +35,7 @@ spec:
         bypassrls: false
         passwordSecret:
           name: {{ include "controlplane-app.fullname" . }}-pg-migration
-      - name: {{ .Values.postgres.users.runtime }}
+      - name: {{ .Values.postgres.users.runtime.name }}
         ensure: present
         comment: Application runtime user
         login: true
@@ -48,7 +48,7 @@ spec:
           name: {{ include "controlplane-app.fullname" . }}-pg-runtime
 
   storage:
-    storageClass: aws-gp3-daily-backup
+    storageClass: {{ .Values.postgres.cluster.storage.className }}
     size: {{ .Values.postgres.cluster.storage.size }}
 
   certificates:
@@ -56,12 +56,7 @@ spec:
     serverCASecret: {{ include "controlplane-app.fullname" . }}-postgres-cert
 
   resources:
-    requests:
-      cpu: {{ .Values.postgres.cluster.resources.requests.cpu }}
-      memory: {{ .Values.postgres.cluster.resources.requests.memory }}
-    limits:
-      cpu: {{ .Values.postgres.cluster.resources.limits.cpu }}
-      memory: {{ .Values.postgres.cluster.resources.limits.memory }}
+    {{- toYaml .Values.postgres.cluster.resources | nindent 4 }}
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io

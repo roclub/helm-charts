@@ -7,6 +7,9 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "controlplane-app.selectorLabels" . | nindent 6 }}
@@ -15,12 +18,13 @@ spec:
       labels:
         {{- include "controlplane-app.selectorLabels" . | nindent 8 }}
     spec:
+      automountServiceAccountToken: false
       imagePullSecrets:
-        {{- toYaml .Values.app.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.app.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /usr/local/bin/backend
           args:
@@ -39,10 +43,10 @@ spec:
                   key: password
           ports:
             - name: grpc
-              containerPort: {{ .Values.app.service.gRPCPort }}
+              containerPort: {{ .Values.service.grpcPort }}
               protocol: TCP
             - name: http
-              containerPort: {{ .Values.app.service.httpPort }}
+              containerPort: {{ .Values.service.httpPort }}
               protocol: TCP
           volumeMounts:
             - name: app-config
@@ -71,15 +75,10 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
           resources:
-            requests:
-              cpu: {{ .Values.app.deployment.resources.requests.cpu }}
-              memory: {{ .Values.app.deployment.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.app.deployment.resources.limits.cpu }}
-              memory: {{ .Values.app.deployment.resources.limits.memory }}
+            {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: app-config
           configMap:
             name: {{ include "controlplane-app.fullname" . }}-deployment-config
       nodeSelector:
-        {{- toYaml .Values.app.nodeSelector | nindent 8 }}
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

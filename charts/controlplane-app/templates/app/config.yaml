@@ -4,18 +4,20 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-deployment-config
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 data:
   config.yaml: |
     dependencies:
       postgres:
         host: {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
         port: {{ .Values.postgres.connection.port }}
-        database: {{ .Values.postgres.connection.database }}
-        sslMode: {{ .Values.postgres.connection.sslMode }}
+        database: {{ .Values.postgres.connection.database | quote }}
+        sslMode: {{ .Values.postgres.connection.sslMode | quote }}
       calCom:
-        apiKey: {{ .Values.app.config.calCom.apiKey }}
-        apiVersion: {{ .Values.app.config.calCom.apiVersion }}
-        baseURL: {{ .Values.app.config.calCom.baseURL }}
+        apiKey: {{ .Values.config.calCom.apiKey | quote }}
+        apiVersion: {{ .Values.config.calCom.apiVersion | quote }}
+        baseURL: {{ .Values.config.calCom.baseUrl | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -24,11 +26,13 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
     app.kubernetes.io/component: migration
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 data:
   config.yaml: |
     dependencies:
       postgres:
         host: {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
         port: {{ .Values.postgres.connection.port }}
-        database: {{ .Values.postgres.connection.database }}
-        sslMode: {{ .Values.postgres.connection.sslMode }}
+        database: {{ .Values.postgres.connection.database | quote }}
+        sslMode: {{ .Values.postgres.connection.sslMode | quote }}
