@@ -4,6 +4,8 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   selector:
     matchLabels:
@@ -19,9 +21,22 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.app.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: Always
+          command:
+            - /usr/local/bin/backend
           args:
             - "--config"
             - "/app/config.yaml"
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "controlplane-app.fullname" . }}-pg-runtime
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "controlplane-app.fullname" . }}-pg-runtime
+                  key: password
           ports:
             - name: grpc
               containerPort: {{ .Values.app.service.gRPCPort }}
@@ -65,6 +80,6 @@ spec:
       volumes:
         - name: app-config
           configMap:
-            name: {{ include "controlplane-app.fullname" . }}
+            name: {{ include "controlplane-app.fullname" . }}-deployment-config
       nodeSelector:
         {{- toYaml .Values.app.nodeSelector | nindent 8 }}

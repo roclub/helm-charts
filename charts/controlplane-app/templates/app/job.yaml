@@ -1,0 +1,64 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-migration
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: {{ .Values.app.migration.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.app.migration.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: migration
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.app.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: migration
+          image: "{{ .Values.app.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always
+          command:
+            - /usr/local/bin/backend
+          args:
+            - "--config"
+            - "/app/config.yaml"
+            - migrate
+            - up
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "controlplane-app.fullname" . }}-pg-migration
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "controlplane-app.fullname" . }}-pg-migration
+                  key: password
+          volumeMounts:
+            - name: migration-config
+              mountPath: /app/config.yaml
+              subPath: config.yaml
+              readOnly: true
+          resources:
+            requests:
+              cpu: {{ .Values.app.migration.resources.requests.cpu }}
+              memory: {{ .Values.app.migration.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.app.migration.resources.limits.cpu }}
+              memory: {{ .Values.app.migration.resources.limits.memory }}
+      volumes:
+        - name: migration-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-migration-config
+      nodeSelector:
+        {{- toYaml .Values.app.nodeSelector | nindent 8 }}

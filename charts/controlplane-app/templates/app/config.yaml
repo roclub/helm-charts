@@ -1,15 +1,34 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "controlplane-app.fullname" . }}
+  name: {{ include "controlplane-app.fullname" . }}-deployment-config
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 data:
   config.yaml: |
     dependencies:
       postgres:
-        url: {{ .Values.app.config.postgresUrl }}
+        host: {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
+        port: {{ .Values.postgres.connection.port }}
+        database: {{ .Values.postgres.connection.database }}
+        sslMode: {{ .Values.postgres.connection.sslMode }}
       calCom:
         apiKey: {{ .Values.app.config.calCom.apiKey }}
         apiVersion: {{ .Values.app.config.calCom.apiVersion }}
         baseURL: {{ .Values.app.config.calCom.baseURL }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-migration-config
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+data:
+  config.yaml: |
+    dependencies:
+      postgres:
+        host: {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
+        port: {{ .Values.postgres.connection.port }}
+        database: {{ .Values.postgres.connection.database }}
+        sslMode: {{ .Values.postgres.connection.sslMode }}
