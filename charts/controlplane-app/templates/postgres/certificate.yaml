@@ -1,0 +1,41 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-postgres-cert
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  secretName: {{ include "controlplane-app.fullname" . }}-postgres-cert
+  secretTemplate:
+    labels:
+      cnpg.io/reload: "true"
+      {{- include "controlplane-app.labels" . | nindent 6 }}
+  usages:
+    - server auth
+  dnsNames:
+    - {{ .Chart.Name }}-postgres-cluster-rw
+    - {{ .Chart.Name }}-postgres-cluster-rw.controlplane-app
+    - {{ .Chart.Name }}-postgres-cluster-rw.controlplane-app.svc
+    - {{ .Chart.Name }}-postgres-cluster-r
+    - {{ .Chart.Name }}-postgres-cluster-r.controlplane-app
+    - {{ .Chart.Name }}-postgres-cluster-r.controlplane-app.svc
+    - {{ .Chart.Name }}-postgres-cluster-ro
+    - {{ .Chart.Name }}-postgres-cluster-ro.controlplane-app
+    - {{ .Chart.Name }}-postgres-cluster-ro.controlplane-app.svc
+  issuerRef:
+    name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
+    kind: Issuer
+    group: cert-manager.io
