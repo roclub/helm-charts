@@ -1,3 +1,5 @@
+{{/* TODO: Uncomment this migration Job after the initial release has created the PostgreSQL cluster. */}}
+{{/*
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -6,9 +8,9 @@ metadata:
     {{- include "controlplane-app.labels" . | nindent 4 }}
     app.kubernetes.io/component: migration
   annotations:
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/sync-wave: "2"
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   backoffLimit: {{ .Values.migration.backoffLimit }}
   activeDeadlineSeconds: {{ .Values.migration.activeDeadlineSeconds }}
@@ -57,3 +59,4 @@ spec:
             name: {{ include "controlplane-app.fullname" . }}-migration-config
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
+*/}}

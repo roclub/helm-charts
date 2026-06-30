@@ -4,8 +4,6 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-daily-backup
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
 spec:
   schedule: {{ .Values.postgres.backup.schedule | quote }}
   backupOwnerReference: self

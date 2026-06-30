@@ -4,8 +4,6 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-deployment-config
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 data:
   config.yaml: |
     dependencies:
@@ -26,8 +24,6 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
     app.kubernetes.io/component: migration
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 data:
   config.yaml: |
     dependencies:

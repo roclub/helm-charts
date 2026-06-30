@@ -4,8 +4,6 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-postgres-cluster
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   instances: {{ .Values.postgres.cluster.instances }}
   description: {{ printf "%s PostgreSQL cluster" (include "controlplane-app.fullname" .) | quote }}

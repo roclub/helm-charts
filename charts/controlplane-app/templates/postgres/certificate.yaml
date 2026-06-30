@@ -4,8 +4,6 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec:
   selfSigned: {}
 ---
@@ -15,8 +13,6 @@ metadata:
   name: {{ include "controlplane-app.fullname" . }}-postgres-cert
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   secretName: {{ include "controlplane-app.fullname" . }}-postgres-cert
   secretTemplate:
