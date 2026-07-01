@@ -7,3 +7,4 @@ charts/roclub-conference @roclub/core-team
 
 charts/app @roclub/app-team
 charts/controlplane-authz @roclub/app-team
+charts/controlplane-app @roclub/app-team

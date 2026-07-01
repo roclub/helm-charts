@@ -1,0 +1,35 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}
+  {{- with .Values.gatewayApi.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    authentication/zitadel: jwt
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ .Values.gatewayApi.gatewayName }}
+  hostnames:
+  {{- range $domainName := .Values.domainNames }}
+    - {{ $domainName | quote }}
+  {{- end }}
+  rules:
+  {{- range .Values.gatewayApi.hosts }}
+    - matches:
+      {{- range $path := .paths }}
+        {{- range $method := $path.methods }}
+        - path:
+            type: {{ $path.pathType }}
+            value: {{ $path.path }}
+          method: {{ $method }}
+        {{- end }}
+      {{- end }}
+      backendRefs:
+        - name: {{ include "controlplane-app.fullname" $ }}
+          port: {{ $.Values.service.httpPort }}
+  {{- end }}

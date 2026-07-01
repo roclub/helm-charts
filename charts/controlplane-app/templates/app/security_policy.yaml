@@ -1,0 +1,45 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-jwt-authentication
+  {{- with .Values.securityPolicy.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  targetSelectors:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    matchLabels:
+      authentication/zitadel: jwt
+  jwt:
+    providers:
+    - name: zitadel
+      remoteJWKS:
+        uri: {{ .Values.securityPolicy.jwksUri | quote }}
+        backendSettings:
+          retry:
+            numRetries: 5
+  cors:
+    allowOrigins:
+    {{- range $allowedOrigin := .Values.securityPolicy.allowedOrigins}}
+    - {{ $allowedOrigin | quote }}
+    {{- end }}
+    allowMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - PATCH
+    - OPTIONS
+    allowHeaders:
+    - "Origin"
+    - "Authorization"
+    - "Content-Type"
+    - "Accept"
+    - "Content-Length"
+    exposeHeaders:
+    - "Content-Length"
+    # Our App will be only used by Chromium Browsers, Chromiums default value is 7200, we adapt to that.
+    maxAge: "7200s"
+    allowCredentials: true

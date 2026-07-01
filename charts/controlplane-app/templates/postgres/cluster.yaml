@@ -1,0 +1,77 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-postgres-cluster
+  {{- with .Values.postgres.cluster.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+spec:
+  instances: {{ .Values.postgres.cluster.instances }}
+  description: {{ printf "%s PostgreSQL cluster" (include "controlplane-app.fullname" .) | quote }}
+  imageName: {{ .Values.postgres.cluster.imageName | quote }}
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: {{ include "controlplane-app.fullname" . }}-pg-superuser
+
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgres.connection.database }}
+      owner: {{ .Values.postgres.users.migration.name }}
+      secret:
+        name: {{ include "controlplane-app.fullname" . }}-pg-migration
+      # Managed roles are reconciled only after bootstrap, so create the runtime
+      # role here and let managed.roles configure its login and password later.
+      postInitApplicationSQL:
+        - {{ printf "CREATE ROLE \"%s\" NOLOGIN" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT CONNECT ON DATABASE \"%s\" TO \"%s\"" .Values.postgres.connection.database .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT USAGE ON SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
+
+  managed:
+    roles:
+      - name: {{ .Values.postgres.users.migration.name }}
+        ensure: present
+        comment: {{ printf "Schema migration user and owner of the %s database" .Values.postgres.connection.database | quote }}
+        login: true
+        superuser: false
+        createdb: false
+        createrole: false
+        replication: false
+        bypassrls: false
+        passwordSecret:
+          name: {{ include "controlplane-app.fullname" . }}-pg-migration
+      - name: {{ .Values.postgres.users.runtime.name }}
+        ensure: present
+        comment: Application runtime user
+        login: true
+        superuser: false
+        createdb: false
+        createrole: false
+        replication: false
+        bypassrls: false
+        passwordSecret:
+          name: {{ include "controlplane-app.fullname" . }}-pg-runtime
+
+  storage:
+    storageClass: {{ .Values.postgres.cluster.storage.className }}
+    size: {{ .Values.postgres.cluster.storage.size }}
+
+  certificates:
+    serverTLSSecret: {{ include "controlplane-app.fullname" . }}-postgres-cert
+    serverCASecret: {{ include "controlplane-app.fullname" . }}-postgres-cert
+
+  resources:
+    {{- toYaml .Values.postgres.cluster.resources | nindent 4 }}
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: {{ include "controlplane-app.fullname" . }}-aws-s3-postgres-backup
