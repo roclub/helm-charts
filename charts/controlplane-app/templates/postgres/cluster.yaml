@@ -19,6 +19,16 @@ spec:
       owner: {{ .Values.postgres.users.migration.name }}
       secret:
         name: {{ include "controlplane-app.fullname" . }}-pg-migration
+      # Managed roles are reconciled only after bootstrap, so create the runtime
+      # role here and let managed.roles configure its login and password later.
+      postInitApplicationSQL:
+        - {{ printf "CREATE ROLE \"%s\" NOLOGIN" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT CONNECT ON DATABASE \"%s\" TO \"%s\"" .Values.postgres.connection.database .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT USAGE ON SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
+        - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
 
   managed:
     roles:
