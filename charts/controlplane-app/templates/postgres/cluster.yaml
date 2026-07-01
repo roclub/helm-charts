@@ -2,6 +2,10 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: {{ include "controlplane-app.fullname" . }}-postgres-cluster
+  {{- with .Values.postgres.cluster.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:

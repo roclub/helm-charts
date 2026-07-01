@@ -2,6 +2,10 @@ apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: {{ include "controlplane-app.fullname" . }}-daily-backup
+  {{- with .Values.postgres.backup.scheduledBackup.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:

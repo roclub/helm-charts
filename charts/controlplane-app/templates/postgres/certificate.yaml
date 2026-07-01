@@ -2,6 +2,10 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:
@@ -11,6 +15,10 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ include "controlplane-app.fullname" . }}-postgres-cert
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
 spec:

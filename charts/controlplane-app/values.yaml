@@ -13,6 +13,8 @@ imagePullSecrets:
 
 # migration configures the deployment-blocking database migration Job.
 migration:
+  # migration.annotations are added to the migration Job metadata.
+  annotations: {}
   # migration.backoffLimit is the number of retries before the Job fails.
   backoffLimit: 3
   # migration.activeDeadlineSeconds is the maximum total Job duration.
@@ -28,6 +30,8 @@ migration:
 
 # config contains application-specific configuration.
 config:
+  # config.annotations are added to application ConfigMaps.
+  annotations: {}
   # config.calCom configures the Cal.com dependency.
   calCom:
     # config.calCom.apiKey is the Cal.com API credential.
@@ -39,6 +43,8 @@ config:
 
 # service configures the application Service.
 service:
+  # service.annotations are added to the application Service metadata.
+  annotations: {}
   # service.type is the Kubernetes Service type.
   type: "ClusterIP"
   # service.httpPort exposes the HTTP API.
@@ -52,6 +58,8 @@ domainNames:
 
 # gatewayApi configures the Gateway API HTTPRoute.
 gatewayApi:
+  # gatewayApi.annotations are added to the HTTPRoute metadata.
+  annotations: {}
   # gatewayApi.gatewayName is the parent Gateway resource name.
   gatewayName: "dev-controlplane"
   # gatewayApi.hosts contains HTTPRoute rule groups.
@@ -63,6 +71,8 @@ gatewayApi:
 
 # securityPolicy configures JWT authentication and CORS.
 securityPolicy:
+  # securityPolicy.annotations are added to the SecurityPolicy metadata.
+  annotations: {}
   # securityPolicy.jwksUri is the identity provider JSON Web Key Set endpoint.
   jwksUri: "https://identity.dev.roclub.io/oauth/v2/keys"
   # securityPolicy.allowedOrigins lists allowed CORS origins.
@@ -81,8 +91,15 @@ resources:
 # replicaCount is used when autoscaling is disabled.
 replicaCount: 1
 
+# deployment configures the application Deployment.
+deployment:
+  # deployment.annotations are added to the application Deployment metadata.
+  annotations: {}
+
 # autoscaling configures the application HorizontalPodAutoscaler.
 autoscaling:
+  # autoscaling.annotations are added to the HPA metadata.
+  annotations: {}
   # autoscaling.enabled creates an HPA when true.
   enabled: false
   # autoscaling.minReplicas is the minimum application replica count.
@@ -96,6 +113,9 @@ nodeSelector:
 
 # postgres configures the CloudNativePG cluster and its backup integration.
 postgres:
+  # postgres.annotations are added to all chart-managed PostgreSQL resources unless overridden below.
+  annotations: {}
+
   # postgres.connection contains shared non-secret client connection settings.
   connection:
     # postgres.connection.port is the PostgreSQL service port.
@@ -128,6 +148,8 @@ postgres:
 
   # postgres.cluster configures the CloudNativePG Cluster resource.
   cluster:
+    # postgres.cluster.annotations are added to the CloudNativePG Cluster metadata.
+    annotations: {}
     # postgres.cluster.instances is the total number of primary and replica instances.
     instances: 1
     # postgres.cluster.imageName is the PostgreSQL operand image.
@@ -149,12 +171,18 @@ postgres:
 
   # postgres.backup configures base backups, WAL archiving, and object storage.
   backup:
+    # postgres.backup.scheduledBackup configures the ScheduledBackup resource.
+    scheduledBackup:
+      # postgres.backup.scheduledBackup.annotations are added to the ScheduledBackup metadata.
+      annotations: {}
     # postgres.backup.schedule is a six-field cron expression including seconds.
     schedule: "0 0 2 * * *"
     # postgres.backup.retentionPolicy defines the recoverability window.
     retentionPolicy: "7d"
     # postgres.backup.objectStore configures the S3 backup destination.
     objectStore:
+      # postgres.backup.objectStore.annotations are added to the ObjectStore metadata.
+      annotations: {}
       # postgres.backup.objectStore.destinationPath is the environment-specific S3 URI.
       destinationPath: "s3://controlplane-app-dev-postgres-backups"
       # postgres.backup.objectStore.credentials is used to create the chart-managed Secret.
