@@ -24,6 +24,12 @@ data:
     negative_ttl_seconds = {{ .Values.connectorControl.config.redis.negativeTtlSeconds }}
     timeout_ms = {{ .Values.connectorControl.config.redis.timeoutMs }}
     max_retries = {{ .Values.connectorControl.config.redis.maxRetries }}
+    tls_enabled = {{ .Values.connectorControl.config.redis.tls.enabled }}
+    tls_insecure_skip_verify = {{ .Values.connectorControl.config.redis.tls.insecureSkipVerify }}
+    tls_server_name = "{{ if .Values.connectorControl.config.redis.tls.serverName }}{{ .Values.connectorControl.config.redis.tls.serverName }}{{ else }}{{ .Release.Name }}-redis-headless{{ end }}"
+    tls_ca_cert_path = "{{ .Values.connectorControl.config.redis.tls.caCertPath }}"
+    tls_cert_path = "{{ .Values.connectorControl.config.redis.tls.certPath }}"
+    tls_key_path = "{{ .Values.connectorControl.config.redis.tls.keyPath }}"
 
     [connector_control.authz_service]
     address = "http://{{ include "controlplane.authZServiceName" . }}:{{ .Values.authZ.service.port }}"

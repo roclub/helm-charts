@@ -88,6 +88,13 @@ remoteControl:
       negativeTtlSeconds: 10
       timeoutMs: 2000
       maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
 
     liveKit:
       key: ""
@@ -226,6 +233,13 @@ connectorControl:
       negativeTtlSeconds: 10
       timeoutMs: 2000
       maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
 
     logger: "debug"
 
@@ -299,6 +313,27 @@ notifications:
   config:
     logger: "debug"
 
+    redis:
+      enabled: true
+      url: ""
+      username: ""
+      password: ""
+      db: 0
+      timeoutMs: 2000
+      maxRetries: 3
+      tls:
+        enabled: true
+        insecureSkipVerify: false
+        serverName: ""
+        caCertPath: "/etc/redis/tls/ca.crt"
+        certPath: "/etc/redis/tls/tls.crt"
+        keyPath: "/etc/redis/tls/tls.key"
+
+    vapid:
+      publicKey: ""
+      privateKey: ""
+      keyId: ""
+
   serviceAccount:
     create: true
     automount: true
@@ -352,3 +387,54 @@ iotKafkaInterfaceCronjob:
     imagePullPolicy: Always
   imagePullSecrets: dockerconfigjson-github-com
   restartPolicy: OnFailure
+
+redis:
+  architecture: "replication"
+  auth:
+    enabled: true
+    sentinel: true
+    password: ""
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+  replica:
+    replicaCount: 2
+    automountServiceAccountToken: true
+    persistence:
+      enabled: true
+      storageClass: "gp3"
+      size: 10Gi
+  sentinel:
+    enabled: true
+    service:
+      createMaster: true
+    masterService:
+      enabled: true
+  master:
+    persistence:
+      enabled: true
+      storageClass: "gp3"
+      size: 10Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+  tls:
+    enabled: true
+    existingSecret: "controlplane-redis-tls"
+    certFilename: "tls.crt"
+    certKeyFilename: "tls.key"
+    certCAFilename: "ca.crt"
+    authClients: true
+
+redisClientTLS:
+  existingSecret: "controlplane-redis-client-tls"
