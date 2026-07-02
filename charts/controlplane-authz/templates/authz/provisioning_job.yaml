@@ -1,0 +1,49 @@
+{{- if .Values.provisioning.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-authz.fullname" . }}-openfga-model-writer
+  labels:
+    {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
+  {{- with .Values.provisioning.jobAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.provisioning.backoffLimit }}
+  ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
+        app.kubernetes.io/component: openfga-model-writer
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
+      restartPolicy: OnFailure
+      containers:
+        - name: openfga-model-writer
+          image: "{{ .Values.provisioning.image.repository }}:{{ .Values.provisioning.image.tag }}"
+          imagePullPolicy: {{ .Values.provisioning.image.pullPolicy }}
+          args:
+            - model
+            - write
+            - --file
+            - /etc/openfga/model.fga
+          env:
+            - name: FGA_API_URL
+              value: "{{ .Values.config.openfga.url }}"
+            - name: FGA_STORE_ID
+              value: "{{ .Values.config.openfga.storeId }}"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/openfga/model.fga
+              subPath: model.fga
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane-authz.fullname" . }}-config"
+{{- end }}

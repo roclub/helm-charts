@@ -18,7 +18,6 @@ config:
   openfga:
     url: "http://openfga-dev.openfga.svc.cluster.local:8080"
     storeId: "01J7B5WBSF3VHP1D0S5JV5Q1JY"
-    modelId: "01J7BE0N8AQ9XST88B4XXT7KJT"
 
   logger: "debug"
 
@@ -48,6 +47,13 @@ serviceAccount:
   annotations: {}
   name: "authz-dev"
 
+configAnnotations: {}
+deploymentAnnotations: {}
+serviceAnnotations: {}
+routeAnnotations: {}
+securityPolicyAnnotations: {}
+hpaAnnotations: {}
+
 podAnnotations: {}
 podLabels: {}
 podSecurityContext: {}
@@ -70,4 +76,32 @@ nodeSelector: {}
 
 tolerations: []
 affinity: {}
+
+provisioning:
+  enabled: true
+  jobAnnotations: {}
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 300
+  image:
+    repository: openfga/cli
+    tag: "v0.7.15"
+    pullPolicy: IfNotPresent
+  model: |
+    model
+    schema 1.1
+
+    type user
+
+    type organization
+        relations
+            define member: [user]
+            define admin: [user]
+
+    type connector
+        relations
+            define parent: [organization]
+            define local_operator: [user]
+            define remote_operator: [user]
+            define guest: [user]
+            define admin: admin from parent
 

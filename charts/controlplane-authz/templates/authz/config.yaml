@@ -4,6 +4,10 @@ metadata:
   name: "{{ include "controlplane-authz.fullname" . }}-config"
   labels:
     {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
+  {{- with .Values.configAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
   config.toml: |-
     [authz]
@@ -13,7 +17,8 @@ data:
     [authz.openfga]
     url = "{{ .Values.config.openfga.url }}"
     store_id = "{{ .Values.config.openfga.storeId }}"
-    model_id = "{{ .Values.config.openfga.modelId }}"
 
     [authz.logger]
     level = "{{ .Values.config.logger }}"
+  model.fga: |-
+{{- .Values.provisioning.model | trim | nindent 4 }}
