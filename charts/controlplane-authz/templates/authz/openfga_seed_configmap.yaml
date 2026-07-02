@@ -11,6 +11,10 @@ metadata:
     {{- include "controlplane-authz.labels" . | nindent 4 }}
     {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
     app.kubernetes.io/component: openfga-seed
+  {{- with .Values.provisioning.seedConfigMapAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
   tuples.{{ .Values.provisioning.tuplesFileFormat }}: |-
 {{ $tuplesContent | nindent 4 }}

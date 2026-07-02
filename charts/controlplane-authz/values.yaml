@@ -80,6 +80,8 @@ affinity: {}
 provisioning:
   enabled: true
   jobAnnotations: {}
+  seedJobAnnotations: {}
+  seedConfigMapAnnotations: {}
   backoffLimit: 1
   ttlSecondsAfterFinished: 300
   image:
@@ -104,4 +106,15 @@ provisioning:
             define remote_operator: [user]
             define guest: [user]
             define admin: admin from parent
+  # If set, loads tuple data from a file packaged in this chart (e.g. seeds/seed.yaml).
+  tuplesFilePath: ""
+  # Preferred for GitOps overlays and environment-specific seeds.
+  # Set this in the GitOps values file to avoid chart changes per environment.
+  tuplesFileContent: ""
+  tuplesFileFormat: "yaml"
+  seedCommand: ""
+  modelId: ""
+  onDuplicate: "ignore"
+  maxTuplesPerWrite: 50
+  maxParallelRequests: 5
 
