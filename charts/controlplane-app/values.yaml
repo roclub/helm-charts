@@ -48,13 +48,23 @@ service:
   # service.type is the Kubernetes Service type.
   type: "ClusterIP"
   # service.httpPort exposes the HTTP API.
-  httpPort: 8081
+  httpPort: 8080
   # service.grpcPort exposes the gRPC API.
-  grpcPort: 8080
+  grpcPort: 9090
 
 # domainNames lists hostnames accepted by the HTTPRoute.
 domainNames:
   - "controlplane.dev.roclub.io"
+
+# networkPolicy configures the ingress policy for application Pods.
+networkPolicy:
+  # networkPolicy.annotations are added to the application NetworkPolicy metadata.
+  annotations: {}
+  # networkPolicy.allowedNamespace is the namespace containing Pods allowed to access the application.
+  allowedNamespace: "roclub-app"
+  # networkPolicy.allowedPodSelector selects Pods allowed to access the application.
+  allowedPodSelector:
+    app.kubernetes.io/name: "app"
 
 # gatewayApi configures the Gateway API HTTPRoute.
 gatewayApi:
