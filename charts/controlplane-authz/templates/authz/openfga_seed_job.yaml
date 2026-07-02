@@ -1,5 +1,4 @@
 {{- if .Values.provisioning.enabled }}
-{{- $seedJobAnnotations := .Values.provisioning.seedJobAnnotations | default .Values.provisioning.jobAnnotations }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -8,7 +7,7 @@ metadata:
     {{- include "controlplane-authz.labels" . | nindent 4 }}
     {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
     app.kubernetes.io/component: openfga-seed
-  {{- with $seedJobAnnotations }}
+  {{- with .Values.provisioning.seedJobAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -38,7 +37,7 @@ spec:
               set -eu
               API_URL={{ .Values.config.openfga.url | quote }}
               STORE_ID={{ .Values.config.openfga.storeId | quote }}
-              MODEL_ID={{ default .Values.config.openfga.modelId .Values.provisioning.modelId | quote }}
+              MODEL_ID={{ coalesce .Values.provisioning.modelId .Values.config.openfga.modelId .Values.config.openfga.modelID "" | quote }}
 
               {{- if .Values.provisioning.seedCommand }}
               {{ .Values.provisioning.seedCommand | nindent 14 }}
