@@ -16,7 +16,7 @@ spec:
     metadata:
       labels:
         {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
-         app.kubernetes.io/component: openfga-model-writer
+        app.kubernetes.io/component: openfga-model-writer
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
