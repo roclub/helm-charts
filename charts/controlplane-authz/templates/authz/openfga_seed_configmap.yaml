@@ -1,0 +1,17 @@
+{{- if and .Values.provisioning.enabled (or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath) }}
+{{- $tuplesContent := .Values.provisioning.tuplesFileContent }}
+{{- if .Values.provisioning.tuplesFilePath }}
+{{- $tuplesContent = .Files.Get .Values.provisioning.tuplesFilePath }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
+  labels:
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
+    {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
+    app.kubernetes.io/component: openfga-seed
+data:
+  tuples.{{ .Values.provisioning.tuplesFileFormat }}: |-
+{{ $tuplesContent | nindent 4 }}
+{{- end }}
