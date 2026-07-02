@@ -1,0 +1,203 @@
+# image configures the controlplane application container image.
+image:
+  # image.repository is the container image repository.
+  repository: "ghcr.io/roclub/controlplane-app"
+  # image.tag overrides Chart.appVersion when non-empty.
+  tag: ""
+  # image.pullPolicy controls when Kubernetes pulls the application image.
+  pullPolicy: "Always"
+
+# imagePullSecrets lists Secrets used to pull private container images.
+imagePullSecrets:
+  - name: "dockerconfigjson-github-com"
+
+# migration configures the deployment-blocking database migration Job.
+migration:
+  # migration.annotations are added to the migration Job metadata.
+  annotations: {}
+  # migration.backoffLimit is the number of retries before the Job fails.
+  backoffLimit: 3
+  # migration.activeDeadlineSeconds is the maximum total Job duration.
+  activeDeadlineSeconds: 600
+  # migration.resources configures migration container requests and limits.
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+
+# config contains application-specific configuration.
+config:
+  # config.annotations are added to application ConfigMaps.
+  annotations: {}
+  # config.calCom configures the Cal.com dependency.
+  calCom:
+    # config.calCom.apiKey is the Cal.com API credential.
+    apiKey: ""
+    # config.calCom.apiVersion is the requested Cal.com API version.
+    apiVersion: "2024-08-13"
+    # config.calCom.baseUrl is the Cal.com API base URL.
+    baseUrl: "https://api.cal.eu/v2"
+
+# service configures the application Service.
+service:
+  # service.annotations are added to the application Service metadata.
+  annotations: {}
+  # service.type is the Kubernetes Service type.
+  type: "ClusterIP"
+  # service.httpPort exposes the HTTP API.
+  httpPort: 8080
+  # service.grpcPort exposes the gRPC API.
+  grpcPort: 9090
+
+# domainNames lists hostnames accepted by the HTTPRoute.
+domainNames:
+  - "controlplane.dev.roclub.io"
+
+# networkPolicy configures the ingress policy for application Pods.
+networkPolicy:
+  # networkPolicy.annotations are added to the application NetworkPolicy metadata.
+  annotations: {}
+  # networkPolicy.allowedNamespace is the namespace containing Pods allowed to access the application.
+  allowedNamespace: "roclub-app"
+  # networkPolicy.allowedPodSelector selects Pods allowed to access the application.
+  allowedPodSelector:
+    app.kubernetes.io/name: "app"
+
+# gatewayApi configures the Gateway API HTTPRoute.
+gatewayApi:
+  # gatewayApi.annotations are added to the HTTPRoute metadata.
+  annotations: {}
+  # gatewayApi.gatewayName is the parent Gateway resource name.
+  gatewayName: "dev-controlplane"
+  # gatewayApi.hosts contains HTTPRoute rule groups.
+  hosts:
+    - paths:
+        - path: "/api/core/v1/"
+          pathType: "PathPrefix"
+          methods: ["GET", "POST", "DELETE", "PATCH", "PUT", "OPTIONS"]
+
+# securityPolicy configures JWT authentication and CORS.
+securityPolicy:
+  # securityPolicy.annotations are added to the SecurityPolicy metadata.
+  annotations: {}
+  # securityPolicy.jwksUri is the identity provider JSON Web Key Set endpoint.
+  jwksUri: "https://identity.dev.roclub.io/oauth/v2/keys"
+  # securityPolicy.allowedOrigins lists allowed CORS origins.
+  allowedOrigins:
+    - "https://beta.dev.roclub.io"
+
+# resources configures application container requests and limits.
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "400m"
+    memory: "512Mi"
+
+# replicaCount is used when autoscaling is disabled.
+replicaCount: 1
+
+# deployment configures the application Deployment.
+deployment:
+  # deployment.annotations are added to the application Deployment metadata.
+  annotations: {}
+
+# autoscaling configures the application HorizontalPodAutoscaler.
+autoscaling:
+  # autoscaling.annotations are added to the HPA metadata.
+  annotations: {}
+  # autoscaling.enabled creates an HPA when true.
+  enabled: false
+  # autoscaling.minReplicas is the minimum application replica count.
+  minReplicas: 1
+  # autoscaling.maxReplicas is the maximum application replica count.
+  maxReplicas: 1
+
+# nodeSelector constrains application and migration Pods to matching nodes.
+nodeSelector:
+  kubernetes.io/arch: "arm64"
+
+# postgres configures the CloudNativePG cluster and its backup integration.
+postgres:
+  # postgres.annotations are added to all chart-managed PostgreSQL resources unless overridden below.
+  annotations: {}
+
+  # postgres.connection contains shared non-secret client connection settings.
+  connection:
+    # postgres.connection.port is the PostgreSQL service port.
+    port: 5432
+    # postgres.connection.database is the application database name.
+    database: "controlplane_app"
+    # postgres.connection.sslMode controls PostgreSQL client TLS behavior.
+    sslMode: "require"
+
+  # postgres.users defines database roles used by the chart-managed PostgreSQL cluster.
+  users:
+    # postgres.users.superuser configures the administrative postgres role.
+    superuser:
+      # postgres.users.superuser.name is the PostgreSQL superuser role name.
+      name: "postgres"
+      # postgres.users.superuser.password is used to create the chart-managed Secret.
+      password: ""
+    # postgres.users.runtime configures the least-privileged application role.
+    runtime:
+      # postgres.users.runtime.name is the application runtime role name.
+      name: "controlplane_app_runtime"
+      # postgres.users.runtime.password is used to create the chart-managed Secret.
+      password: ""
+    # postgres.users.migration configures the database owner and migration role.
+    migration:
+      # postgres.users.migration.name is the schema migration role name.
+      name: "controlplane_app_migration"
+      # postgres.users.migration.password is used to create the chart-managed Secret.
+      password: ""
+
+  # postgres.cluster configures the CloudNativePG Cluster resource.
+  cluster:
+    # postgres.cluster.annotations are added to the CloudNativePG Cluster metadata.
+    annotations: {}
+    # postgres.cluster.instances is the total number of primary and replica instances.
+    instances: 1
+    # postgres.cluster.imageName is the PostgreSQL operand image.
+    imageName: "ghcr.io/cloudnative-pg/postgresql:16.0"
+    # postgres.cluster.storage configures each PostgreSQL data volume.
+    storage:
+      # postgres.cluster.storage.className is the Kubernetes StorageClass name.
+      className: "aws-gp3-daily-backup"
+      # postgres.cluster.storage.size is the requested data volume capacity.
+      size: "50Gi"
+    # postgres.cluster.resources configures each PostgreSQL instance.
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+
+  # postgres.backup configures base backups, WAL archiving, and object storage.
+  backup:
+    # postgres.backup.scheduledBackup configures the ScheduledBackup resource.
+    scheduledBackup:
+      # postgres.backup.scheduledBackup.annotations are added to the ScheduledBackup metadata.
+      annotations: {}
+    # postgres.backup.schedule is a six-field cron expression including seconds.
+    schedule: "0 0 2 * * *"
+    # postgres.backup.retentionPolicy defines the recoverability window.
+    retentionPolicy: "7d"
+    # postgres.backup.objectStore configures the S3 backup destination.
+    objectStore:
+      # postgres.backup.objectStore.annotations are added to the ObjectStore metadata.
+      annotations: {}
+      # postgres.backup.objectStore.destinationPath is the environment-specific S3 URI.
+      destinationPath: "s3://controlplane-app-dev-postgres-backups"
+      # postgres.backup.objectStore.credentials is used to create the chart-managed Secret.
+      credentials:
+        # postgres.backup.objectStore.credentials.accessKeyId is the S3 access key identifier.
+        accessKeyId: ""
+        # postgres.backup.objectStore.credentials.secretAccessKey is the S3 secret access key.
+        secretAccessKey: ""
