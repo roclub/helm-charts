@@ -119,7 +119,6 @@ provisioning:
   tuplesFileContent: ""
   tuplesFileFormat: "yaml"
   seedCommand: ""
-  modelId: ""
   onDuplicate: "ignore"
   maxTuplesPerWrite: 50
   maxParallelRequests: 5

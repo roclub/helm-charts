@@ -37,29 +37,17 @@ spec:
               set -eu
               API_URL={{ .Values.config.openfga.url | quote }}
               STORE_ID={{ .Values.config.openfga.storeId | quote }}
-              MODEL_ID={{ coalesce .Values.provisioning.modelId .Values.config.openfga.modelId .Values.config.openfga.modelID "" | quote }}
 
               {{- if .Values.provisioning.seedCommand }}
               {{ .Values.provisioning.seedCommand | nindent 14 }}
               {{- else if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
-              if [ -n "${MODEL_ID}" ]; then
-                fga tuple write \
-                  --api-url "${API_URL}" \
-                  --store-id "${STORE_ID}" \
-                  --model-id "${MODEL_ID}" \
-                  --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
-                  --on-duplicate {{ .Values.provisioning.onDuplicate }} \
-                  --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
-                  --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
-              else
-                fga tuple write \
-                  --api-url "${API_URL}" \
-                  --store-id "${STORE_ID}" \
-                  --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
-                  --on-duplicate {{ .Values.provisioning.onDuplicate }} \
-                  --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
-                  --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
-              fi
+              fga tuple write \
+                --api-url "${API_URL}" \
+                --store-id "${STORE_ID}" \
+                --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
+                --on-duplicate {{ .Values.provisioning.onDuplicate }} \
+                --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
+                --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
               {{- else }}
               echo "provisioning.enabled=true but neither provisioning.seedCommand nor tuple input (tuplesFilePath/tuplesFileContent) is set"
               exit 1
