@@ -94,18 +94,24 @@ provisioning:
 
     type user
 
+    type platform
+      relations
+        define csm: [user]
+
     type organization
-        relations
-            define member: [user]
-            define admin: [user]
+      relations
+        define parent: [platform]
+        define member: [user] or csm from parent
+        define admin: [user] or csm from parent
 
     type connector
-        relations
-            define parent: [organization]
-            define local_operator: [user]
-            define remote_operator: [user]
-            define guest: [user]
-            define admin: admin from parent
+      relations
+        define parent: [organization]
+        define local_operator: [user] or admin from parent
+        define remote_operator: [user] or admin from parent
+        define guest: [user]
+        define admin: admin from parent
+
   # If set, loads tuple data from a file packaged in this chart (e.g. seeds/seed.yaml).
   tuplesFilePath: ""
   # Preferred for GitOps overlays and environment-specific seeds.
