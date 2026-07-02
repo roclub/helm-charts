@@ -47,6 +47,13 @@ serviceAccount:
   annotations: {}
   name: "authz-dev"
 
+configAnnotations: {}
+deploymentAnnotations: {}
+serviceAnnotations: {}
+routeAnnotations: {}
+securityPolicyAnnotations: {}
+hpaAnnotations: {}
+
 podAnnotations: {}
 podLabels: {}
 podSecurityContext: {}
