@@ -1,0 +1,80 @@
+{{- if .Values.provisioning.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
+  labels:
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
+    {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
+    app.kubernetes.io/component: openfga-seed
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "10"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.provisioning.backoffLimit }}
+  ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
+        app.kubernetes.io/component: openfga-seed
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: seed
+          image: "{{ .Values.provisioning.image.repository }}:{{ .Values.provisioning.image.tag }}"
+          imagePullPolicy: {{ .Values.provisioning.image.pullPolicy }}
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              set -eu
+              API_URL={{ .Values.config.openfga.url | quote }}
+              STORE_ID={{ .Values.config.openfga.storeId | quote }}
+              MODEL_ID={{ default .Values.config.openfga.modelId .Values.provisioning.modelId | quote }}
+
+              {{- if .Values.provisioning.seedCommand }}
+              {{ .Values.provisioning.seedCommand | nindent 14 }}
+              {{- else if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
+              if [ -n "${MODEL_ID}" ]; then
+                fga tuple write \
+                  --api-url "${API_URL}" \
+                  --store-id "${STORE_ID}" \
+                  --model-id "${MODEL_ID}" \
+                  --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
+                  --on-duplicate {{ .Values.provisioning.onDuplicate }} \
+                  --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
+                  --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
+              else
+                fga tuple write \
+                  --api-url "${API_URL}" \
+                  --store-id "${STORE_ID}" \
+                  --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
+                  --on-duplicate {{ .Values.provisioning.onDuplicate }} \
+                  --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
+                  --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
+              fi
+              {{- else }}
+              echo "provisioning.enabled=true but neither provisioning.seedCommand nor tuple input (tuplesFilePath/tuplesFileContent) is set"
+              exit 1
+              {{- end }}
+          {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
+          volumeMounts:
+            - name: seed-file
+              mountPath: /seed
+              readOnly: true
+          {{- end }}
+      {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
+      volumes:
+        - name: seed-file
+          configMap:
+            name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
+            defaultMode: 0444
+      {{- end }}
+{{- end }}
