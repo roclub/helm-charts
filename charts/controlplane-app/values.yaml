@@ -1,7 +1,7 @@
 # image configures the controlplane application container image.
 image:
   # image.repository is the container image repository.
-  repository: "ghcr.io/roclub/controlplane-app"
+  repository: "ghcr.io/roclub/controlplane-app-backend"
   # image.tag overrides Chart.appVersion when non-empty.
   tag: ""
   # image.pullPolicy controls when Kubernetes pulls the application image.
