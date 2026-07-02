@@ -71,6 +71,10 @@ tolerations: []
 affinity: {}
 
 provisioning:
+  enabled: true
+  jobAnnotations: {}
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 300
   image:
     repository: openfga/cli
     tag: "v0.7.15"
