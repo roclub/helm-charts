@@ -3,6 +3,10 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: {{ $name}}-jwt-authentication
+  {{- with .Values.securityPolicyAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   targetSelectors:
   - group: gateway.networking.k8s.io

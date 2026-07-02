@@ -4,6 +4,10 @@ metadata:
   name: "{{ include "controlplane-authz.fullname" . }}-config"
   labels:
     {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
+  {{- with .Values.configAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 data:
   config.toml: |-
     [authz]

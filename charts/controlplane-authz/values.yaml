@@ -47,6 +47,13 @@ serviceAccount:
   annotations: {}
   name: "authz-dev"
 
+configAnnotations: {}
+deploymentAnnotations: {}
+serviceAnnotations: {}
+routeAnnotations: {}
+securityPolicyAnnotations: {}
+hpaAnnotations: {}
+
 podAnnotations: {}
 podLabels: {}
 podSecurityContext: {}
@@ -71,6 +78,10 @@ tolerations: []
 affinity: {}
 
 provisioning:
+  enabled: true
+  jobAnnotations: {}
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 300
   image:
     repository: openfga/cli
     tag: "v0.7.15"
