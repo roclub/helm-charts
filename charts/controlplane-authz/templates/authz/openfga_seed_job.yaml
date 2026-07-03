@@ -49,6 +49,11 @@ spec:
             - name: config-volume
               mountPath: /etc/edged
               readOnly: true
+          {{- if .Values.provisioning.seedConfig }}
+            - name: seed-config-volume
+              mountPath: /etc/seed
+              readOnly: true
+          {{- end }}
           {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
             - name: seed-file
               mountPath: /seed
@@ -59,6 +64,12 @@ spec:
           configMap:
             name: "{{ include "controlplane-authz.fullname" . }}-config"
             defaultMode: 0444
+      {{- if .Values.provisioning.seedConfig }}
+        - name: seed-config-volume
+          configMap:
+            name: {{ include "controlplane-authz.fullname" . }}-seed-config
+            defaultMode: 0444
+      {{- end }}
       {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
         - name: seed-file
           configMap:

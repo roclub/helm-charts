@@ -122,8 +122,15 @@ provisioning:
   # Set this in the GitOps values file to avoid chart changes per environment.
   tuplesFileContent: ""
   tuplesFileFormat: "yaml"
+  # Seed configuration passed to the OpenFGA seed Job (ConfigMap seed.toml).
+  # Set this in GitOps to provide environment-specific seed configuration.
+  seedConfig: |
+    [seed.openfga]
+    url = "{{ .Values.config.openfga.url }}"
+    store_id = "{{ .Values.config.openfga.storeId }}"
   # Command executed by the OpenFGA seed Job (runs in provisioning.seedImage).
   # It should invoke the controlplane-authz CLI seeding command.
+  # Example: /app/bin/controlplane-authz seed --config-dir /etc/seed
   seedCommand: ""
   onDuplicate: "ignore"
   maxTuplesPerWrite: 50
