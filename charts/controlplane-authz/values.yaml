@@ -101,7 +101,7 @@ provisioning:
     type organization
       relations
         define parent: [platform]
-        define member: [user] or csm from parent
+        define member: [user]
         define admin: [user] or csm from parent
 
     type connector
