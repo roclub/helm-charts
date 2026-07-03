@@ -29,37 +29,37 @@ spec:
       {{- end }}
       containers:
         - name: seed
-          image: "{{ .Values.provisioning.image.repository }}:{{ .Values.provisioning.image.tag }}"
-          imagePullPolicy: {{ .Values.provisioning.image.pullPolicy }}
+          image: "{{ default .Values.image.repository .Values.provisioning.seedImage.repository }}:{{ default (default .Chart.AppVersion .Values.image.tag) .Values.provisioning.seedImage.tag }}"
+          imagePullPolicy: {{ default .Values.image.pullPolicy .Values.provisioning.seedImage.pullPolicy }}
           command: ["/bin/sh", "-ec"]
           args:
             - |
               set -eu
               API_URL={{ .Values.config.openfga.url | quote }}
               STORE_ID={{ .Values.config.openfga.storeId | quote }}
+              SEED_FILE=/seed/tuples.{{ .Values.provisioning.tuplesFileFormat }}
 
               {{- if .Values.provisioning.seedCommand }}
               {{ .Values.provisioning.seedCommand | nindent 14 }}
-              {{- else if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
-              fga tuple write \
-                --api-url "${API_URL}" \
-                --store-id "${STORE_ID}" \
-                --file /seed/tuples.{{ .Values.provisioning.tuplesFileFormat }} \
-                --on-duplicate {{ .Values.provisioning.onDuplicate }} \
-                --max-tuples-per-write {{ .Values.provisioning.maxTuplesPerWrite }} \
-                --max-parallel-requests {{ .Values.provisioning.maxParallelRequests }}
               {{- else }}
-              echo "provisioning.enabled=true but neither provisioning.seedCommand nor tuple input (tuplesFilePath/tuplesFileContent) is set"
+              echo "provisioning.enabled=true but provisioning.seedCommand is not set"
               exit 1
               {{- end }}
-          {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
           volumeMounts:
+            - name: config-volume
+              mountPath: /etc/edged
+              readOnly: true
+          {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
             - name: seed-file
               mountPath: /seed
               readOnly: true
           {{- end }}
-      {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
       volumes:
+        - name: config-volume
+          configMap:
+            name: "{{ include "controlplane-authz.fullname" . }}-config"
+            defaultMode: 0444
+      {{- if or .Values.provisioning.tuplesFileContent .Values.provisioning.tuplesFilePath }}
         - name: seed-file
           configMap:
             name: {{ include "controlplane-authz.fullname" . }}-openfga-seed

@@ -84,6 +84,10 @@ provisioning:
   seedConfigMapAnnotations: {}
   backoffLimit: 1
   ttlSecondsAfterFinished: 300
+  seedImage:
+    repository: ghcr.io/roclub/controlplane-authz
+    tag: ""
+    pullPolicy: Always
   image:
     repository: openfga/cli
     tag: "v0.7.15"
@@ -118,6 +122,8 @@ provisioning:
   # Set this in the GitOps values file to avoid chart changes per environment.
   tuplesFileContent: ""
   tuplesFileFormat: "yaml"
+  # Command executed by the OpenFGA seed Job (runs in provisioning.seedImage).
+  # It should invoke the controlplane-authz CLI seeding command.
   seedCommand: ""
   onDuplicate: "ignore"
   maxTuplesPerWrite: 50
