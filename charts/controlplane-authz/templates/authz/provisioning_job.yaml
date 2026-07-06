@@ -26,8 +26,8 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: openfga-model-writer
-          image: "{{ .Values.provisioning.image.repository }}:{{ .Values.provisioning.image.tag }}"
-          imagePullPolicy: {{ .Values.provisioning.image.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - model
             - write
