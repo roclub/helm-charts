@@ -30,20 +30,9 @@ spec:
           command:
             - /usr/local/bin/backend
           args:
-            - "run"
+            - run
             - "--config"
             - "/app/config.yaml"
-          env:
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "controlplane-app.fullname" . }}-pg-runtime
-                  key: username
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "controlplane-app.fullname" . }}-pg-runtime
-                  key: password
           ports:
             - name: grpc
               containerPort: {{ .Values.service.grpcPort }}
