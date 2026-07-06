@@ -12,5 +12,5 @@ metadata:
   {{- end }}
 data:
   seed.toml: |-
-{{ .Values.provisioning.seedConfig | nindent 4 }}
+{{ tpl .Values.provisioning.seedConfig . | nindent 4 }}
 {{- end }}
