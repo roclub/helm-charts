@@ -15,6 +15,6 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 data:
-  tuples.{{ .Values.provisioning.tuplesFileFormat }}: |-
+  tuples.yaml: |-
 {{ $tuplesContent | nindent 4 }}
 {{- end }}

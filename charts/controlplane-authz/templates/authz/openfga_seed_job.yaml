@@ -33,7 +33,7 @@ spec:
               set -eu
               API_URL={{ .Values.config.openfga.url | quote }}
               STORE_ID={{ .Values.config.openfga.storeId | quote }}
-              SEED_FILE=/seed/tuples.{{ .Values.provisioning.tuplesFileFormat }}
+              SEED_FILE=/seed/tuples.yaml
 
               /app/bin/controlplane-authz seed --config-dir /etc/seed
           volumeMounts:
