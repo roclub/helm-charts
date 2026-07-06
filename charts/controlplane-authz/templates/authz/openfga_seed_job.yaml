@@ -5,7 +5,6 @@ metadata:
   name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
   labels:
     {{- include "controlplane-authz.labels" . | nindent 4 }}
-    {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 4 }}
     app.kubernetes.io/component: openfga-seed
   {{- with .Values.provisioning.seedJobAnnotations }}
   annotations:
@@ -17,7 +16,6 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "controlplane-authz.selectorLabelsAuthZ" . | nindent 8 }}
         app.kubernetes.io/component: openfga-seed
     spec:
       restartPolicy: Never
