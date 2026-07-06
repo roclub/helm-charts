@@ -31,32 +31,25 @@ spec:
           args:
             - |
               set -eu
-              API_URL={{ .Values.config.openfga.url | quote }}
-              STORE_ID={{ .Values.config.openfga.storeId | quote }}
-              SEED_FILE=/seed/tuples.yaml
-
               /app/bin/controlplane-authz seed --config-dir /etc/seed
           volumeMounts:
             - name: config-volume
               mountPath: /etc/edged
               readOnly: true
-            - name: seed-config-volume
+            - name: seed-data-volume
               mountPath: /etc/seed
-              readOnly: true
-            - name: seed-file
-              mountPath: /seed
               readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: "{{ include "controlplane-authz.fullname" . }}-config"
             defaultMode: 0444
-        - name: seed-config-volume
-          configMap:
-            name: {{ include "controlplane-authz.fullname" . }}-seed-config
+        - name: seed-data-volume
+          projected:
             defaultMode: 0444
-        - name: seed-file
-          configMap:
-            name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
-            defaultMode: 0444
+            sources:
+              - configMap:
+                  name: {{ include "controlplane-authz.fullname" . }}-seed-config
+              - configMap:
+                  name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
 {{- end }}
