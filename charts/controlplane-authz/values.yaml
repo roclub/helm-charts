@@ -128,7 +128,4 @@ provisioning:
     [seed.openfga]
     url = "{{ .Values.config.openfga.url }}"
     store_id = "{{ .Values.config.openfga.storeId }}"
-  onDuplicate: "ignore"
-  maxTuplesPerWrite: 50
-  maxParallelRequests: 5
 
