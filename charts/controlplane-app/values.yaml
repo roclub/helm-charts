@@ -119,7 +119,7 @@ autoscaling:
 
 # nodeSelector constrains application and migration Pods to matching nodes.
 nodeSelector:
-  kubernetes.io/arch: "arm64"
+  beta.kubernetes.io/arch: "arm64"
 
 # postgres configures the CloudNativePG cluster and its backup integration.
 postgres:
