@@ -36,7 +36,10 @@ data:
   config.yaml: |
     dependencies:
       postgres:
-        host: {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
-        port: {{ .Values.postgres.connection.port }}
-        database: {{ .Values.postgres.connection.database | quote }}
-        sslMode: {{ .Values.postgres.connection.sslMode | quote }}
+        {{- $user := .Values.postgres.users.migration.name | urlquery }}
+        {{- $pass := .Values.postgres.users.migration.password | urlquery }}
+        {{- $host := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $port := .Values.postgres.connection.port }}
+        {{- $db := .Values.postgres.connection.database | urlquery }}
+        {{- $sslmode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $user $pass $host $port $db $sslmode | quote }}
