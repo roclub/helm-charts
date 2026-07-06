@@ -19,8 +19,6 @@ spec:
         app.kubernetes.io/component: openfga-seed
     spec:
       restartPolicy: Never
-      serviceAccountName: {{ include "controlplane-authz.serviceAccountAuthZName" . }}
-      automountServiceAccountToken: false
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
