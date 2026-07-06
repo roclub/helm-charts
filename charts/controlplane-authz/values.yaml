@@ -84,10 +84,6 @@ provisioning:
   seedConfigMapAnnotations: {}
   backoffLimit: 1
   ttlSecondsAfterFinished: 60
-  seedImage:
-    repository: ghcr.io/roclub/controlplane-authz
-    tag: ""
-    pullPolicy: Always
   image:
     repository: openfga/cli
     tag: "v0.7.15"

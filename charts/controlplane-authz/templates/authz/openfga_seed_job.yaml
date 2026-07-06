@@ -25,8 +25,8 @@ spec:
       {{- end }}
       containers:
         - name: seed
-          image: "{{ default .Values.image.repository .Values.provisioning.seedImage.repository }}:{{ default (default .Chart.AppVersion .Values.image.tag) .Values.provisioning.seedImage.tag }}"
-          imagePullPolicy: {{ default .Values.image.pullPolicy .Values.provisioning.seedImage.pullPolicy }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh", "-ec"]
           args:
             - |
