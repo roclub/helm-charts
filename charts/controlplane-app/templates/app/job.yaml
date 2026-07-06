@@ -31,8 +31,8 @@ spec:
           args:
             - migrate
             - up
-            - "--config"
-            - "/app/config.yaml"
+            - --config
+            - /app/config.yaml
           volumeMounts:
             - name: migration-config
               mountPath: /app/config.yaml
