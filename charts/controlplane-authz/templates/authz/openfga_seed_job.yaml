@@ -39,12 +39,7 @@ spec:
               STORE_ID={{ .Values.config.openfga.storeId | quote }}
               SEED_FILE=/seed/tuples.{{ .Values.provisioning.tuplesFileFormat }}
 
-              {{- if .Values.provisioning.seedCommand }}
-              {{ .Values.provisioning.seedCommand | nindent 14 }}
-              {{- else }}
-              echo "provisioning.enabled=true but provisioning.seedCommand is not set"
-              exit 1
-              {{- end }}
+              /app/bin/controlplane-authz seed --config-dir /etc/seed
           volumeMounts:
             - name: config-volume
               mountPath: /etc/edged

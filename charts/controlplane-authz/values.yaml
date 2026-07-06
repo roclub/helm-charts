@@ -78,7 +78,7 @@ tolerations: []
 affinity: {}
 
 provisioning:
-  enabled: true
+  enabled: false
   jobAnnotations: {}
   seedJobAnnotations: {}
   seedConfigMapAnnotations: {}
@@ -128,10 +128,6 @@ provisioning:
     [seed.openfga]
     url = "{{ .Values.config.openfga.url }}"
     store_id = "{{ .Values.config.openfga.storeId }}"
-  # Command executed by the OpenFGA seed Job (runs in provisioning.seedImage).
-  # It should invoke the controlplane-authz CLI seeding command.
-  # Example: /app/bin/controlplane-authz seed --config-dir /etc/seed
-  seedCommand: ""
   onDuplicate: "ignore"
   maxTuplesPerWrite: 50
   maxParallelRequests: 5
