@@ -29,21 +29,10 @@ spec:
           command:
             - /usr/local/bin/backend
           args:
-            - "--config"
-            - "/app/config.yaml"
             - migrate
             - up
-          env:
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "controlplane-app.fullname" . }}-pg-migration
-                  key: username
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "controlplane-app.fullname" . }}-pg-migration
-                  key: password
+            - "--config"
+            - "/app/config.yaml"
           volumeMounts:
             - name: migration-config
               mountPath: /app/config.yaml
