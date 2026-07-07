@@ -12,5 +12,7 @@ metadata:
   {{- end }}
 data:
   seed.toml: |-
-{{ tpl .Values.provisioning.seedConfig . | nindent 4 }}
+    [seed.openfga]
+    url = {{ .Values.config.openfga.url | quote }}
+    store_id = {{ .Values.config.openfga.storeId | quote }}
 {{- end }}

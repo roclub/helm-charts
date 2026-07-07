@@ -117,10 +117,4 @@ provisioning:
   # Preferred for GitOps overlays and environment-specific seeds.
   # Set this in the GitOps values file to avoid chart changes per environment.
   tuplesFileContent: ""
-  # Seed configuration passed to the OpenFGA seed Job (ConfigMap seed.toml).
-  # Set this in GitOps to provide environment-specific seed configuration.
-  seedConfig: |
-    [seed.openfga]
-    url = "{{ .Values.config.openfga.url }}"
-    store_id = "{{ .Values.config.openfga.storeId }}"
 
