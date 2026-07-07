@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-migration
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+  {{- with .Values.migration.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.migration.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migration.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: migration
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: migration
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/backend
+          args:
+            - migrate
+            - up
+            - --config
+            - /app/config.yaml
+          volumeMounts:
+            - name: migration-config
+              mountPath: /app/config.yaml
+              subPath: config.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.migration.resources | nindent 12 }}
+      volumes:
+        - name: migration-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-migration-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

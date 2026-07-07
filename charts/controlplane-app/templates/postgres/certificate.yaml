@@ -1,0 +1,45 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-postgres-cert
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "controlplane-app.fullname" . }}-postgres-cert
+  secretTemplate:
+    labels:
+      cnpg.io/reload: "true"
+      {{- include "controlplane-app.labels" . | nindent 6 }}
+  usages:
+    - server auth
+  dnsNames:
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}.svc
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}.svc
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}
+    - {{ include "controlplane-app.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}.svc
+  issuerRef:
+    name: {{ include "controlplane-app.fullname" . }}-selfsigned-issuer
+    kind: Issuer
+    group: cert-manager.io

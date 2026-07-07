@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-deployment-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    dependencies:
+      postgres:
+        {{- $user := .Values.postgres.users.runtime.name | urlquery }}
+        {{- $pass := .Values.postgres.users.runtime.password | urlquery }}
+        {{- $host := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $port := .Values.postgres.connection.port }}
+        {{- $db := .Values.postgres.connection.database | urlquery }}
+        {{- $sslmode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $user $pass $host $port $db $sslmode | quote }}
+      calCom:
+        apiKey: {{ .Values.config.calCom.apiKey | quote }}
+        apiVersion: {{ .Values.config.calCom.apiVersion | quote }}
+        baseURL: {{ .Values.config.calCom.baseUrl | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-migration-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+data:
+  config.yaml: |
+    dependencies:
+      postgres:
+        {{- $migUser := .Values.postgres.users.migration.name | urlquery }}
+        {{- $migPass := .Values.postgres.users.migration.password | urlquery }}
+        {{- $migHost := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $migPort := .Values.postgres.connection.port }}
+        {{- $migDb := .Values.postgres.connection.database | urlquery }}
+        {{- $migSslmode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $migUser $migPass $migHost $migPort $migDb $migSslmode | quote }}
