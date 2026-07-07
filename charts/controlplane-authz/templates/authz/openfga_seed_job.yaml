@@ -33,17 +33,10 @@ spec:
               set -eu
               /app/bin/controlplane-authz seed --config-dir /etc/seed
           volumeMounts:
-            - name: config-volume
-              mountPath: /etc/edged
-              readOnly: true
             - name: seed-data-volume
               mountPath: /etc/seed
               readOnly: true
       volumes:
-        - name: config-volume
-          configMap:
-            name: "{{ include "controlplane-authz.fullname" . }}-config"
-            defaultMode: 0444
         - name: seed-data-volume
           projected:
             defaultMode: 0444
