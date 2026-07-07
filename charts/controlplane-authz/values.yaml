@@ -112,8 +112,6 @@ provisioning:
         define guest: [user]
         define admin: admin from parent
 
-  # If set, loads tuple data from a file packaged in this chart (e.g. seeds/seed.yaml).
-  tuplesFilePath: ""
   # Preferred for GitOps overlays and environment-specific seeds.
   # Set this in the GitOps values file to avoid chart changes per environment.
   tuplesFileContent: ""

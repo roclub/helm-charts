@@ -1,8 +1,5 @@
 {{- if .Values.provisioning.enabled }}
 {{- $tuplesContent := .Values.provisioning.tuplesFileContent }}
-{{- if .Values.provisioning.tuplesFilePath }}
-{{- $tuplesContent = .Files.Get .Values.provisioning.tuplesFilePath }}
-{{- end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
