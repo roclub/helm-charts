@@ -27,11 +27,10 @@ spec:
         - name: seed
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh", "-ec"]
           args:
-            - |
-              set -eu
-              /app/bin/controlplane-authz seed --config-dir /etc/seed
+            - seed
+            - --config-dir
+            - /etc/seed
           volumeMounts:
             - name: seed-data-volume
               mountPath: /etc/seed
