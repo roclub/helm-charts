@@ -55,4 +55,4 @@ spec:
           configMap:
             name: {{ include "controlplane-app.fullname" . }}-migration-config
       nodeSelector:
-        beta.kubernetes.io/arch: arm64
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
