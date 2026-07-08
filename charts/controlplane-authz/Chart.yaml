@@ -3,4 +3,4 @@ name: controlplane-authz
 description: Deploys the AuthZ micro service
 type: application
 version: 0.4.2
-appVersion: "1.5.0"
+appVersion: "1.4.0"
