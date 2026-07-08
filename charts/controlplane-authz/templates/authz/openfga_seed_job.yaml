@@ -29,8 +29,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - seed
-            - --config-dir
-            - /etc/seed
+            - --seed-config
+            - /etc/seed/seed.toml
+            - --seed-file
+            - /etc/seed/tuples.yaml
           volumeMounts:
             - name: seed-data-volume
               mountPath: /etc/seed
