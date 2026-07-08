@@ -3339,6 +3339,16 @@ entries:
   controlplane-authz:
   - apiVersion: v2
     appVersion: 1.5.0
+    created: "2026-07-08T13:39:52.272384597Z"
+    description: Deploys the AuthZ micro service
+    digest: 627ed34fc07f35380fd7e05beddc8a35b68ad3b4e6b1f4d2e83bf90a1ab3741a
+    name: controlplane-authz
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-authz-0.5.2/controlplane-authz-0.5.2.tgz
+    version: 0.5.2
+  - apiVersion: v2
+    appVersion: 1.5.0
     created: "2026-07-08T13:13:42.526884714Z"
     description: Deploys the AuthZ micro service
     digest: d2ca91579fc38790b25143244139fae2c196042c235aea0f1657dda7b9b17c1c
@@ -5166,4 +5176,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-08T13:13:42.527638716Z"
+generated: "2026-07-08T13:39:52.273048514Z"
