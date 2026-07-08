@@ -1,0 +1,48 @@
+{{- if .Values.provisioning.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
+  labels:
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
+    app.kubernetes.io/component: openfga-seed
+  {{- with .Values.provisioning.seedJobAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.provisioning.backoffLimit }}
+  ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: openfga-seed
+    spec:
+      restartPolicy: Never
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: seed
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              set -eu
+              /app/bin/controlplane-authz seed --config-dir /etc/seed
+          volumeMounts:
+            - name: seed-data-volume
+              mountPath: /etc/seed
+              readOnly: true
+      volumes:
+        - name: seed-data-volume
+          projected:
+            defaultMode: 0444
+            sources:
+              - configMap:
+                  name: {{ include "controlplane-authz.fullname" . }}-seed-config
+              - configMap:
+                  name: {{ include "controlplane-authz.fullname" . }}-openfga-seed
+{{- end }}
