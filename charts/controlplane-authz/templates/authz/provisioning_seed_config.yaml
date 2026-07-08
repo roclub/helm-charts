@@ -1,0 +1,18 @@
+{{- if .Values.provisioning.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-authz.fullname" . }}-seed-config
+  labels:
+    {{- include "controlplane-authz.labels" . | nindent 4 }}
+    app.kubernetes.io/component: openfga-seed
+  {{- with .Values.provisioning.seedConfigMapAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  seed.toml: |-
+    [seed.openfga]
+    url = {{ .Values.config.openfga.url | quote }}
+    store_id = {{ .Values.config.openfga.storeId | quote }}
+{{- end }}

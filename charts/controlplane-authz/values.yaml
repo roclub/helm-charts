@@ -78,10 +78,12 @@ tolerations: []
 affinity: {}
 
 provisioning:
-  enabled: true
+  enabled: false
   jobAnnotations: {}
+  seedJobAnnotations: {}
+  seedConfigMapAnnotations: {}
   backoffLimit: 1
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: 60
   image:
     repository: openfga/cli
     tag: "v0.7.15"
@@ -92,16 +94,25 @@ provisioning:
 
     type user
 
+    type platform
+      relations
+        define csm: [user]
+
     type organization
-        relations
-            define member: [user]
-            define admin: [user]
+      relations
+        define parent: [platform]
+        define member: [user]
+        define admin: [user] or csm from parent
 
     type connector
-        relations
-            define parent: [organization]
-            define local_operator: [user]
-            define remote_operator: [user]
-            define guest: [user]
-            define admin: admin from parent
+      relations
+        define parent: [organization]
+        define local_operator: [user] or admin from parent
+        define remote_operator: [user] or admin from parent
+        define guest: [user]
+        define admin: admin from parent
+
+  # Preferred for GitOps overlays and environment-specific seeds.
+  # Set this in the GitOps values file to avoid chart changes per environment.
+  tuplesFileContent: ""
 
