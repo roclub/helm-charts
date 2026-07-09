@@ -12,7 +12,6 @@ metadata:
 spec:
   backoffLimit: {{ .Values.migration.backoffLimit }}
   activeDeadlineSeconds: {{ .Values.migration.activeDeadlineSeconds }}
-  ttlSecondsAfterFinished: 300
   template:
     metadata:
       labels:
@@ -28,21 +27,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /bin/sh
+            - /usr/local/bin/backend
           args:
-            - -lc
-            - |
-              set -x
-              echo "=== runtime ==="
-              uname -a || true
-              uname -m || true
-              echo "=== backend binary ==="
-              ls -l /usr/local/bin/backend || true
-              od -An -tx1 -N64 /usr/local/bin/backend || true
-              echo "=== config ==="
-              ls -l /app/config.yaml || true
-              echo "=== backend execution ==="
-              /usr/local/bin/backend migrate up --config /app/config.yaml
+            - migrate
+            - up
+            - --config
+            - /app/config.yaml
           volumeMounts:
             - name: migration-config
               mountPath: /app/config.yaml
