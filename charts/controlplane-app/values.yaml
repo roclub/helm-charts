@@ -72,6 +72,9 @@ gatewayApi:
   annotations: {}
   # gatewayApi.gatewayName is the parent Gateway resource name.
   gatewayName: "dev-controlplane"
+  # gatewayApi.gatewayNamespace is the parent Gateway resource namespace.
+  # Leave empty to resolve the Gateway in the HTTPRoute namespace.
+  gatewayNamespace: ""
   # gatewayApi.hosts contains HTTPRoute rule groups.
   hosts:
     - paths:

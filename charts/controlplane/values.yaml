@@ -5,6 +5,11 @@ stage: "dev"
 recordNames:
   - cp.dev.roclub.io123
 
+gateway:
+  allowedRouteNamespaces:
+    - roclub-app
+    - controlplane-app
+
 authZ:
   service:
     name: ""
