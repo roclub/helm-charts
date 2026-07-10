@@ -2,5 +2,5 @@ apiVersion: v2
 name: controlplane-app
 description: Deploys the Control Plane App microservice
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: "v1.1.0"

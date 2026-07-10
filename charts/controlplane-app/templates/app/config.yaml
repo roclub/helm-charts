@@ -23,6 +23,8 @@ data:
         apiKey: {{ .Values.config.calCom.apiKey | quote }}
         apiVersion: {{ .Values.config.calCom.apiVersion | quote }}
         baseURL: {{ .Values.config.calCom.baseUrl | quote }}
+      zitadel:
+        projectID: {{ .Values.config.zitadel.projectID | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
