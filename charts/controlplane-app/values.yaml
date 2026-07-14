@@ -77,7 +77,7 @@ gatewayApi:
   gatewayName: "dev-controlplane"
   # gatewayApi.gatewayNamespace is the parent Gateway resource namespace.
   # Leave empty to resolve the Gateway in the HTTPRoute namespace.
-  gatewayNamespace: ""
+  gatewayNamespace: "roclub-app"
   # gatewayApi.hosts contains HTTPRoute rule groups.
   hosts:
     - paths:
