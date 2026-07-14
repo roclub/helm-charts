@@ -2,5 +2,5 @@ apiVersion: v2
 name: controlplane-authz
 description: Deploys the AuthZ micro service
 type: application
-version: 0.5.3
-appVersion: "1.5.0"
+version: 0.5.4
+appVersion: "1.5.1"
