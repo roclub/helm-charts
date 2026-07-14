@@ -45,6 +45,17 @@ spec:
       hostname: {{ . }}
       protocol: HTTP
       port: 80
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                {{- range $.Values.gateway.allowedRouteNamespaces }}
+                  - {{ . | quote }}
+                {{- end }}
     - name: {{ . }}-https
       hostname: {{ . }}
       protocol: HTTPS
@@ -54,6 +65,17 @@ spec:
         certificateRefs:
           - kind: Secret
             name: {{ . }}-https
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                {{- range $.Values.gateway.allowedRouteNamespaces }}
+                  - {{ . | quote }}
+                {{- end }}
   {{- end }}
 ---
 apiVersion: cert-manager.io/v1
