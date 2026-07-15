@@ -72,5 +72,5 @@ spec:
     - dns01:
         route53:
           region: eu-central-1
-          hostedZoneID: {{ .Values.cloudfront.hostedZoneID }}
+          hostedZoneID: {{ .Values.cloudfront.hostedZoneId | quote }}
 {{- end -}}
