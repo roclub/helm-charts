@@ -7,6 +7,7 @@ metadata:
   name: {{ $name}}
   labels:
     authentication/zitadel: jwt
+    app.kubernetes.io/instance: {{ .Release.Name }}
   {{- with .Values.routeAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

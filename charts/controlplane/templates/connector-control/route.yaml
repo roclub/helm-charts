@@ -8,6 +8,7 @@ metadata:
   name: {{ $gatewayName }}-connector-control
   labels:
     authentication/zitadel: jwt
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io

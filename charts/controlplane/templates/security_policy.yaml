@@ -9,6 +9,7 @@ spec:
     kind: HTTPRoute
     matchLabels:
       authentication/zitadel: jwt
+      app.kubernetes.io/instance: {{ .Release.Name }}
   jwt:
     providers:
     - name: zitadel

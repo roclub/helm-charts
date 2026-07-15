@@ -9,6 +9,7 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
     authentication/zitadel: jwt
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   parentRefs:
     - group: gateway.networking.k8s.io
