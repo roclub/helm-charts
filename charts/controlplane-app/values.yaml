@@ -81,7 +81,10 @@ gatewayApi:
   # gatewayApi.hosts contains HTTPRoute rule groups.
   hosts:
     - paths:
-        - path: "/api/core/v1/"
+        - path: "/api/core/"
+          pathType: "PathPrefix"
+          methods: ["GET", "POST", "DELETE", "PATCH", "PUT", "OPTIONS"]
+        - path: "/api/bookings/"
           pathType: "PathPrefix"
           methods: ["GET", "POST", "DELETE", "PATCH", "PUT", "OPTIONS"]
 
