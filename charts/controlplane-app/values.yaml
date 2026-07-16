@@ -16,9 +16,9 @@ migration:
   # migration.annotations are added to the migration Job metadata.
   annotations: {}
   # migration.backoffLimit is the number of retries before the Job fails.
-  backoffLimit: 3
+  backoffLimit: 5
   # migration.activeDeadlineSeconds is the maximum total Job duration.
-  activeDeadlineSeconds: 600
+  activeDeadlineSeconds: 3600
   # migration.resources configures migration container requests and limits.
   resources:
     requests:
