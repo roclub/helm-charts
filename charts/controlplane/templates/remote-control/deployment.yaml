@@ -69,6 +69,12 @@ spec:
           - name: controlplane-redis-client-tls
             mountPath: /etc/redis/tls
             readOnly: true
+          env:
+          - name: INFLUXDB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "controlplane.fullname" . }}-influxdb2-auth
+                key: admin-token
       volumes:
         - name: config-volume
           configMap:

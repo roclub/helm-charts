@@ -1,3 +1,4 @@
+{{- $influxName := include "controlplane.fullname" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -45,3 +46,7 @@ data:
 
     [session_control.notification_service]
     address = "http://{{ include "controlplane.notificationsName" . }}:8080"
+
+    [session_control.session_usage_repository]
+    influxdb_org = "{{ .Values.remoteControl.config.influx.org }}"
+    influxdb_url = "http://{{ $influxName }}-influxdb2"
