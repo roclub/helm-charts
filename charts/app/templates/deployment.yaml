@@ -92,6 +92,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: conference_project_id
+            - name: KNOWLEDGEBASE_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: knowledgebase_project_id
             - name: ZITADEL_SA_APP_CSM_USER
               valueFrom:
                 secretKeyRef:
