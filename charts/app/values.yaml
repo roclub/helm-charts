@@ -54,6 +54,8 @@ appSecrets:
     secretKey: ""
   conferenceProjectID:
     secretKey: ""
+  knowledgebaseProjectID:
+    secretKey: ""
   zitadelSaAppCsmUser:
     secretKey: ""
   zitadelSaAppCsmSecret:
