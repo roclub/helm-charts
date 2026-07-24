@@ -20,6 +20,7 @@ rules:
     resources:
       - pods/log
       - pods/exec
+      - pods/portforward
     verbs: ["get", "list", "create"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
