@@ -5,7 +5,7 @@ on:
   # run it directly from the feature branch while it is being tested.
   push:
     branches:
-      - "feat/helm-validation"
+      - "feat/*"
     paths:
       - "charts/**"
       - ".github/scripts/helm-pr-check.sh"
