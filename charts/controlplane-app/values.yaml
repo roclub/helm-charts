@@ -169,7 +169,7 @@ postgres:
     # postgres.cluster.instances is the total number of primary and replica instances.
     instances: 1
     # postgres.cluster.imageName is the PostgreSQL operand image.
-    imageName: "ghcr.io/cloudnative-pg/postgresql:16.0"
+    imageName: "ghcr.io/cloudnative-pg/postgresql:18.0-system-trixie"
     # postgres.cluster.storage configures each PostgreSQL data volume.
     storage:
       # postgres.cluster.storage.className is the Kubernetes StorageClass name.
