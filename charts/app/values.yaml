@@ -96,6 +96,13 @@ service:
   type: ClusterIP
   port: 8080
 
+redisWait:
+  enabled: true
+  image:
+    repository: registry-1.docker.io/bitnami/redis
+    tag: latest
+    pullPolicy: IfNotPresent
+
 redis:
   auth:
     enabled: true

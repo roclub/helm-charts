@@ -29,6 +29,45 @@ spec:
       - name: redis-server-tls
         secret:
           secretName: redis-server-tls
+      - name: redis-password
+        secret:
+          secretName: {{ .Release.Name }}-redis
+          items:
+            - key: redis-password
+              path: redis-password
+      {{- if .Values.redisWait.enabled }}
+      initContainers:
+        - name: wait-for-redis
+          image: "{{ .Values.redisWait.image.repository }}:{{ .Values.redisWait.image.tag }}"
+          imagePullPolicy: {{ .Values.redisWait.image.pullPolicy }}
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              REDIS_HOST="{{ .Release.Name }}-redis-headless"
+              export REDISCLI_AUTH="$(cat /opt/bitnami/redis/secrets/redis-password)"
+
+              until getent hosts "${REDIS_HOST}"; do
+                echo "waiting for Redis DNS: ${REDIS_HOST}"
+                sleep 2
+              done
+
+              until redis-cli --tls \
+                --cacert /opt/bitnami/redis/certs/ca.crt \
+                -h "${REDIS_HOST}" \
+                -p 6379 \
+                ping; do
+                echo "waiting for Redis: ${REDIS_HOST}:6379"
+                sleep 2
+              done
+          volumeMounts:
+            - name: redis-server-tls
+              readOnly: true
+              mountPath: /opt/bitnami/redis/certs
+            - name: redis-password
+              readOnly: true
+              mountPath: /opt/bitnami/redis/secrets
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
