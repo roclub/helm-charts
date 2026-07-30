@@ -103,12 +103,13 @@ provisioning:
         define parent: [platform]
         define member: [user]
         define admin: [user] or csm from parent
+        define csm: csm from parent
 
     type connector
       relations
         define parent: [organization]
-        define local_operator: [user] or admin from parent
-        define remote_operator: [user] or admin from parent
+        define local_operator: [user] or csm from parent
+        define remote_operator: [user] or csm from parent
         define guest: [user]
         define admin: admin from parent
 
