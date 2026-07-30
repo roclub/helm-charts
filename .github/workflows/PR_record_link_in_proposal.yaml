@@ -1,0 +1,167 @@
+name: 'PR - Record merged feat PR in enhancement proposal'
+
+# When a `feat` PR is MERGED, append its link to a tracking file inside the
+# referenced enhancement-proposal folder in the roclub/docs repo.
+#
+# The proposal folder is derived from the same blob URL the verify workflow
+# checks (see PR_verify_feat_doc_link.yaml). The tracking file
+# `<REP-folder>/linked-prs.md` is created if missing and de-duplicated.
+#
+# Cross-repo WRITE: the proposal lives in a DIFFERENT repo (docs). GITHUB_TOKEN
+# can't write it. Reuses the DOCS_REPO_TOKEN secret from the verify workflow —
+# that token now needs WRITE access to roclub/docs contents (not read-only).
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  pull-requests: write   # to comment
+
+env:
+  DOC_REPO: docs                            # owner assumed: roclub
+  DOC_PATH: roclub-enhancements-proposals   # required folder prefix
+  TRACK_FILE: linked-prs.md                 # tracking file inside the REP folder
+
+jobs:
+  record:
+    # merged feat PRs only
+    if: >-
+      ${{ github.event.pull_request.merged == true &&
+          startsWith(github.event.pull_request.title, 'feat') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Regex on PR body for proposal link
+        id: regex
+        uses: actions-ecosystem/action-regex-match@v2.0.2
+        with:
+          text: ${{ github.event.pull_request.body }}
+          regex: 'https:\/\/github\.com\/roclub\/${{ env.DOC_REPO }}\/blob\/[^\/\s]+\/${{ env.DOC_PATH }}\/[^\s)]+'
+
+      - name: Append PR link to proposal tracking file
+        id: record
+        env:
+          MATCH: ${{ steps.regex.outputs.match }}
+          DOCS_TOKEN: ${{ secrets.DOCS_REPO_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${MATCH:-}" ]; then
+            echo "::warning::merged feat PR has no proposal link — nothing to record"
+            echo "result=no_link" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Matched: $MATCH"
+
+          if [ -z "${DOCS_TOKEN:-}" ]; then
+            echo "::error::DOCS_REPO_TOKEN secret is empty/unset"
+            echo "result=doc_api_error" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Parse "<ref>/roclub-enhancements-proposals/<path>" out of the blob URL,
+          # dropping any #anchor or ?query the regex may have captured.
+          rest="${MATCH#https://github.com/roclub/${DOC_REPO}/blob/}"
+          rest="${rest%%#*}"
+          rest="${rest%%\?*}"
+          path="${rest#*/}"          # strip "<ref>/"
+
+          # Derive the REP folder: if the last segment looks like a file
+          # (has an extension), drop it; otherwise the link is the folder itself.
+          last="${path##*/}"
+          case "$last" in
+            *.*) folder="${path%/*}" ;;
+            *)   folder="${path%/}" ;;
+          esac
+          track="${folder}/${TRACK_FILE}"
+          echo "Tracking file: $track"
+
+          api="https://api.github.com/repos/roclub/${DOC_REPO}/contents/${track}"
+          auth="Authorization: Bearer ${DOCS_TOKEN}"
+          accept="Accept: application/vnd.github+json"
+          apiver="X-GitHub-Api-Version: 2022-11-28"
+
+          # Fetch the current tracking file (default branch). 404 => create new.
+          status=$(curl -sS -o cur.json -w '%{http_code}' \
+            -H "$auth" -H "$accept" -H "$apiver" "$api")
+          echo "GET tracking file HTTP $status"
+
+          sha=""
+          body=""
+          if [ "$status" = "200" ]; then
+            sha=$(jq -r '.sha' cur.json)
+            jq -r '.content' cur.json | tr -d '\n' | base64 -d > cur.md || true
+            body="$(cat cur.md)"
+          elif [ "$status" = "404" ]; then
+            body=""   # new file
+          else
+            echo "::error::docs API returned $status: $(cat cur.json)"
+            echo "result=doc_api_error" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # De-dupe: skip if this PR URL is already recorded.
+          if printf '%s' "$body" | grep -qF "$PR_URL"; then
+            echo "PR already recorded — skipping"
+            echo "result=already" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Build the new content: header for a new file, then the appended entry.
+          {
+            if [ -z "$body" ]; then
+              printf '# Linked PRs\n\nPull requests that reference this enhancement proposal.\n\n'
+            else
+              printf '%s\n' "$body"
+            fi
+            printf -- '- [#%s](%s) — %s\n' "$PR_NUM" "$PR_URL" "$PR_TITLE"
+          } > new.md
+
+          content_b64=$(base64 -w0 new.md)
+
+          # Commit via contents API. Include sha only when updating.
+          jq -n \
+            --arg msg "docs: record roclub PR #${PR_NUM} in $(basename "$folder")" \
+            --arg content "$content_b64" \
+            --arg sha "$sha" \
+            '{message: $msg, content: $content}
+             + (if $sha == "" then {} else {sha: $sha} end)' > put.json
+
+          put_status=$(curl -sS -o put_resp.json -w '%{http_code}' \
+            -X PUT -H "$auth" -H "$accept" -H "$apiver" \
+            --data @put.json "$api")
+          echo "PUT tracking file HTTP $put_status"
+
+          if [ "$put_status" != "200" ] && [ "$put_status" != "201" ]; then
+            echo "::error::commit failed $put_status: $(cat put_resp.json)"
+            echo "result=doc_api_error" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "result=ok" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on failure
+        if: ${{ steps.record.outputs.result != 'ok' && steps.record.outputs.result != 'already' }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const r = '${{ steps.record.outputs.result }}';
+            const msg = {
+              no_link:       'no proposal link was found in the PR body, so nothing was recorded in the `docs` repo.',
+              doc_api_error: 'the proposal tracking file could not be updated (auth/config problem — see the Action logs).',
+            }[r] || 'the PR link could not be recorded in the enhancement proposal.';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `This merged \`feat\` PR was not recorded in its enhancement proposal: ${msg}`
+            });
+
+      - name: OK
+        if: ${{ steps.record.outputs.result == 'ok' }}
+        run: echo "Recorded PR link in the enhancement proposal tracking file."
