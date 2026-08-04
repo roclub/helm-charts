@@ -38,11 +38,22 @@ config:
     apiKey: ""
     # config.calCom.apiVersion is the requested Cal.com API version.
     apiVersion: "2024-08-13"
-    # config.calCom.baseUrl is the Cal.com API base URL.
-    baseUrl: "https://api.cal.eu/v2"
+    # config.calCom.baseURL is the Cal.com API base URL.
+    baseURL: "https://api.cal.eu/v2"
   zitadel:
-    # config.zitadel.projectID is the Zitadel project ID used for MultiOrg in JWTs.
-    projectID: ""
+    # config.zitadel.coreAppProjectID is the main Zitadel project ID used for MultiOrg in JWTs.
+    coreAppProjectID: ""
+    # config.zitadel.knowledgebaseProjectID is the knowledge base Zitadel project ID.
+    knowledgebaseProjectID: ""
+    # config.zitadel.conferenceProjectID is the conference Zitadel project ID.
+    conferenceProjectID: ""
+    # config.zitadel.instanceURL is the Zitadel instance base URL.
+    instanceURL: ""
+    # config.zitadel.serviceAccountKey is the Zitadel service account credential.
+    serviceAccountKey: ""
+  controlPlaneAuthz:
+    # config.controlPlaneAuthz.address is the control plane authz service address.
+    address: ""
 
 # service configures the application Service.
 service:
