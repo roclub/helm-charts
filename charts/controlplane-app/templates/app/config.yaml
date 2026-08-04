@@ -22,9 +22,15 @@ data:
       calCom:
         apiKey: {{ .Values.config.calCom.apiKey | quote }}
         apiVersion: {{ .Values.config.calCom.apiVersion | quote }}
-        baseURL: {{ .Values.config.calCom.baseUrl | quote }}
+        baseURL: {{ .Values.config.calCom.baseURL | quote }}
       zitadel:
-        projectID: {{ .Values.config.zitadel.projectID | quote }}
+        coreAppProjectID: {{ .Values.config.zitadel.coreAppProjectID | quote }}
+        knowledgebaseProjectID: {{ .Values.config.zitadel.knowledgebaseProjectID | quote }}
+        conferenceProjectID: {{ .Values.config.zitadel.conferenceProjectID | quote }}
+        instanceURL: {{ .Values.config.zitadel.instanceURL | quote }}
+        serviceAccountKey: {{ .Values.config.zitadel.serviceAccountKey | quote }}
+      controlPlaneAuthz:
+        address: {{ .Values.config.controlPlaneAuthz.address | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
