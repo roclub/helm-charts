@@ -24,10 +24,10 @@ jobs:
           message_if_xl: ''
           github_api_url: 'https://api.github.com'
           files_to_ignore: ''
-  
+
   PR_type_labeler:
     runs-on: ubuntu-22.04
     steps:
-      - uses: grafana/pr-labeler-action@50737759cb150f5d312de1a45559027156db8bab # 0.1.0
+      - uses: grafana-cold-storage/pr-labeler-action@50737759cb150f5d312de1a45559027156db8bab # 0.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
