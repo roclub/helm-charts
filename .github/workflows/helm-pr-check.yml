@@ -1,0 +1,106 @@
+name: Helm - Validate PR changes
+
+on:
+  pull_request:
+    paths:
+      - "charts/**"
+      - ".github/scripts/helm-pr-check.sh"
+      - ".github/workflows/helm-pr-check.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: helm-pr-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint and compare rendered manifests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
+        with:
+          version: v3.21.1
+
+      - name: Validate changed charts and render diff
+        id: validate
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HELM_PR_REPORT: ${{ runner.temp }}/helm-pr-check-report.md
+        run: bash .github/scripts/helm-pr-check.sh "$BASE_SHA" "$HEAD_SHA"
+
+      - name: Publish pull request comment
+        if: ${{ always() && github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          VALIDATION_OUTCOME: ${{ steps.validate.outcome }}
+          REPORT_PATH: ${{ runner.temp }}/helm-pr-check-report.md
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          retries: 3
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- helm-pr-check -->';
+            const outcome = process.env.VALIDATION_OUTCOME;
+            const icon = outcome === 'success' ? '\u2705' : '\u274c';
+            const issueNumber = context.payload.pull_request.number;
+            const runUrl =
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}` +
+              `/actions/runs/${context.runId}`;
+
+            let report = fs.existsSync(process.env.REPORT_PATH)
+              ? fs.readFileSync(process.env.REPORT_PATH, 'utf8')
+              : 'The Helm validation did not produce a report.';
+
+            if (report.length > 58000) {
+              report =
+                `${report.slice(0, 58000)}\n\n` +
+                `... comment truncated; see the [complete workflow run](${runUrl}).`;
+            }
+
+            const body =
+              `${marker}\n${icon} **Helm validation: ${outcome}**\n\n` +
+              `${report}\n\n[Open workflow run](${runUrl})`;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                per_page: 100
+              }
+            );
+            const existing = comments.find(
+              comment =>
+                comment.user?.login === 'github-actions[bot]' &&
+                comment.body?.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body
+              });
+            }
