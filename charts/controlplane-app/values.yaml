@@ -28,6 +28,32 @@ migration:
       cpu: "200m"
       memory: "256Mi"
 
+# seed configures the optional post-migration organization seeding Job.
+seed:
+  # seed.enabled creates a seeding Job when true.
+  enabled: false
+  # seed.annotations are added to the seeding Job metadata.
+  annotations: {}
+  # seed.backoffLimit is the number of retries before the Job fails.
+  backoffLimit: 5
+  # seed.activeDeadlineSeconds is the maximum total Job duration.
+  activeDeadlineSeconds: 3600
+  # seed.resources configures seeding container requests and limits.
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+  # seed.zitadel configures the Zitadel dependency required by seed organizations.
+  zitadel:
+    coreAppProjectID: ""
+    knowledgebaseProjectID: ""
+    conferenceProjectID: ""
+    serviceAccountKey: ""
+    instanceURL: ""
+
 # config contains application-specific configuration.
 config:
   # config.annotations are added to application ConfigMaps.
