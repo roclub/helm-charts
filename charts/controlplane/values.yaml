@@ -9,6 +9,7 @@ gateway:
   allowedRouteNamespaces:
     - roclub-app
     - controlplane-app
+    - core
 
 authZ:
   service:
