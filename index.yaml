@@ -1702,6 +1702,24 @@ entries:
   controlplane:
   - apiVersion: v2
     appVersion: 2.23.1
+    created: "2026-08-11T10:05:29.606637002Z"
+    dependencies:
+    - name: influxdb2
+      repository: https://helm.influxdata.com/
+      version: 2.1.2
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 23.1.1
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: 579efaf2978f9667996ada0c232ee93f39862e4f9720907a01a9c8e11dd37386
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.38.3/controlplane-2.38.3.tgz
+    version: 2.38.3
+  - apiVersion: v2
+    appVersion: 2.23.1
     created: "2026-08-10T14:44:18.407492463Z"
     dependencies:
     - name: influxdb2
@@ -3771,6 +3789,16 @@ entries:
   controlplane-authz:
   - apiVersion: v2
     appVersion: 1.5.4
+    created: "2026-08-11T10:05:29.743615378Z"
+    description: Deploys the AuthZ micro service
+    digest: 1293edee6165e972390641b17e6f9ba2345b3dd4917df020802f4b2b313cb6ce
+    name: controlplane-authz
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-authz-0.5.10/controlplane-authz-0.5.10.tgz
+    version: 0.5.10
+  - apiVersion: v2
+    appVersion: 1.5.4
     created: "2026-07-30T11:37:49.039222792Z"
     description: Deploys the AuthZ micro service
     digest: c68b0c94900e58876fb00d33637c6b76656f9a583b0da4959cf4983df54cc949
@@ -5678,4 +5706,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-10T14:44:18.408369791Z"
+generated: "2026-08-11T10:05:29.744779339Z"
