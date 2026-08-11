@@ -10,6 +10,7 @@ gateway:
     - roclub-app
     - controlplane-app
     - core
+    - app
 
 authZ:
   service:

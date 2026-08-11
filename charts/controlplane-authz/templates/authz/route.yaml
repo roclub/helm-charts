@@ -17,6 +17,7 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: {{ .Values.gatewayAPI.gatewayName }}
+      namespace: {{ .Values.gatewayAPI.gatewayNamespace }}
   hostnames:
   {{- range .Values.domainNames}}
     - {{ . }}
