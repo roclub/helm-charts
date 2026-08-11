@@ -31,6 +31,9 @@ domainNames:
 
 gatewayAPI:
   gatewayName: "dev-controlplane"
+  # gatewayAPI.gatewayNamespace is the parent Gateway resource namespace.
+  # Leave empty to resolve the Gateway in the HTTPRoute namespace.
+  gatewayNamespace: ""
   hosts:
     - paths:
         - path: /v2/authz/
