@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: app-team-role
-  namespace: roclub-app
+  namespace: app
 rules:
   - apiGroups: ["", "apps", "batch"]
     resources:
@@ -26,7 +26,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: app-team-rolebinding
-  namespace: roclub-app
+  namespace: app
 subjects:
   - kind: Group
     name: app-team

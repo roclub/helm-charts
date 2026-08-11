@@ -64,7 +64,7 @@ networkPolicy:
   # networkPolicy.annotations are added to the application NetworkPolicy metadata.
   annotations: {}
   # networkPolicy.allowedNamespace is the namespace containing Pods allowed to access the application.
-  allowedNamespace: "roclub-app"
+  allowedNamespace: "app"
   # networkPolicy.allowedPodSelector selects Pods allowed to access the application.
   allowedPodSelector:
     app.kubernetes.io/name: "app"
@@ -77,7 +77,7 @@ gatewayApi:
   gatewayName: "dev-controlplane"
   # gatewayApi.gatewayNamespace is the parent Gateway resource namespace.
   # Leave empty to resolve the Gateway in the HTTPRoute namespace.
-  gatewayNamespace: "roclub-app"
+  gatewayNamespace: "core"
   # gatewayApi.hosts contains HTTPRoute rule groups.
   hosts:
     - paths:
