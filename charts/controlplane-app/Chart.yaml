@@ -3,4 +3,4 @@ name: controlplane-app
 description: Deploys the Control Plane App microservice
 type: application
 version: 0.1.13
-appVersion: "v1.2.0"
+appVersion: "v1.3.0"
