@@ -25,7 +25,7 @@ spec:
   cors:
     allowOrigins:
     - "https://conference.{{ .Values.stage }}.roclub.io"
-{{- if eq .Values.stage "dev" }}
+{{- if or (eq .Values.stage "dev") (eq .Values.stage "stg") }}
     - "http://localhost:3000"
 {{- end }}
 {{- if eq .Values.stage "prd" }}
