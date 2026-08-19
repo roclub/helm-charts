@@ -50,3 +50,10 @@ data:
     [session_control.session_usage_repository]
     influxdb_org = "{{ .Values.remoteControl.config.influx.org }}"
     influxdb_url = "http://{{ $influxName }}-influxdb2"
+
+    [session_control.sqs]
+    queue_url                  = "{{ .Values.remoteControl.config.sqs.queueURL }}"
+    worker_count               = {{ .Values.remoteControl.config.sqs.workerCount }}
+    visibility_timeout_seconds = {{ .Values.remoteControl.config.sqs.visibilityTimeoutSeconds }}
+    wait_time_seconds          = {{ .Values.remoteControl.config.sqs.waitTimeSeconds }}
+    max_messages               = {{ .Values.remoteControl.config.sqs.maxMessages }}

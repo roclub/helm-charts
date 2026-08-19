@@ -112,6 +112,13 @@ remoteControl:
     influx:
       org: "roclub"
 
+    sqs:
+      queueURL: ""
+      workerCount: 2
+      visibilityTimeoutSeconds: 30
+      waitTimeSeconds: 20
+      maxMessages: 10
+
     logger: "debug"
 
   service:
