@@ -177,11 +177,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: controlplane_app_mocks_enabled
-            - name: CONTROLPLANE_APP_ALLOWED_ENVS
+            - name: CONTROLPLANE_APP_MIGRATION_ENABLED
               valueFrom:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
-                  key: controlplane_app_allowed_envs
+                  key: controlplane_app_migration_enabled
             - name: CONTROLPLANE_APP_REFERENCE_DATA_ENABLED
               valueFrom:
                 secretKeyRef:

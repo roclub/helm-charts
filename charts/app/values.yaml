@@ -88,7 +88,7 @@ appSecrets:
     secretKey: ""
   controlplaneAppMocksEnabled:
     secretKey: ""
-  controlplaneAppAllowedEnvs:
+  controlplaneAppMigrationEnabled:
     secretKey: ""
   controlplaneAppReferenceDataEnabled:
     secretKey: ""
