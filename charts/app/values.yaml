@@ -84,6 +84,26 @@ appSecrets:
     secretKey: ""
   redisEncryptionKey:
     secretKey: ""
+  controlplaneAppBaseUrl:
+    secretKey: ""
+  controlplaneAppMocksEnabled:
+    secretKey: ""
+  controlplaneAppAllowedEnvs:
+    secretKey: ""
+  controlplaneAppReferenceDataEnabled:
+    secretKey: ""
+  controlplaneAppOrganizationsEnabled:
+    secretKey: ""
+  controlplaneAppDepartmentsDevicesEnabled:
+    secretKey: ""
+  controlplaneAppUsersPermissionsEnabled:
+    secretKey: ""
+  controlplaneAppOrganizationsWriteMode:
+    secretKey: ""
+  controlplaneAppDepartmentsDevicesWriteMode:
+    secretKey: ""
+  controlplaneAppUsersPermissionsWriteMode:
+    secretKey: ""
 
 image:
   tag: ""
