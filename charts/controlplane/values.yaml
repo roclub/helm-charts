@@ -119,6 +119,17 @@ remoteControl:
       waitTimeSeconds: 20
       maxMessages: 10
 
+    usageExport:
+      enabled: false
+      fromAddress: ""
+      bccAddress: ""
+      slackWebhookUrl: ""
+      awsRegion: "eu-central-1"
+      schedule:
+        hourUtc: 2
+      orgs: {}
+      manualRuns: []
+
     logger: "debug"
 
   service:
