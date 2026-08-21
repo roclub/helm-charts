@@ -167,6 +167,56 @@ spec:
                 secretKeyRef:
                   name: {{ include "app.fullname" . }}-app-nextjs
                   key: redis_encryption_key
+            - name: CONTROLPLANE_APP_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_base_url
+            - name: CONTROLPLANE_APP_MOCKS_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_mocks_enabled
+            - name: CONTROLPLANE_APP_MIGRATION_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_migration_enabled
+            - name: CONTROLPLANE_APP_REFERENCE_DATA_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_reference_data_enabled
+            - name: CONTROLPLANE_APP_ORGANIZATIONS_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_organizations_enabled
+            - name: CONTROLPLANE_APP_DEPARTMENTS_DEVICES_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_departments_devices_enabled
+            - name: CONTROLPLANE_APP_USERS_PERMISSIONS_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_users_permissions_enabled
+            - name: CONTROLPLANE_APP_ORGANIZATIONS_WRITE_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_organizations_write_mode
+            - name: CONTROLPLANE_APP_DEPARTMENTS_DEVICES_WRITE_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_departments_devices_write_mode
+            - name: CONTROLPLANE_APP_USERS_PERMISSIONS_WRITE_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.fullname" . }}-app-nextjs
+                  key: controlplane_app_users_permissions_write_mode
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
