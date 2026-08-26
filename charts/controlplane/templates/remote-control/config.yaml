@@ -72,11 +72,27 @@ data:
     [session_control.usage_export.orgs."{{ $orgID }}"]
     slug  = "{{ $org.slug }}"
     email = "{{ $org.email }}"
+    {{- if $org.name }}
+    name  = "{{ $org.name }}"
+    {{- end }}
+    {{- if $org.group }}
+    group = "{{ $org.group }}"
+    {{- end }}
+    {{- end }}
+    {{- range $groupID, $group := .Values.remoteControl.config.usageExport.groups }}
+
+    [session_control.usage_export.groups."{{ $groupID }}"]
+    slug  = "{{ $group.slug }}"
+    email = "{{ $group.email }}"
     {{- end }}
     {{- range .Values.remoteControl.config.usageExport.manualRuns }}
 
     [[session_control.usage_export.manual_runs]]
-    org   = "{{ .org }}"
     month = "{{ .month }}"
     force = {{ .force }}
+    {{- if .group }}
+    group = "{{ .group }}"
+    {{- else }}
+    org   = "{{ .org }}"
+    {{- end }}
     {{- end }}
