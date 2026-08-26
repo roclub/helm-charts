@@ -89,7 +89,6 @@ data:
 
     [[session_control.usage_export.manual_runs]]
     month = "{{ .month }}"
-    force = {{ default false .force }}
     {{- if .group }}
     group = "{{ .group }}"
     {{- else }}
