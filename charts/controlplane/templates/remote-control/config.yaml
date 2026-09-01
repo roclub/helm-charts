@@ -60,9 +60,9 @@ data:
 
     [session_control.usage_export]
     enabled           = {{ .Values.remoteControl.config.usageExport.enabled }}
-    endpoint_url      = "{{ .Values.remoteControl.config.usageExport.endpointURL }}"
-    api_key           = "{{ .Values.remoteControl.config.usageExport.apiKey }}"
-    slack_webhook_url = "{{ .Values.remoteControl.config.usageExport.slackWebhookUrl }}"
+    endpoint_url      = {{ .Values.remoteControl.config.usageExport.endpointURL | quote }}
+    api_key           = {{ .Values.remoteControl.config.usageExport.apiKey | quote }}
+    slack_webhook_url = {{ .Values.remoteControl.config.usageExport.slackWebhookUrl | quote }}
 
     [session_control.usage_export.schedule]
     hour_utc = {{ .Values.remoteControl.config.usageExport.schedule.hourUtc }}
