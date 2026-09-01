@@ -121,14 +121,12 @@ remoteControl:
 
     usageExport:
       enabled: false
-      fromAddress: ""
-      bccAddress: ""
+      endpointURL: ""
+      apiKey: ""
       slackWebhookUrl: ""
-      awsRegion: "eu-central-1"
       schedule:
         hourUtc: 2
       orgs: {}
-      groups: {}
       manualRuns: []
 
     logger: "debug"
