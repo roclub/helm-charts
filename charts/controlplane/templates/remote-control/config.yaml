@@ -60,38 +60,19 @@ data:
 
     [session_control.usage_export]
     enabled           = {{ .Values.remoteControl.config.usageExport.enabled }}
-    from_address      = "{{ .Values.remoteControl.config.usageExport.fromAddress }}"
-    bcc_address       = "{{ .Values.remoteControl.config.usageExport.bccAddress }}"
+    endpoint_url      = "{{ .Values.remoteControl.config.usageExport.endpointURL }}"
+    api_key           = "{{ .Values.remoteControl.config.usageExport.apiKey }}"
     slack_webhook_url = "{{ .Values.remoteControl.config.usageExport.slackWebhookUrl }}"
-    aws_region        = "{{ .Values.remoteControl.config.usageExport.awsRegion }}"
 
     [session_control.usage_export.schedule]
     hour_utc = {{ .Values.remoteControl.config.usageExport.schedule.hourUtc }}
     {{- range $orgID, $org := .Values.remoteControl.config.usageExport.orgs }}
 
     [session_control.usage_export.orgs."{{ $orgID }}"]
-    slug  = "{{ $org.slug }}"
-    email = "{{ $org.email }}"
-    {{- if $org.name }}
-    name  = "{{ $org.name }}"
-    {{- end }}
-    {{- if $org.group }}
-    group = "{{ $org.group }}"
-    {{- end }}
-    {{- end }}
-    {{- range $groupID, $group := .Values.remoteControl.config.usageExport.groups }}
-
-    [session_control.usage_export.groups."{{ $groupID }}"]
-    slug  = "{{ $group.slug }}"
-    email = "{{ $group.email }}"
+    name = "{{ $org.name }}"
     {{- end }}
     {{- range .Values.remoteControl.config.usageExport.manualRuns }}
 
     [[session_control.usage_export.manual_runs]]
-    month = "{{ .month }}"
-    {{- if .group }}
-    group = "{{ .group }}"
-    {{- else }}
-    org   = "{{ .org }}"
-    {{- end }}
+    day = "{{ .day }}"
     {{- end }}
