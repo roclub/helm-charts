@@ -343,7 +343,7 @@ influxdb2:
         exit 0
 
   persistence:
-    enabled: false
+    enabled: true
     storageClass: "gp3"
     accessMode: ReadWriteOnce
     size: 50Gi
