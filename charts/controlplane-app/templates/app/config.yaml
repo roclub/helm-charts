@@ -54,3 +54,35 @@ data:
         {{- $migDb := .Values.postgres.connection.database | urlquery }}
         {{- $migSslmode := .Values.postgres.connection.sslMode }}
         url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $migUser $migPass $migHost $migPort $migDb $migSslmode | quote }}
+
+{{- if .Values.seed.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+data:
+  seed.yaml: |
+    dependencies:
+      postgres:
+        {{- $runtimeUser := .Values.postgres.users.runtime.name | urlquery }}
+        {{- $runtimePass := .Values.postgres.users.runtime.password | urlquery }}
+        {{- $dbHost := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $dbPort := .Values.postgres.connection.port }}
+        {{- $dbName := .Values.postgres.connection.database | urlquery }}
+        {{- $dbSSLMode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $runtimeUser $runtimePass $dbHost $dbPort $dbName $dbSSLMode | quote }}
+      zitadel:
+        coreAppProjectID: {{ .Values.seed.zitadel.coreAppProjectID | quote }}
+        knowledgebaseProjectID: {{ .Values.seed.zitadel.knowledgebaseProjectID | quote }}
+        conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
+        serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
+        instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+{{- end }}
