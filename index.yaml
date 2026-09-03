@@ -3811,6 +3811,16 @@ entries:
     version: 2.0.12
   controlplane-app:
   - apiVersion: v2
+    appVersion: v0.0.0-19ea51a
+    created: "2026-09-03T09:22:01.758481684Z"
+    description: Deploys the Control Plane App microservice
+    digest: ade501fd8627837d39883855f30b17a9572a24c1ad379a642b24cd91e4b7eb32
+    name: controlplane-app
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-app-0.1.28/controlplane-app-0.1.28.tgz
+    version: 0.1.28
+  - apiVersion: v2
     appVersion: v0.0.0-8cb92f9
     created: "2026-09-03T08:27:08.987317705Z"
     description: Deploys the Control Plane App microservice
@@ -6119,4 +6129,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-03T08:27:08.988009198Z"
+generated: "2026-09-03T09:22:01.759851167Z"
