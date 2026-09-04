@@ -442,8 +442,10 @@ redis:
   architecture: "replication"
   # Digests are pinned because bitnami only publishes the mutable `latest` tag; without
   # this, nodes cached different builds and replication broke on an RDB format mismatch.
+  # Pin forward-only: redis reads older on-disk RDB/AOF but never newer, so downgrading
+  # the pin below what an environment already wrote makes its PVC unreadable.
   image:
-    digest: "sha256:b436e0a73c2d4cee3087f3f5ca8212c9d473411f424ae28ef968d6414a728da8" # redis 8.8.0
+    digest: "sha256:ffa455a3ad00bccc24dfde113ef55329dde687da242e9feb6ccd2b30eb93e8f3" # redis 8.10.1
   auth:
     enabled: true
     sentinel: true
@@ -470,7 +472,7 @@ redis:
   sentinel:
     enabled: true
     image:
-      digest: "sha256:99c9cddfa8729dc4828777df63d4eb201be72661d5d2128497d4dbd45a5112df"
+      digest: "sha256:97433fd14ea945c164ac514c162e2d2a017e9044fdc7ec46abf12a92f4660770" # redis-sentinel 8.10.1
     service:
       createMaster: true
     masterService:
@@ -490,12 +492,12 @@ redis:
   metrics:
     enabled: true
     image:
-      digest: "sha256:29641924c23cbb5e76a27017f9975f69d4949ba1cbad62a965f5e7f7a10c63fd"
+      digest: "sha256:3023b8e4b708bc1fa60e991563ed3e5901784440e97f4cb439c3ee93e6ef0dfc" # redis-exporter 1.90.0
     serviceMonitor:
       enabled: false
   kubectl:
     image:
-      digest: "sha256:cd9daa0cc6968665402654b887bdc59aba0f774d0d0a36808eb9259fb642aa5c"
+      digest: "sha256:b29d8c1665b70817259ceecaea16ab27aab6368b48daf485d19436c809067492" # kubectl 1.37.0
   tls:
     enabled: true
     existingSecret: "controlplane-redis-tls"
