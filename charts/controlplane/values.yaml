@@ -440,6 +440,10 @@ iotKafkaInterfaceCronjob:
 
 redis:
   architecture: "replication"
+  # Digests are pinned because bitnami only publishes the mutable `latest` tag; without
+  # this, nodes cached different builds and replication broke on an RDB format mismatch.
+  image:
+    digest: "sha256:b436e0a73c2d4cee3087f3f5ca8212c9d473411f424ae28ef968d6414a728da8" # redis 8.8.0
   auth:
     enabled: true
     sentinel: true
@@ -450,14 +454,23 @@ redis:
     create: true
     automountServiceAccountToken: true
   replica:
-    replicaCount: 2
+    replicaCount: 3
     automountServiceAccountToken: true
     persistence:
       enabled: true
       storageClass: "gp3"
       size: 10Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
   sentinel:
     enabled: true
+    image:
+      digest: "sha256:99c9cddfa8729dc4828777df63d4eb201be72661d5d2128497d4dbd45a5112df"
     service:
       createMaster: true
     masterService:
@@ -467,17 +480,22 @@ redis:
       enabled: true
       storageClass: "gp3"
       size: 10Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
   metrics:
     enabled: true
+    image:
+      digest: "sha256:29641924c23cbb5e76a27017f9975f69d4949ba1cbad62a965f5e7f7a10c63fd"
     serviceMonitor:
       enabled: false
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: 1000m
-      memory: 2Gi
+  kubectl:
+    image:
+      digest: "sha256:cd9daa0cc6968665402654b887bdc59aba0f774d0d0a36808eb9259fb642aa5c"
   tls:
     enabled: true
     existingSecret: "controlplane-redis-tls"
