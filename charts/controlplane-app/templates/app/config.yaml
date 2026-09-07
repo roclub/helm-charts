@@ -29,6 +29,8 @@ data:
         conferenceProjectID: {{ .Values.config.zitadel.conferenceProjectID | quote }}
         instanceURL: {{ .Values.config.zitadel.instanceURL | quote }}
         serviceAccountKey: {{ .Values.config.zitadel.serviceAccountKey | quote }}
+      controlPlane:
+        address: {{ .Values.config.controlPlane.address | quote }}
       controlPlaneAuthz:
         address: {{ .Values.config.controlPlaneAuthz.address | quote }}
 ---
