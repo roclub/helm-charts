@@ -51,6 +51,9 @@ config:
     instanceURL: ""
     # config.zitadel.serviceAccountKey is the Zitadel service account credential.
     serviceAccountKey: ""
+  controlPlane:
+    # config.controlPlane.address is the control plane gRPC service address.
+    address: ""
   controlPlaneAuthz:
     # config.controlPlaneAuthz.address is the control plane authz service address.
     address: ""
