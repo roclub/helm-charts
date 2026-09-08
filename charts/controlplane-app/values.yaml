@@ -32,6 +32,12 @@ migration:
 config:
   # config.annotations are added to application ConfigMaps.
   annotations: {}
+  # config.aws configures the AWS dependency used by the application.
+  aws:
+    # config.aws.accessKeyID is the AWS access key ID for the runtime environment.
+    accessKeyID: ""
+    # config.aws.secretAccessKey is the AWS secret access key for the runtime environment.
+    secretAccessKey: ""
   # config.calCom configures the Cal.com dependency.
   calCom:
     # config.calCom.apiKey is the Cal.com API credential.
