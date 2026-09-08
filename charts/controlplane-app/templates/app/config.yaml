@@ -19,6 +19,9 @@ data:
         {{- $db := .Values.postgres.connection.database | urlquery }}
         {{- $sslmode := .Values.postgres.connection.sslMode }}
         url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $user $pass $host $port $db $sslmode | quote }}
+      aws:
+        accessKeyID: {{ .Values.config.aws.accessKeyID | quote }}
+        secretAccessKey: {{ .Values.config.aws.secretAccessKey | quote }}
       calCom:
         apiKey: {{ .Values.config.calCom.apiKey | quote }}
         apiVersion: {{ .Values.config.calCom.apiVersion | quote }}
