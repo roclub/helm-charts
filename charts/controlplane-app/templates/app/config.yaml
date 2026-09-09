@@ -60,12 +60,12 @@ data:
         {{- $migSslmode := .Values.postgres.connection.sslMode }}
         url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $migUser $migPass $migHost $migPort $migDb $migSslmode | quote }}
 
-{{- if .Values.seed.enabled }}
+{{- if .Values.seed.organizations.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "controlplane-app.fullname" . }}-seed-config
+  name: {{ include "controlplane-app.fullname" . }}-seed-organizations-config
   {{- with .Values.config.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -73,9 +73,111 @@ metadata:
   labels:
     {{- include "controlplane-app.labels" . | nindent 4 }}
     app.kubernetes.io/component: seed
+    controlplane-app/seed-command: organizations
 data:
   seed.yaml: |
     dependencies:
+      postgres:
+        {{- $runtimeUser := .Values.postgres.users.runtime.name | urlquery }}
+        {{- $runtimePass := .Values.postgres.users.runtime.password | urlquery }}
+        {{- $dbHost := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $dbPort := .Values.postgres.connection.port }}
+        {{- $dbName := .Values.postgres.connection.database | urlquery }}
+        {{- $dbSSLMode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $runtimeUser $runtimePass $dbHost $dbPort $dbName $dbSSLMode | quote }}
+      zitadel:
+        coreAppProjectID: {{ .Values.seed.zitadel.coreAppProjectID | quote }}
+        knowledgebaseProjectID: {{ .Values.seed.zitadel.knowledgebaseProjectID | quote }}
+        conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
+        serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
+        instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+{{- end }}
+
+{{- if .Values.seed.users.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-users-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: users
+data:
+  seed.yaml: |
+    dependencies:
+      postgres:
+        {{- $runtimeUser := .Values.postgres.users.runtime.name | urlquery }}
+        {{- $runtimePass := .Values.postgres.users.runtime.password | urlquery }}
+        {{- $dbHost := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $dbPort := .Values.postgres.connection.port }}
+        {{- $dbName := .Values.postgres.connection.database | urlquery }}
+        {{- $dbSSLMode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $runtimeUser $runtimePass $dbHost $dbPort $dbName $dbSSLMode | quote }}
+      zitadel:
+        coreAppProjectID: {{ .Values.seed.zitadel.coreAppProjectID | quote }}
+        knowledgebaseProjectID: {{ .Values.seed.zitadel.knowledgebaseProjectID | quote }}
+        conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
+        serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
+        instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+{{- end }}
+
+{{- if .Values.seed.departments.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-departments-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: departments
+data:
+  seed.yaml: |
+    dependencies:
+      postgres:
+        {{- $runtimeUser := .Values.postgres.users.runtime.name | urlquery }}
+        {{- $runtimePass := .Values.postgres.users.runtime.password | urlquery }}
+        {{- $dbHost := printf "%s-postgres-cluster-rw" (include "controlplane-app.fullname" .) }}
+        {{- $dbPort := .Values.postgres.connection.port }}
+        {{- $dbName := .Values.postgres.connection.database | urlquery }}
+        {{- $dbSSLMode := .Values.postgres.connection.sslMode }}
+        url: {{ printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $runtimeUser $runtimePass $dbHost $dbPort $dbName $dbSSLMode | quote }}
+      zitadel:
+        coreAppProjectID: {{ .Values.seed.zitadel.coreAppProjectID | quote }}
+        knowledgebaseProjectID: {{ .Values.seed.zitadel.knowledgebaseProjectID | quote }}
+        conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
+        serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
+        instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+{{- end }}
+
+{{- if .Values.seed.devices.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-devices-config
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: devices
+data:
+  seed.yaml: |
+    dependencies:
+      aws:
+        {{- toYaml .Values.seed.aws | nindent 8 }}
       postgres:
         {{- $runtimeUser := .Values.postgres.users.runtime.name | urlquery }}
         {{- $runtimePass := .Values.postgres.users.runtime.password | urlquery }}
