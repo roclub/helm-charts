@@ -47,3 +47,224 @@ spec:
             name: {{ include "controlplane-app.fullname" . }}-migration-config
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}
+
+{{- if .Values.seed.organizations.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: organizations
+  {{- with .Values.seed.organizations.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.seed.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.seed.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: seed
+        controlplane-app/seed-command: organizations
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: seed
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/backend
+          args:
+            - seed
+            - organizations
+            - --config
+            - /app/seed.yaml
+          volumeMounts:
+            - name: seed-config
+              mountPath: /app/seed.yaml
+              subPath: seed.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.seed.resources | nindent 12 }}
+      volumes:
+        - name: seed-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-seed-organizations-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}
+
+{{- if .Values.seed.users.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-users
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: users
+  {{- with .Values.seed.users.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.seed.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.seed.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: seed
+        controlplane-app/seed-command: users
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: seed
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/backend
+          args:
+            - seed
+            - users
+            - --config
+            - /app/seed.yaml
+          volumeMounts:
+            - name: seed-config
+              mountPath: /app/seed.yaml
+              subPath: seed.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.seed.resources | nindent 12 }}
+      volumes:
+        - name: seed-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-seed-users-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}
+
+{{- if .Values.seed.departments.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-departments
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: departments
+  {{- with .Values.seed.departments.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.seed.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.seed.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: seed
+        controlplane-app/seed-command: departments
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: seed
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/backend
+          args:
+            - seed
+            - departments
+            - --config
+            - /app/seed.yaml
+          volumeMounts:
+            - name: seed-config
+              mountPath: /app/seed.yaml
+              subPath: seed.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.seed.resources | nindent 12 }}
+      volumes:
+        - name: seed-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-seed-departments-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}
+
+{{- if .Values.seed.devices.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-seed-devices
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seed
+    controlplane-app/seed-command: devices
+  {{- with .Values.seed.devices.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.seed.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.seed.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        {{- include "controlplane-app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: seed
+        controlplane-app/seed-command: devices
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: seed
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/backend
+          args:
+            - seed
+            - devices
+            - --config
+            - /app/seed.yaml
+          volumeMounts:
+            - name: seed-config
+              mountPath: /app/seed.yaml
+              subPath: seed.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.seed.resources | nindent 12 }}
+      volumes:
+        - name: seed-config
+          configMap:
+            name: {{ include "controlplane-app.fullname" . }}-seed-devices-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+{{- end }}
+

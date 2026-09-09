@@ -28,6 +28,54 @@ migration:
       cpu: "200m"
       memory: "256Mi"
 
+# seed configures optional post-migration organizations, users, departments, and devices Jobs.
+seed:
+  # Each command has its own Job annotations (e.g. Argo CD sync waves).
+  # Order Jobs after migration: organizations, then users, then departments, then devices.
+  # YAML document order alone does not enforce execution order.
+  organizations:
+    # Creates only the organizations seeding Job when true.
+    enabled: false
+    annotations: {}
+  users:
+    # Creates only the users seeding Job when true.
+    enabled: false
+    annotations: {}
+  departments:
+    # Creates only the departments seeding Job when true.
+    enabled: false
+    annotations: {}
+  devices:
+    # Creates only the devices seeding Job when true.
+    enabled: false
+    annotations: {}
+  # seed.backoffLimit is the number of retries before the Job fails.
+  backoffLimit: 5
+  # seed.activeDeadlineSeconds is the maximum total Job duration.
+  activeDeadlineSeconds: 3600
+  # seed.resources configures seeding container requests and limits.
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+  # seed.aws configures AWS IoT access required by seed devices.
+  # Empty credentials use the AWS SDK credential chain.
+  aws:
+    region: "eu-central-1"
+    requestsPerSecond: 5
+    accessKeyID: ""
+    secretAccessKey: ""
+  # seed.zitadel configures Zitadel for all seed Jobs; users requires coreAppProjectID.
+  zitadel:
+    coreAppProjectID: ""
+    knowledgebaseProjectID: ""
+    conferenceProjectID: ""
+    serviceAccountKey: ""
+    instanceURL: ""
+
 # config contains application-specific configuration.
 config:
   # config.annotations are added to application ConfigMaps.
