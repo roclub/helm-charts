@@ -53,6 +53,7 @@ data:
 
     [session_control.sqs]
     queue_url                  = "{{ .Values.remoteControl.config.sqs.queueURL }}"
+    role_arn = "{{ .Values.remoteControl.config.sqs.roleArn }}"
     worker_count               = {{ .Values.remoteControl.config.sqs.workerCount }}
     visibility_timeout_seconds = {{ .Values.remoteControl.config.sqs.visibilityTimeoutSeconds }}
     wait_time_seconds          = {{ .Values.remoteControl.config.sqs.waitTimeSeconds }}
