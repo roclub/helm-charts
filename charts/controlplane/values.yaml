@@ -114,6 +114,7 @@ remoteControl:
 
     sqs:
       queueURL: ""
+      roleArn: ""
       workerCount: 2
       visibilityTimeoutSeconds: 30
       waitTimeSeconds: 20
