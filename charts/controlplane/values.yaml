@@ -493,7 +493,7 @@ redis:
   metrics:
     enabled: true
     image:
-      digest: "sha256:3023b8e4b708bc1fa60e991563ed3e5901784440e97f4cb439c3ee93e6ef0dfc" # redis-exporter 1.90.0
+      digest: "sha256:d5e1b663341db7aa908b6e59581df33f45479732006a5e16a17c2cb7eaef47b4" # redis-exporter 1.91.1
     serviceMonitor:
       enabled: false
   kubectl:
