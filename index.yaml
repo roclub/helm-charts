@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   app:
   - apiVersion: v2
+    appVersion: 0.22.1
+    created: "2026-09-14T13:19:21.633709892Z"
+    dependencies:
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 23.1.1
+    description: Deploys the roclub main application to Kubernetes
+    digest: 91eb7b620d587d7b5b599959d73bd6799c53e00cad7cb90e95d3663159f267c9
+    name: app
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/app-0.22.1/app-0.22.1.tgz
+    version: 0.22.1
+  - apiVersion: v2
     appVersion: 0.22.0
     created: "2026-09-13T21:48:16.218803836Z"
     dependencies:
@@ -6884,4 +6898,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-14T11:54:53.301749349Z"
+generated: "2026-09-14T13:19:21.634284713Z"
