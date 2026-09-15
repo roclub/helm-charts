@@ -32,6 +32,7 @@ data:
         conferenceProjectID: {{ .Values.config.zitadel.conferenceProjectID | quote }}
         instanceURL: {{ .Values.config.zitadel.instanceURL | quote }}
         serviceAccountKey: {{ .Values.config.zitadel.serviceAccountKey | quote }}
+        introspectionApplicationKey: {{ .Values.config.zitadel.introspectionApplicationKey | quote }}
       controlPlane:
         address: {{ .Values.config.controlPlane.address | quote }}
       controlPlaneAuthz:
@@ -90,6 +91,7 @@ data:
         knowledgebaseProjectID: {{ .Values.seed.zitadel.knowledgebaseProjectID | quote }}
         conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
         serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
+        introspectionApplicationKey: {{ .Values.seed.zitadel.introspectionApplicationKey | quote }}
         instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
 {{- end }}
 
@@ -124,6 +126,7 @@ data:
         conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
         serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
         instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+        introspectionApplicationKey: {{ .Values.seed.zitadel.introspectionApplicationKey | quote }}
 {{- end }}
 
 {{- if .Values.seed.departments.enabled }}
@@ -157,6 +160,7 @@ data:
         conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
         serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
         instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+        introspectionApplicationKey: {{ .Values.seed.zitadel.introspectionApplicationKey | quote }}
 {{- end }}
 
 {{- if .Values.seed.devices.enabled }}
@@ -192,4 +196,5 @@ data:
         conferenceProjectID: {{ .Values.seed.zitadel.conferenceProjectID | quote }}
         serviceAccountKey: {{ .Values.seed.zitadel.serviceAccountKey | quote }}
         instanceURL: {{ .Values.seed.zitadel.instanceURL | quote }}
+        introspectionApplicationKey: {{ .Values.seed.zitadel.introspectionApplicationKey | quote }}
 {{- end }}
