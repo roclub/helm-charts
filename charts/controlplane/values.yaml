@@ -115,7 +115,7 @@ remoteControl:
     sqs:
       queueURL: ""
       roleArn: ""
-      workerCount: 2
+      workerCount: 1
       visibilityTimeoutSeconds: 30
       waitTimeSeconds: 20
       maxMessages: 10
@@ -496,6 +496,9 @@ redis:
       digest: "sha256:d5e1b663341db7aa908b6e59581df33f45479732006a5e16a17c2cb7eaef47b4" # redis-exporter 1.91.1
     serviceMonitor:
       enabled: true
+      port: http-metrics
+      additionalLabels:
+        prometheus.io/instance: primary
     redisTargetHost: "dev-controlplane-redis-headless.core.svc.cluster.local" # has to be overriden per dev
 
   kubectl:
