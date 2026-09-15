@@ -74,6 +74,7 @@ seed:
     knowledgebaseProjectID: ""
     conferenceProjectID: ""
     serviceAccountKey: ""
+    introspectionApplicationKey: ""
     instanceURL: ""
 
 # config contains application-specific configuration.
@@ -101,10 +102,12 @@ config:
     knowledgebaseProjectID: ""
     # config.zitadel.conferenceProjectID is the conference Zitadel project ID.
     conferenceProjectID: ""
-    # config.zitadel.instanceURL is the Zitadel instance base URL.
-    instanceURL: ""
     # config.zitadel.serviceAccountKey is the Zitadel service account credential.
     serviceAccountKey: ""
+    # config.zitadel.introspectionApplicationKey is the Zitadel introspection application credential.
+    introspectionApplicationKey: ""
+    # config.zitadel.instanceURL is the Zitadel instance base URL.
+    instanceURL: ""
   controlPlane:
     # config.controlPlane.address is the control plane gRPC service address.
     address: ""
