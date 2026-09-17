@@ -106,6 +106,8 @@ config:
     serviceAccountKey: ""
     # config.zitadel.introspectionApplicationKey is the Zitadel introspection application credential.
     introspectionApplicationKey: ""
+    # config.zitadel.introspectionApplicationKeys maps Zitadel project IDs to introspection application credentials.
+    introspectionApplicationKeys: {}
     # config.zitadel.instanceURL is the Zitadel instance base URL.
     instanceURL: ""
   controlPlane:
