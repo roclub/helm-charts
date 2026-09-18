@@ -33,6 +33,8 @@ data:
         instanceURL: {{ .Values.config.zitadel.instanceURL | quote }}
         serviceAccountKey: {{ .Values.config.zitadel.serviceAccountKey | quote }}
         introspectionApplicationKey: {{ .Values.config.zitadel.introspectionApplicationKey | quote }}
+        introspectionApplicationKeys:{{- if .Values.config.zitadel.introspectionApplicationKeys }}
+{{ toYaml .Values.config.zitadel.introspectionApplicationKeys | nindent 10 }}{{- else }} {}{{- end }}
       controlPlane:
         address: {{ .Values.config.controlPlane.address | quote }}
       controlPlaneAuthz:
