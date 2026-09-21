@@ -1104,6 +1104,16 @@ entries:
     version: 0.1.0
   conference:
   - apiVersion: v2
+    appVersion: 0.28.7
+    created: "2026-09-21T12:55:06.698241363Z"
+    description: Deploys the roclub conference using livekit
+    digest: f13a6476f0f3900e8ed6f4c025c6cb5a8ec1dc5a956674c217c0ec838634f9f6
+    name: conference
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/conference-0.28.7/conference-0.28.7.tgz
+    version: 0.28.7
+  - apiVersion: v2
     appVersion: 0.28.6
     created: "2026-09-09T13:49:47.94303739Z"
     description: Deploys the roclub conference using livekit
@@ -2054,6 +2064,24 @@ entries:
     - https://github.com/roclub/helm-charts/releases/download/conference-0.4.1/conference-0.4.1.tgz
     version: 0.4.1
   controlplane:
+  - apiVersion: v2
+    appVersion: 2.30.0
+    created: "2026-09-21T12:55:07.007288945Z"
+    dependencies:
+    - name: influxdb2
+      repository: https://helm.influxdata.com/
+      version: 2.1.2
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 23.1.1
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: a0210b281b638a1d13817e17eca39aedb43b325f0016ca9c0af275dc3e84e2e3
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.53.0/controlplane-2.53.0.tgz
+    version: 2.53.0
   - apiVersion: v2
     appVersion: 2.29.0
     created: "2026-09-16T08:50:53.714259731Z"
@@ -7308,4 +7336,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-21T08:59:36.312823213Z"
+generated: "2026-09-21T12:55:07.008365009Z"
