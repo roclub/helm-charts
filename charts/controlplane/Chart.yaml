@@ -2,12 +2,12 @@ apiVersion: v2
 name: controlplane
 description: Deploys all microservices associated with managing and controlling the roclub connectors
 type: application
-version: 2.53.1
-appVersion: "2.30.1"
+version: 2.53.2
+appVersion: "test-branch-deploy-dev-2-20260925123540-9515d1c"
 dependencies:
-- name: influxdb2
-  version: 2.1.2
-  repository: https://helm.influxdata.com/
-- name: redis
-  version: 23.1.1
-  repository: https://charts.bitnami.com/bitnami
+  - name: influxdb2
+    version: 2.1.2
+    repository: https://helm.influxdata.com/
+  - name: redis
+    version: 23.1.1
+    repository: https://charts.bitnami.com/bitnami
