@@ -69,6 +69,15 @@ spec:
     privateKeySecretRef:
       name: {{ $fullName }}-letsencrypt
     solvers:
+    {{- range .Values.cloudfront.additionalAliases }}
+    - selector:
+        dnsZones:
+          - {{ .fqdn | quote }}
+      dns01:
+        route53:
+          region: eu-central-1
+          hostedZoneID: {{ .hostedZoneId | quote }}
+    {{- end }}
     - dns01:
         route53:
           region: eu-central-1
