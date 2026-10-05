@@ -1,0 +1,26 @@
+{{- if .Values.postgres.recovery.enabled }}
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: {{ include "controlplane-app.fullname" . }}-postgres-recovery-source
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "controlplane-app.labels" . | nindent 4 }}
+spec:
+  configuration:
+    destinationPath: {{ .Values.postgres.recovery.destinationPath | quote }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ .Values.postgres.recovery.credentials.existingSecret | quote }}
+        key: {{ .Values.postgres.recovery.credentials.accessKeyIdKey | quote }}
+      secretAccessKey:
+        name: {{ .Values.postgres.recovery.credentials.existingSecret | quote }}
+        key: {{ .Values.postgres.recovery.credentials.secretAccessKeyKey | quote }}
+    wal:
+      compression: gzip
+    data:
+      compression: gzip
+{{- end }}

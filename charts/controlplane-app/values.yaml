@@ -258,6 +258,19 @@ postgres:
         cpu: "200m"
         memory: "512Mi"
 
+  # Recovery only bootstraps a new cluster; it does not overwrite existing volumes.
+  recovery:
+    enabled: false
+    destinationPath: ""
+    # Source cluster's backup prefix, not the new cluster name.
+    serverName: ""
+    # Empty restores to the end of available WAL; set a CNPG recoveryTarget for PITR.
+    recoveryTarget: {}
+    credentials:
+      existingSecret: ""
+      accessKeyIdKey: "ACCESS_KEY_ID"
+      secretAccessKeyKey: "ACCESS_SECRET_KEY"
+
   # postgres.backup configures base backups, WAL archiving, and object storage.
   backup:
     # postgres.backup.scheduledBackup configures the ScheduledBackup resource.
@@ -273,6 +286,7 @@ postgres:
       # postgres.backup.objectStore.annotations are added to the ObjectStore metadata.
       annotations: {}
       # postgres.backup.objectStore.destinationPath is the environment-specific S3 URI.
+      # Recovery may reuse the source bucket with a separate write prefix.
       destinationPath: "s3://controlplane-app-dev-postgres-backups"
       # postgres.backup.objectStore.credentials is used to create the chart-managed Secret.
       credentials:
