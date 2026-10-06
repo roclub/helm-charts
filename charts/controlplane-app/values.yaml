@@ -258,7 +258,6 @@ postgres:
         cpu: "200m"
         memory: "512Mi"
 
-  # Recovery only bootstraps a new cluster; it does not overwrite existing volumes.
   recovery:
     enabled: false
     destinationPath: ""
