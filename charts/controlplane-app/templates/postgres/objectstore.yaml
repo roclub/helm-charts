@@ -1,4 +1,3 @@
-{{- include "controlplane-app.validatePostgres" . }}
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
