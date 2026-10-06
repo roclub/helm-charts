@@ -94,3 +94,6 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: {{ include "controlplane-app.fullname" . }}-aws-s3-postgres-backup
+        {{- with .Values.postgres.backup.serverName }}
+        serverName: {{ . | quote }}
+        {{- end }}

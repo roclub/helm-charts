@@ -280,12 +280,15 @@ postgres:
     schedule: "0 0 2 * * *"
     # postgres.backup.retentionPolicy defines the recoverability window.
     retentionPolicy: "7d"
+    # postgres.backup.serverName is the Barman folder this cluster writes WAL and base backups to.
+    # Empty uses the cluster name. Must differ from postgres.recovery.serverName when restoring
+    # from the same bucket, otherwise WAL archiving fails with "Expected empty archive".
+    serverName: ""
     # postgres.backup.objectStore configures the S3 backup destination.
     objectStore:
       # postgres.backup.objectStore.annotations are added to the ObjectStore metadata.
       annotations: {}
       # postgres.backup.objectStore.destinationPath is the environment-specific S3 URI.
-      # Recovery may reuse the source bucket with a separate write prefix.
       destinationPath: "s3://controlplane-app-dev-postgres-backups"
       # postgres.backup.objectStore.credentials is used to create the chart-managed Secret.
       credentials:
