@@ -28,8 +28,5 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if not .Values.postgres.recovery.credentials.existingSecret -}}
 {{- fail "postgres.recovery.credentials.existingSecret is required when recovery is enabled" -}}
 {{- end -}}
-{{- if eq (trimSuffix "/" .Values.postgres.recovery.destinationPath) (trimSuffix "/" .Values.postgres.backup.objectStore.destinationPath) -}}
-{{- fail "Recovery source and backup write destination must be separate S3 locations" -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
