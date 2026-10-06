@@ -261,7 +261,7 @@ postgres:
   recovery:
     enabled: false
     destinationPath: ""
-    # Source cluster's backup prefix, not the new cluster name.
+    # Barman serverName of the source cluster whose backups are being restored, not the new cluster.
     serverName: ""
     # Empty restores to the end of available WAL; set a CNPG recoveryTarget for PITR.
     recoveryTarget: {}
