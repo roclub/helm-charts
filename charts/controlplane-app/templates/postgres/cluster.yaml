@@ -20,7 +20,7 @@ spec:
   bootstrap:
     {{- if .Values.postgres.recovery.enabled }}
     recovery:
-      source: backup-source
+      source: {{ include "controlplane-app.fullname" . }}-backup-source
       {{- with .Values.postgres.recovery.recoveryTarget }}
       recoveryTarget:
         {{- toYaml . | nindent 8 }}
@@ -45,7 +45,7 @@ spec:
 
   {{- if .Values.postgres.recovery.enabled }}
   externalClusters:
-    - name: backup-source
+    - name: {{ include "controlplane-app.fullname" . }}-backup-source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
