@@ -258,6 +258,18 @@ postgres:
         cpu: "200m"
         memory: "512Mi"
 
+  recovery:
+    enabled: false
+    destinationPath: ""
+    # Barman serverName of the source cluster whose backups are being restored, not the new cluster.
+    serverName: ""
+    # Empty restores to the end of available WAL; set a CNPG recoveryTarget for PITR.
+    recoveryTarget: {}
+    credentials:
+      existingSecret: ""
+      accessKeyIdKey: "ACCESS_KEY_ID"
+      secretAccessKeyKey: "ACCESS_SECRET_KEY"
+
   # postgres.backup configures base backups, WAL archiving, and object storage.
   backup:
     # postgres.backup.scheduledBackup configures the ScheduledBackup resource.
@@ -268,6 +280,10 @@ postgres:
     schedule: "0 0 2 * * *"
     # postgres.backup.retentionPolicy defines the recoverability window.
     retentionPolicy: "7d"
+    # postgres.backup.serverName is the Barman folder this cluster writes WAL and base backups to.
+    # Empty uses the cluster name. Must differ from postgres.recovery.serverName when restoring
+    # from the same bucket, otherwise WAL archiving fails with "Expected empty archive".
+    serverName: ""
     # postgres.backup.objectStore configures the S3 backup destination.
     objectStore:
       # postgres.backup.objectStore.annotations are added to the ObjectStore metadata.

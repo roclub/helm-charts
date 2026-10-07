@@ -18,6 +18,14 @@ spec:
     name: {{ include "controlplane-app.fullname" . }}-pg-superuser
 
   bootstrap:
+    {{- if .Values.postgres.recovery.enabled }}
+    recovery:
+      source: {{ include "controlplane-app.fullname" . }}-backup-source
+      {{- with .Values.postgres.recovery.recoveryTarget }}
+      recoveryTarget:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- else }}
     initdb:
       database: {{ .Values.postgres.connection.database }}
       owner: {{ .Values.postgres.users.migration.name }}
@@ -33,6 +41,17 @@ spec:
         - {{ printf "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"%s\"" .Values.postgres.users.runtime.name | quote }}
         - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
         - {{ printf "ALTER DEFAULT PRIVILEGES FOR ROLE \"%s\" IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"%s\"" .Values.postgres.users.migration.name .Values.postgres.users.runtime.name | quote }}
+    {{- end }}
+
+  {{- if .Values.postgres.recovery.enabled }}
+  externalClusters:
+    - name: {{ include "controlplane-app.fullname" . }}-backup-source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: {{ include "controlplane-app.fullname" . }}-postgres-recovery-source
+          serverName: {{ .Values.postgres.recovery.serverName | quote }}
+  {{- end }}
 
   managed:
     roles:
@@ -75,3 +94,6 @@ spec:
       isWALArchiver: true
       parameters:
         barmanObjectName: {{ include "controlplane-app.fullname" . }}-aws-s3-postgres-backup
+        {{- with .Values.postgres.backup.serverName }}
+        serverName: {{ . | quote }}
+        {{- end }}
