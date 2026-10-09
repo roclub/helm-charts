@@ -272,6 +272,8 @@ postgres:
 
   # postgres.backup configures base backups, WAL archiving, and object storage.
   backup:
+    # controls WAL archiving, the backup ObjectStore, and scheduled backups.
+    enabled: true
     # postgres.backup.scheduledBackup configures the ScheduledBackup resource.
     scheduledBackup:
       # postgres.backup.scheduledBackup.annotations are added to the ScheduledBackup metadata.
