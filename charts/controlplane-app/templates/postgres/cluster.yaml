@@ -21,6 +21,10 @@ spec:
     {{- if .Values.postgres.recovery.enabled }}
     recovery:
       source: {{ include "controlplane-app.fullname" . }}-backup-source
+      database: {{ .Values.postgres.connection.database }}
+      owner: {{ .Values.postgres.users.migration.name }}
+      secret:
+        name: {{ include "controlplane-app.fullname" . }}-pg-migration
       {{- with .Values.postgres.recovery.recoveryTarget }}
       recoveryTarget:
         {{- toYaml . | nindent 8 }}
@@ -89,6 +93,7 @@ spec:
   resources:
     {{- toYaml .Values.postgres.cluster.resources | nindent 4 }}
 
+  {{- if .Values.postgres.backup.enabled }}
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
@@ -97,3 +102,4 @@ spec:
         {{- with .Values.postgres.backup.serverName }}
         serverName: {{ . | quote }}
         {{- end }}
+  {{- end }}
