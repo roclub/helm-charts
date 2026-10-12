@@ -50,7 +50,7 @@ spec:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: {{ include "controlplane-app.fullname" . }}-postgres-recovery-source
-          serverName: {{ .Values.postgres.recovery.serverName | quote }}
+          serverName: {{ default (printf "%s-postgres-cluster" (include "controlplane-app.fullname" .)) .Values.postgres.recovery.serverName | quote }}
   {{- end }}
 
   managed:
@@ -89,6 +89,7 @@ spec:
   resources:
     {{- toYaml .Values.postgres.cluster.resources | nindent 4 }}
 
+  {{- if .Values.postgres.backup.enabled }}
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
@@ -97,3 +98,4 @@ spec:
         {{- with .Values.postgres.backup.serverName }}
         serverName: {{ . | quote }}
         {{- end }}
+  {{- end }}
