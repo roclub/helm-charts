@@ -11,7 +11,7 @@ spec:
     name: {{ $fullname }}-oidc
   oidc:
     provider:
-      issuer: "https://identity.roclub.io"
+      issuer: "{{ .Values.httpRoute.oidc.provider.issuer }}"
     clientID: "{{ .Values.httpRoute.oidc.clientID }}"
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
@@ -29,7 +29,7 @@ spec:
     name: {{ $fullname }}-oidc-de
   oidc:
     provider:
-      issuer: "https://identity.roclub.io"
+      issuer: "{{ .Values.httpRoute.oidc.provider.issuer }}"
     clientID: "{{ .Values.httpRoute.oidc.clientID }}"
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
