@@ -40,6 +40,9 @@ httpRoute:
   oidc:
     clientID: "285474337715194832"
     clientSecret: "kuwQhvfqxfMfwnK2jng3p7NTIcDwn2sEEh0z2iahaFMJtdJtrfQXJqqvEHVw0zZB"
+    redirectURL: "https://knowledgebase.roclub.io/de-de/requirements/oauth2/callback"
+    logoutPath: "https://knowledgebase.roclub.io/"
+
   hosts:
     - knowledgebase-local.dev.roclub.io
     - origin-knowledgebase-local.dev.roclub.io

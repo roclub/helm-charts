@@ -15,8 +15,8 @@ spec:
     clientID: "{{ .Values.httpRoute.oidc.clientID }}"
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
-    redirectURL: "https://knowledgebase.roclub.io/en-en/requirements/oauth2/callback"
-    logoutPath: "https://knowledgebase.roclub.io/"
+    redirectURL: "{{ .Values.httpRoute.oidc.redirectURL }}"
+    logoutPath: "{{ .Values.httpRoute.oidc.logoutPath }}"
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
@@ -33,8 +33,8 @@ spec:
     clientID: "{{ .Values.httpRoute.oidc.clientID }}"
     clientSecret: 
       name: "{{ $fullname }}-oauth-secret"
-    redirectURL: "https://knowledgebase.roclub.io/de-de/requirements/oauth2/callback"
-    logoutPath: "https://knowledgebase.roclub.io/"
+    redirectURL: "{{ .Values.httpRoute.oidc.redirectURL }}"
+    logoutPath: "{{ .Values.httpRoute.oidc.logoutPath }}"
 ---
 apiVersion: v1
 data:
