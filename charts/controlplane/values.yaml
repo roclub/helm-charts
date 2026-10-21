@@ -311,6 +311,13 @@ connectorControl:
 influxdb2:
   enabled: true
 
+  serviceMonitor:
+    enabled: false
+    namespace: monitoring
+    interval: 30s
+    additionalLabels:
+      prometheus.io/instance: primary
+
   image:
     tag: 2.7.12-alpine
 

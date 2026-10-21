@@ -1,0 +1,23 @@
+{{- if .Values.influxdb2.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-influxdb2
+  namespace: {{ .Values.influxdb2.serviceMonitor.namespace }}
+  labels:
+    {{- toYaml .Values.influxdb2.serviceMonitor.additionalLabels | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: influxdb2
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  endpoints:
+    - port: {{ .Values.influxdb2.service.portName }}
+      path: /metrics
+      interval: {{ .Values.influxdb2.serviceMonitor.interval }}
+      scheme: http
+      honorLabels: true
+{{- end }}
