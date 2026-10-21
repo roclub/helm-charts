@@ -308,6 +308,18 @@ connectorControl:
   nodeSelector: {}
   tolerations: []
 
+podMonitors:
+  enabled: false
+  namespace: monitoring
+  interval: 30s
+  components:
+    - connector-control
+    - connector-status
+    - notifications
+    - remote-control
+  additionalLabels:
+    prometheus.io/instance: primary
+
 influxdb2:
   enabled: true
 
