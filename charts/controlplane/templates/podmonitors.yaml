@@ -1,0 +1,31 @@
+{{- if .Values.podMonitors.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ .Release.Name }}-controlplane
+  namespace: {{ .Values.podMonitors.namespace }}
+  labels:
+    {{- toYaml .Values.podMonitors.additionalLabels | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          {{- range .Values.podMonitors.components }}
+          - {{ printf "%s-%s" $.Release.Name . }}
+          {{- end }}
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
+      interval: {{ .Values.podMonitors.interval }}
+      honorLabels: true
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+          regex: {{ printf "%s-(.*)" .Release.Name | quote }}
+          targetLabel: job
+          replacement: {{ printf "%s/controlplane-$1" .Values.podMonitors.namespace }}
+{{- end }}
