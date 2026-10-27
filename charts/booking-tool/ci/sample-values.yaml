@@ -1,4 +1,4 @@
-# Render-only examples, not deployable credentials or a published image tag.
+# Validation-only examples, not deployable credentials or a published image tag.
 replicaCount: 0
 
 image:

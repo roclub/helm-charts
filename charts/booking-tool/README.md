@@ -41,12 +41,15 @@ kubectl rollout restart deployment/booking-tool --namespace booking-tool
 From the repository root:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r tests/requirements.txt
 helm lint charts/booking-tool --strict
-helm lint charts/booking-tool --strict --values tests/booking-tool/values.yaml
-.venv/bin/python -m unittest discover -s tests/booking-tool -p 'test_*.py' -v
+helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
+helm template booking-tool charts/booking-tool --namespace booking-tool
+helm template booking-tool charts/booking-tool --namespace booking-tool \
+  --values charts/booking-tool/ci/sample-values.yaml
+helm package charts/booking-tool --destination /tmp
 ```
 
-CI runs these checks and packages the chart with Helm 3 and Helm 4. Test fixtures
-are render-only examples, not deployable environment values.
+CI runs these checks with Helm 3 and Helm 4. Lint validates the values schema;
+rendering checks template generation, not runtime behavior or exact workload
+settings. Sample values are validation-only examples, not deployable environment
+values.
