@@ -6,14 +6,15 @@ It creates a Deployment, ClusterIP Service and application ConfigMap. Routing,
 edge resources, workload identity and Argo CD applications belong to later tickets.
 The existing RDS database is not managed by this chart.
 
-## Release prerequisite
+## Image and chart releases
 
 Chart version `0.1.0` is prepared for the existing **Release Charts** workflow.
-`appVersion: v0.0.0` is an explicit placeholder, not a published application image.
-Before publishing or deploying, complete
-[booking-tool issue #60](https://github.com/roclub/booking-tool/issues/60) and set
-`Chart.yaml`'s `appVersion` to its published image tag. A non-empty `image.tag`
-overrides `appVersion`; the default repository is `ghcr.io/roclub/booking-tool`.
+The default image is `ghcr.io/roclub/booking-tool:v0.0.0-4d40c61`, published after
+[booking-tool PR #69](https://github.com/roclub/booking-tool/pull/69) completed
+[issue #60](https://github.com/roclub/booking-tool/issues/60).
+The [publish workflow](https://github.com/roclub/booking-tool/actions/runs/40493549104)
+pulled the published image and verified its ARM64 architecture. A non-empty
+`image.tag` overrides `Chart.yaml`'s `appVersion`.
 
 The existing release workflow packages changed charts, creates versioned GitHub
 releases and updates the Helm repository index on pushes to `main`. Increment
@@ -70,14 +71,13 @@ The initial resources follow the REP:
 | Memory | `256Mi` | `1Gi` |
 | Ephemeral storage | `128Mi` | `1Gi` |
 
-After the image prerequisite is satisfied, stage the workload without running it:
+Stage the workload without running it, using the chart's published default image:
 
 ```bash
 helm upgrade --install booking-tool ./charts/booking-tool \
   --namespace booking-tool --create-namespace \
   --values /path/to/private-booking-values.yaml \
-  --set replicaCount=0 \
-  --set-string image.tag='v0.0.0-<published-short-sha>'
+  --set replicaCount=0
 ```
 
 Changing the mounted ConfigMap alone does not reload the running application.
