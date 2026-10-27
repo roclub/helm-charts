@@ -1,0 +1,7 @@
+apiVersion: v2
+name: booking-tool
+description: Deploys the booking tool workload
+type: application
+version: 0.1.0
+# Replace with a published image tag from booking-tool issue #60 before deployment.
+appVersion: "v0.0.0"

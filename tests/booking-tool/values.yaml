@@ -1,0 +1,34 @@
+# Render-only examples, not deployable credentials or a published image tag.
+replicaCount: 0
+
+image:
+  tag: "v0.0.0-example"
+
+imagePullSecrets:
+  - name: "example-ghcr"
+
+deployment:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+
+service:
+  httpPort: 18080
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+
+config:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  zitadel:
+    domain: "https://identity.example.com"
+    client_id: "example-client"
+    project_id: "00123"
+    redirect_uri: "https://bookings.example.com/auth/callback"
+  database:
+    dsn: "postgres://database.example.com:5432/roclub_booking?sslmode=require"
+    secret_arn: "arn:aws:secretsmanager:eu-central-1:123456789012:secret:example"
+  email:
+    smtp_password: "not-a-real-password:#"
+  sms:
+    origins:
+      "+49": "example"

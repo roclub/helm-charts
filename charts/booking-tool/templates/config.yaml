@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "booking-tool.fullname" . }}-deployment-config
+  namespace: {{ .Release.Namespace }}
+  {{- with .Values.config.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "booking-tool.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    server:
+      port: {{ .Values.service.httpPort }}
+    {{- omit .Values.config "annotations" | toYaml | nindent 4 }}
