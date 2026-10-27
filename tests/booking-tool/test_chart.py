@@ -153,12 +153,12 @@ class BookingToolChartTests(unittest.TestCase):
                     {"argocd.argoproj.io/sync-wave": wave},
                 )
 
-    def test_workload_only_resources_follow_release_identity_and_namespace(self):
+    def test_workload_only_resources_leave_namespace_to_release(self):
         resources = render(release="preview-booking", namespace="booking-preview")
         self.assertEqual(set(resources), {"Deployment", "Service", "ConfigMap"})
         for resource in resources.values():
             with self.subTest(kind=resource["kind"]):
-                self.assertEqual(resource["metadata"]["namespace"], "booking-preview")
+                self.assertNotIn("namespace", resource["metadata"])
                 self.assertEqual(
                     resource["metadata"]["labels"]["app.kubernetes.io/managed-by"],
                     "Helm",
