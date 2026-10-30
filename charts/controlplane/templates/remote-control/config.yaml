@@ -47,6 +47,13 @@ data:
     [session_control.notification_service]
     address = "http://{{ include "controlplane.notificationsName" . }}:8080"
 
+    [session_control.controlplane_app]
+    address = "{{ .Values.remoteControl.config.controlplaneApp.address }}"
+
+    [session_control.zitadel]
+    instance_url = "{{ .Values.remoteControl.config.zitadel.instanceURL }}"
+    service_account_key = "{{ .Values.remoteControl.config.zitadel.serviceAccountKey }}"
+
     [session_control.session_usage_repository]
     influxdb_org = "{{ .Values.remoteControl.config.influx.org }}"
     influxdb_url = "http://{{ $influxName }}-influxdb2"
