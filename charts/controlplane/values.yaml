@@ -130,6 +130,10 @@ remoteControl:
       orgs: {}
       manualRuns: []
 
+    zitadel:
+      instanceURL: ""
+      serviceAccountKey: ""
+
     logger: "debug"
 
   service:

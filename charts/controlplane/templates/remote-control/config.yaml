@@ -51,6 +51,10 @@ data:
     influxdb_org = "{{ .Values.remoteControl.config.influx.org }}"
     influxdb_url = "http://{{ $influxName }}-influxdb2"
 
+    [session_control.zitadel]
+    instance_url = "{{ .Values.remoteControl.config.zitadel.instanceURL }}"
+    service_account_key = {{ .Values.remoteControl.config.zitadel.serviceAccountKey | quote }}
+
     [session_control.sqs]
     queue_url                  = "{{ .Values.remoteControl.config.sqs.queueURL }}"
     role_arn = "{{ .Values.remoteControl.config.sqs.roleArn }}"
