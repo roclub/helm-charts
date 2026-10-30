@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "description": "Use zero during EC2 coexistence or one after cutover.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "tag": { "type": "string" },
+        "pullPolicy": {
+          "type": "string",
+          "enum": ["Always", "IfNotPresent", "Never"]
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "httpPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "server": false
+      },
+      "description": "The chart supplies server.port from service.httpPort."
+    }
+  }
+}
