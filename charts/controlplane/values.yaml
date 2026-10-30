@@ -130,6 +130,13 @@ remoteControl:
       orgs: {}
       manualRuns: []
 
+    controlplaneApp:
+      address: ""
+
+    zitadel:
+      instanceURL: ""
+      serviceAccountKey: ""
+
     logger: "debug"
 
   service:
