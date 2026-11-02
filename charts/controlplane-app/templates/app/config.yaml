@@ -41,6 +41,13 @@ data:
         address: {{ .Values.config.controlPlane.address | quote }}
       controlPlaneAuthz:
         address: {{ .Values.config.controlPlaneAuthz.address | quote }}
+      solvimon:
+        baseURL: {{ .Values.config.solvimon.baseURL | quote }}
+        apiSecret: {{ .Values.config.solvimon.apiSecret | quote }}
+        webhookSecret: {{ .Values.config.solvimon.webhookSecret | quote }}
+      slack:
+        onboardingWebhookURL: {{ .Values.config.slack.onboardingWebhookURL | quote }}
+        subscriptionsAlertsWebhookURL: {{ .Values.config.slack.subscriptionsAlertsWebhookURL | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap

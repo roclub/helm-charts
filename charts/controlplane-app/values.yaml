@@ -116,6 +116,13 @@ config:
   controlPlaneAuthz:
     # config.controlPlaneAuthz.address is the control plane authz service address.
     address: ""
+  solvimon:
+    baseURL: ""
+    apiSecret: ""
+    webhookSecret: ""
+  slack:
+    onboardingWebhookURL: ""
+    subscriptionsAlertsWebhookURL: ""
 
 # service configures the application Service.
 service:
