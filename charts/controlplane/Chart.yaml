@@ -2,8 +2,8 @@ apiVersion: v2
 name: controlplane
 description: Deploys all microservices associated with managing and controlling the roclub connectors
 type: application
-version: 2.60.1
-appVersion: "feat-session-usage-backend-metadata-20261030110936-fc785cd"
+version: 2.60.2
+appVersion: "feat-session-status-api-20261103093747-63cb6be"
 dependencies:
   - name: influxdb2
     version: 2.1.2
