@@ -81,7 +81,7 @@ tolerations: []
 affinity: {}
 
 provisioning:
-  enabled: true
+  enabled: false
   jobAnnotations: {}
   seedJobAnnotations: {}
   seedConfigMapAnnotations: {}
