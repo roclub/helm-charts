@@ -108,13 +108,22 @@ provisioning:
         define admin: [user] or csm from parent
         define csm: csm from parent
 
+    type access_grant
+      relations
+        define recipient: [user with within_time_window]
+
     type connector
       relations
         define parent: [organization]
         define local_operator: [user] or csm from parent
-        define remote_operator: [user] or csm from parent
+        define remote_operator_grants: [access_grant]
+        define remote_operator: [user] or csm from parent or recipient from remote_operator_grants
         define guest: [user]
         define admin: admin from parent
+
+    condition within_time_window(current_time: timestamp, starts_at: timestamp, ends_at: timestamp) {
+      current_time >= starts_at && current_time < ends_at
+    }
 
   # Preferred for GitOps overlays and environment-specific seeds.
   # Set this in the GitOps values file to avoid chart changes per environment.
