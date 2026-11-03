@@ -93,7 +93,7 @@ provisioning:
     pullPolicy: IfNotPresent
   model: |
     model
-      schema 1.1
+    schema 1.1
 
     type user
 
