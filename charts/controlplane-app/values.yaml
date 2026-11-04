@@ -123,6 +123,8 @@ config:
   slack:
     onboardingWebhookURL: ""
     subscriptionsAlertsWebhookURL: ""
+  # config.serviceAccountPermissionAllowList maps service account IDs to permission IDs they may use without authz delegation.
+  serviceAccountPermissionAllowList: {}
 
 # service configures the application Service.
 service:

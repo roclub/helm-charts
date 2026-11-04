@@ -48,6 +48,13 @@ data:
       slack:
         onboardingWebhookURL: {{ .Values.config.slack.onboardingWebhookURL | quote }}
         subscriptionsAlertsWebhookURL: {{ .Values.config.slack.subscriptionsAlertsWebhookURL | quote }}
+    serviceAccountPermissionAllowList:{{- if .Values.config.serviceAccountPermissionAllowList }}
+{{- range $serviceAccountID, $permissionIDs := .Values.config.serviceAccountPermissionAllowList }}
+      {{ $serviceAccountID | quote }}:
+{{- range $permissionIDs }}
+        - {{ . | quote }}
+{{- end }}
+{{- end }}{{- else }} {}{{- end }}
 ---
 apiVersion: v1
 kind: ConfigMap
