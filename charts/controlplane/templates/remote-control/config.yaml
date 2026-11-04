@@ -45,7 +45,7 @@ data:
     user = "{{ .Values.remoteControl.config.session_status_repository.user }}"
     password = "{{ .Values.remoteControl.config.session_status_repository.password }}"
     sslmode = "{{ .Values.remoteControl.config.session_status_repository.sslmode }}"
-    sslrootcert = "{{ .Values.remoteControl.config.session_status_repository.sslrootcert }}"
+    sslrootcert = {{ .Values.remoteControl.config.session_status_repository.sslrootcert | toJson }}
     search_path = "{{ .Values.remoteControl.config.session_status_repository.search_path }}"
 
     [session_control.authz_service]
