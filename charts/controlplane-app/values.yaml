@@ -111,8 +111,10 @@ config:
     # config.zitadel.instanceURL is the Zitadel instance base URL.
     instanceURL: ""
   controlPlane:
-    # config.controlPlane.address is the control plane gRPC service address.
+    # config.controlPlane.address is the control plane connector-control gRPC service address.
     address: ""
+    # config.controlPlane.sessionControlAddress is the control plane session-control (remote-control) gRPC service address.
+    sessionControlAddress: ""
   controlPlaneAuthz:
     # config.controlPlaneAuthz.address is the control plane authz service address.
     address: ""

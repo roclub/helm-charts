@@ -39,6 +39,7 @@ data:
 {{- end }}{{- else }} {}{{- end }}
       controlPlane:
         address: {{ .Values.config.controlPlane.address | quote }}
+        sessionControlAddress: {{ .Values.config.controlPlane.sessionControlAddress | quote }}
       controlPlaneAuthz:
         address: {{ .Values.config.controlPlaneAuthz.address | quote }}
       solvimon:
