@@ -109,6 +109,17 @@ remoteControl:
       host: ""
       ttl: 300
 
+    session_status_repository:
+      host: ""
+      port: 5432
+      dbname: ""
+      user: ""
+      password: ""
+      sslmode: "verify-full"
+      sslrootcert: ""
+      search_path: ""
+
+
     influx:
       org: "roclub"
 
