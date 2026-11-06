@@ -1,0 +1,71 @@
+image:
+  repository: "ghcr.io/roclub/booking-tool"
+  # Empty uses Chart.appVersion.
+  tag: ""
+  pullPolicy: "Always"
+
+imagePullSecrets:
+  - name: "dockerconfigjson-github-com"
+
+# Keep at zero while EC2 is running; never run multiple booking processes.
+replicaCount: 1
+
+deployment:
+  annotations: {}
+
+service:
+  annotations: {}
+  type: "ClusterIP"
+  # Also sets the application listener and container port.
+  httpPort: 8080
+
+# Application config.yaml, following controlplane-app's ConfigMap convention.
+# server.port is derived from service.httpPort; TLS terminates outside the Pod.
+# Supply environment-specific configuration through private GitOps values.
+config:
+  annotations: {}
+  zitadel:
+    domain: ""
+    client_id: ""
+    redirect_uri: ""
+    post_logout_redirect_uri: ""
+    slo_enabled: false
+    project_id: ""
+    pat: ""
+  email:
+    sender: ""
+    smtp_host: ""
+    smtp_port: 587
+    smtp_user: ""
+    smtp_password: ""
+  database:
+    dsn: ""
+    secret_arn: ""
+  storage:
+    bucket: ""
+    region: "eu-central-1"
+    endpoint: ""
+    max_upload_bytes: 10485760
+  sms:
+    region: ""
+    origins: {}
+    default_origin: ""
+  control_plane_app:
+    enabled: false
+    base_url: ""
+    project_id: ""
+    service_account_client_id: ""
+    service_account_client_secret: ""
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+    ephemeral-storage: "128Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+    ephemeral-storage: "1Gi"
+
+nodeSelector:
+  kubernetes.io/arch: "arm64"

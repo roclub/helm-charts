@@ -1,0 +1,47 @@
+name: Validate booking-tool chart
+
+on:
+  pull_request:
+    paths:
+      - "charts/booking-tool/**"
+      - ".github/workflows/booking-tool-test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "charts/booking-tool/**"
+      - ".github/workflows/booking-tool-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        helm: ["v3.17.3", "v4.1.4"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Helm
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
+        with:
+          version: ${{ matrix.helm }}
+
+      - name: Lint default and sample values
+        run: |
+          helm lint charts/booking-tool --strict
+          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
+
+      - name: Render default and sample values
+        run: |
+          helm template booking-tool charts/booking-tool --namespace booking-tool > "$RUNNER_TEMP/booking-tool-default.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --values charts/booking-tool/ci/sample-values.yaml > "$RUNNER_TEMP/booking-tool-sample.yaml"
+
+      - name: Package chart
+        run: helm package charts/booking-tool --destination "$RUNNER_TEMP"
