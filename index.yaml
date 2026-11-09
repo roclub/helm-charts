@@ -2349,6 +2349,24 @@ entries:
     version: 0.4.1
   controlplane:
   - apiVersion: v2
+    appVersion: feat-session-status-api-20261109142125-b6aa1d7
+    created: "2026-11-09T14:23:02.562883365Z"
+    dependencies:
+    - name: influxdb2
+      repository: https://helm.influxdata.com/
+      version: 2.1.2
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 23.1.1
+    description: Deploys all microservices associated with managing and controlling
+      the roclub connectors
+    digest: 4699f0c25c0df6b97fffd559a059e66720fc705e9206800aec91035d11cb7475
+    name: controlplane
+    type: application
+    urls:
+    - https://github.com/roclub/helm-charts/releases/download/controlplane-2.60.9/controlplane-2.60.9.tgz
+    version: 2.60.9
+  - apiVersion: v2
     appVersion: 2.31.0
     created: "2026-11-05T12:16:04.864136238Z"
     dependencies:
@@ -8912,4 +8930,4 @@ entries:
     urls:
     - https://github.com/roclub/helm-charts/releases/download/roclub-websocket-0.1.0/roclub-websocket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-06T08:19:21.410566137Z"
+generated: "2026-11-09T14:23:02.5639731Z"
