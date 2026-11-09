@@ -1,9 +1,6 @@
 # booking-tool
 
 Workload chart for [REP-0055](https://github.com/roclub/docs/blob/main/roclub-enhancements-proposals/REP-0055-Booking-Tool-Kubernetes-Deployment/README.md).
-The existing RDS database remains in use. Envoy/TLS
-([#64](https://github.com/roclub/booking-tool/issues/64)) and the non-prod
-CloudFront/WAF hostname ([#65](https://github.com/roclub/booking-tool/issues/65)) follow later.
 
 ## Deployment
 
@@ -38,21 +35,14 @@ keys are not client secrets.
 ## Configuration
 
 Set `config.existingSecret` to a Secret in the release namespace containing the
-complete application file under `config.yaml`, including SMTP authentication and
-identity/control-plane settings. It is mounted read-only at `/srv/config.yaml`;
+complete application file under `config.yaml`. It is mounted read-only at `/srv/config.yaml`;
 the chart neither provisions the Secret nor renders a ConfigMap in this mode.
 Do not pass credentials through Helm values or Terraform; they are retained in
 Helm releases or Terraform state.
 
-Inline `config` values remain supported for compatibility and synthetic
-validation; empty defaults are not runnable. Without an existing Secret, the
-chart generates a ConfigMap. Keys match the application, including
-`control_plane_app` and `controlplane_authz`; chart settings `config.annotations` and
+Without an existing Secret, inline `config` values generate a ConfigMap; empty
+defaults are not runnable. Chart settings `config.annotations` and
 `config.existingSecret` are excluded from its contents.
-
-Supply the required HTTPS `conference.base_url` and complete `control_plane_app`
-settings. Country lookups require that API even when `control_plane_app.enabled`
-is false. If enabling `controlplane_authz`, supply all four of its settings.
 
 `service.httpPort` also sets `server.port`; do not set `config.server`.
 When supplying a Secret, its `server.port` must match `service.httpPort`.
