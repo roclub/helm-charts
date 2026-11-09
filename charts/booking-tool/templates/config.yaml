@@ -1,3 +1,4 @@
+{{- if not .Values.config.existingSecret }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,4 +13,5 @@ data:
   config.yaml: |
     server:
       port: {{ .Values.service.httpPort }}
-    {{- omit .Values.config "annotations" | toYaml | nindent 4 }}
+    {{- omit .Values.config "annotations" "existingSecret" | toYaml | nindent 4 }}
+{{- end }}

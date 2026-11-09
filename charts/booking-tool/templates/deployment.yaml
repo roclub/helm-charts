@@ -20,6 +20,7 @@ spec:
       labels:
         {{- include "booking-tool.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "booking-tool.serviceAccountName" . }}
       automountServiceAccountToken: false
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
@@ -27,6 +28,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: AWS_EC2_METADATA_DISABLED
+              value: "true"
           ports:
             - name: http
               containerPort: {{ .Values.service.httpPort }}
@@ -61,7 +65,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: app-config
+          {{- if .Values.config.existingSecret }}
+          secret:
+            secretName: {{ .Values.config.existingSecret }}
+          {{- else }}
           configMap:
             name: {{ include "booking-tool.fullname" . }}-deployment-config
+          {{- end }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}

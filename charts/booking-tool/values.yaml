@@ -7,6 +7,11 @@ image:
 imagePullSecrets:
   - name: "dockerconfigjson-github-com"
 
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
 # Keep at zero while EC2 is running; never run multiple booking processes.
 replicaCount: 1
 
@@ -21,9 +26,10 @@ service:
 
 # Application config.yaml, following controlplane-app's ConfigMap convention.
 # server.port is derived from service.httpPort; TLS terminates outside the Pod.
-# Supply environment-specific configuration through private GitOps values.
+# Use an existing Secret for credentials; inline config remains available.
 config:
   annotations: {}
+  existingSecret: ""
   zitadel:
     domain: ""
     client_id: ""
@@ -41,6 +47,8 @@ config:
   database:
     dsn: ""
     secret_arn: ""
+  conference:
+    base_url: ""
   storage:
     bucket: ""
     region: "eu-central-1"
@@ -52,6 +60,11 @@ config:
     default_origin: ""
   control_plane_app:
     enabled: false
+    base_url: ""
+    project_id: ""
+    service_account_client_id: ""
+    service_account_client_secret: ""
+  controlplane_authz:
     base_url: ""
     project_id: ""
     service_account_client_id: ""

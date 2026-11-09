@@ -32,16 +32,30 @@ jobs:
         with:
           version: ${{ matrix.helm }}
 
-      - name: Lint default and sample values
+      - name: Lint default, inline and private configuration values
         run: |
           helm lint charts/booking-tool --strict
           helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
+          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/secret-values.yaml
 
       - name: Render default and sample values
         run: |
           helm template booking-tool charts/booking-tool --namespace booking-tool > "$RUNNER_TEMP/booking-tool-default.yaml"
           helm template booking-tool charts/booking-tool --namespace booking-tool \
             --values charts/booking-tool/ci/sample-values.yaml > "$RUNNER_TEMP/booking-tool-sample.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --values charts/booking-tool/ci/secret-values.yaml > "$RUNNER_TEMP/booking-tool-secret.yaml"
+
+      - name: Reject unsafe replica and service-account settings
+        run: |
+          for setting in replicaCount=2 replicaCount=-1 serviceAccount.create=false \
+            serviceAccount.annotations.example=true config.existingSecret=Invalid_Name; do
+            if helm template booking-tool charts/booking-tool --set "$setting" \
+              > "$RUNNER_TEMP/booking-tool-invalid.yaml" 2> "$RUNNER_TEMP/booking-tool-invalid.log"; then
+              echo "::error::Chart accepted invalid setting: $setting"
+              exit 1
+            fi
+          done
 
       - name: Package chart
         run: helm package charts/booking-tool --destination "$RUNNER_TEMP"

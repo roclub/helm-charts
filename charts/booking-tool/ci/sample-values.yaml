@@ -7,6 +7,11 @@ image:
 imagePullSecrets:
   - name: "example-ghcr"
 
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/example-booking-tool"
+    eks.amazonaws.com/sts-regional-endpoints: "true"
+
 deployment:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -27,6 +32,19 @@ config:
   database:
     dsn: "postgres://database.example.com:5432/roclub_booking?sslmode=require"
     secret_arn: "arn:aws:secretsmanager:eu-central-1:123456789012:secret:example"
+  conference:
+    base_url: "https://conference.example.com"
+  control_plane_app:
+    enabled: true
+    base_url: "https://controlplane.example.com"
+    project_id: "00124"
+    service_account_client_id: "example-core-client"
+    service_account_client_secret: "not-a-real-core-secret"
+  controlplane_authz:
+    base_url: "https://authz.example.com"
+    project_id: "00125"
+    service_account_client_id: "example-authz-client"
+    service_account_client_secret: "not-a-real-authz-secret"
   email:
     smtp_password: "not-a-real-password:#"
   sms:
