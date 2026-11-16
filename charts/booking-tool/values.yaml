@@ -7,9 +7,10 @@ image:
 imagePullSecrets:
   - name: "dockerconfigjson-github-com"
 
-# Dedicated IRSA identity; Kubernetes API-token automount is disabled.
-# EKS injects a separate projected STS token. Verify injection and AWS credentials
-# before activation; AWS_EC2_METADATA_DISABLED=true blocks node-role fallback.
+# AWS workload identity (IRSA); the application does not need Kubernetes API access.
+# Kubernetes API-token automount is disabled; EKS supplies a separate projected STS token.
+# Verify injection and AWS credentials before activation.
+# AWS_EC2_METADATA_DISABLED=true blocks node-role fallback.
 serviceAccount:
   create: true
   # Empty uses the chart-generated name; required when create is false.
@@ -34,14 +35,15 @@ service:
 
 # Application config.yaml; TLS terminates outside the Pod.
 # Without existingSecret, inline values render a ConfigMap; empty defaults are not runnable.
-# Never pass credentials through Helm values or Terraform; releases/state retain them.
+# Keep credentials out of Git, Helm values and Terraform inputs.
 # annotations and existingSecret are chart settings, excluded from the application file.
 # After either source changes, restart the Deployment to reload the subPath-mounted file:
 # kubectl rollout restart deployment/<release-name> --namespace <release-namespace>
 config:
   annotations: {}
-  # Pre-existing Secret in the release namespace; config.yaml must hold the complete file.
-  # Mounted read-only at /srv/config.yaml; no Secret or ConfigMap is created in this mode.
+  # Secret in the release namespace; provision/populate it outside Helm before activation.
+  # Its config.yaml key must hold the complete application file.
+  # Mounted read-only at /srv/config.yaml; no application Secret or ConfigMap is rendered.
   existingSecret: ""
   zitadel:
     domain: ""

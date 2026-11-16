@@ -26,14 +26,27 @@ the [GitOps runbook](https://github.com/roclub/gitops/blob/main/docs/booking-too
 
 From the repository root, using synthetic fixtures:
 
+The [main sample](ci/sample-values.yaml) mirrors development's existing configuration
+Secret and chart-created IRSA account. The [inline fixture](ci/inline-values.yaml)
+covers ConfigMap generation and an externally managed service account.
+
 ```bash
 helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
-helm lint charts/booking-tool --strict --values charts/booking-tool/ci/secret-values.yaml
+helm lint charts/booking-tool --strict --values charts/booking-tool/ci/inline-values.yaml
 helm template booking-tool charts/booking-tool --namespace booking-tool \
-  --values charts/booking-tool/ci/secret-values.yaml
+  --values charts/booking-tool/ci/sample-values.yaml
 helm package charts/booking-tool --destination /tmp
 ```
 
 CI checks default, inline and existing-Secret values with Helm 3 and Helm 4,
 including invalid inputs. These offline checks do not prove runtime access;
 the fixtures are not deployable environment configuration.
+
+Helm validates merged values against [values.schema.json](values.schema.json)
+during lint, template, install and upgrade. The
+[chart workflow](../../.github/workflows/booking-tool-test.yml) runs these synthetic
+checks on matching pull requests and pushes to `main`.
+
+GitOps environment values are not copied into this repository. Argo CD combines
+them with the published chart and validates the merged values during rendering,
+before applying resources.

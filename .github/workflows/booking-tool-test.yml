@@ -32,19 +32,19 @@ jobs:
         with:
           version: ${{ matrix.helm }}
 
-      - name: Lint default, inline and private configuration values
+      - name: Lint default, existing-Secret and inline values
         run: |
           helm lint charts/booking-tool --strict
           helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
-          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/secret-values.yaml
+          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/inline-values.yaml
 
-      - name: Render default and sample values
+      - name: Render default, existing-Secret and inline values
         run: |
           helm template booking-tool charts/booking-tool --namespace booking-tool > "$RUNNER_TEMP/booking-tool-default.yaml"
           helm template booking-tool charts/booking-tool --namespace booking-tool \
             --values charts/booking-tool/ci/sample-values.yaml > "$RUNNER_TEMP/booking-tool-sample.yaml"
           helm template booking-tool charts/booking-tool --namespace booking-tool \
-            --values charts/booking-tool/ci/secret-values.yaml > "$RUNNER_TEMP/booking-tool-secret.yaml"
+            --values charts/booking-tool/ci/inline-values.yaml > "$RUNNER_TEMP/booking-tool-inline.yaml"
 
       - name: Reject unsafe replica and service-account settings
         run: |
