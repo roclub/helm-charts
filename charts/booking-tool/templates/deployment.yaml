@@ -65,12 +65,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: app-config
-          {{- if .Values.config.existingSecret }}
-          secret:
-            secretName: {{ .Values.config.existingSecret }}
-          {{- else }}
           configMap:
             name: {{ include "booking-tool.fullname" . }}-deployment-config
-          {{- end }}
       nodeSelector:
         {{- toYaml .Values.nodeSelector | nindent 8 }}

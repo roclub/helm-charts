@@ -22,30 +22,35 @@ For chart-option explanations, see the comments in [values.yaml](values.yaml).
 Environment-specific prerequisites, authentication and activation checks live in
 the [GitOps runbook](https://github.com/roclub/gitops/blob/main/docs/booking-tool.md).
 
+## Database scope
+
+Development uses the existing PostgreSQL RDS database through a private RDS Proxy
+endpoint. This chart does not install PostgreSQL or migrate data. A later move to
+PostgreSQL inside Kubernetes, following the controlplane-app approach, will be
+covered by a separate new REP.
+
 ## Validation
 
-From the repository root, using synthetic fixtures:
+The [sample](ci/sample-values.yaml) demonstrates inline configuration and a
+chart-created IRSA account, matching the controlplane-app ConfigMap convention.
+Helm generates the ConfigMap and mounts its application file read-only at
+`/srv/config.yaml`; no separately provisioned application configuration Secret is
+required.
 
-The [main sample](ci/sample-values.yaml) mirrors development's existing configuration
-Secret and chart-created IRSA account. The [inline fixture](ci/inline-values.yaml)
-covers ConfigMap generation and an externally managed service account.
+From the repository root:
 
 ```bash
 helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
-helm lint charts/booking-tool --strict --values charts/booking-tool/ci/inline-values.yaml
 helm template booking-tool charts/booking-tool --namespace booking-tool \
   --values charts/booking-tool/ci/sample-values.yaml
 helm package charts/booking-tool --destination /tmp
 ```
 
-CI checks default, inline and existing-Secret values with Helm 3 and Helm 4,
-including invalid inputs. These offline checks do not prove runtime access;
-the fixtures are not deployable environment configuration.
-
-Helm validates merged values against [values.schema.json](values.schema.json)
-during lint, template, install and upgrade. The
-[chart workflow](../../.github/workflows/booking-tool-test.yml) runs these synthetic
-checks on matching pull requests and pushes to `main`.
+The [chart workflow](../../.github/workflows/booking-tool-test.yml) checks default,
+sample and external-service-account values with Helm 3 and Helm 4, including
+invalid inputs and packaging. Helm validates merged values against
+[values.schema.json](values.schema.json). The fixtures are synthetic; these checks
+do not verify live dependencies.
 
 GitOps environment values are not copied into this repository. Argo CD combines
 them with the published chart and validates the merged values during rendering,

@@ -65,13 +65,21 @@
       "type": "object",
       "properties": {
         "server": false,
-        "existingSecret": {
-          "type": "string",
-          "maxLength": 253,
-          "pattern": "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+        "existingSecret": false,
+        "deployment": {
+          "type": "object",
+          "properties": {
+            "environment": { "type": "string" }
+          }
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "operator_schedule_editing": { "type": "boolean" }
+          }
         }
       },
-      "description": "The chart supplies server.port from service.httpPort."
+      "description": "Inline ConfigMap configuration; server.port comes from service.httpPort. The existingSecret option is not supported."
     }
   }
 }

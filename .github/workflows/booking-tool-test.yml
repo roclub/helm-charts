@@ -32,24 +32,25 @@ jobs:
         with:
           version: ${{ matrix.helm }}
 
-      - name: Lint default, existing-Secret and inline values
+      - name: Lint default and sample values
         run: |
           helm lint charts/booking-tool --strict
           helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
-          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/inline-values.yaml
 
-      - name: Render default, existing-Secret and inline values
+      - name: Render default, sample and external-account values
         run: |
           helm template booking-tool charts/booking-tool --namespace booking-tool > "$RUNNER_TEMP/booking-tool-default.yaml"
           helm template booking-tool charts/booking-tool --namespace booking-tool \
             --values charts/booking-tool/ci/sample-values.yaml > "$RUNNER_TEMP/booking-tool-sample.yaml"
           helm template booking-tool charts/booking-tool --namespace booking-tool \
-            --values charts/booking-tool/ci/inline-values.yaml > "$RUNNER_TEMP/booking-tool-inline.yaml"
+            --set serviceAccount.create=false,serviceAccount.name=example-booking-tool \
+            > "$RUNNER_TEMP/booking-tool-external-account.yaml"
 
-      - name: Reject unsafe replica and service-account settings
+      - name: Reject unsafe settings and invalid configuration
         run: |
           for setting in replicaCount=2 replicaCount=-1 serviceAccount.create=false \
-            serviceAccount.annotations.example=true config.existingSecret=Invalid_Name; do
+            serviceAccount.annotations.example=true config.existingSecret=example-config \
+            config.deployment.environment=123 config.features.operator_schedule_editing=not-a-boolean; do
             if helm template booking-tool charts/booking-tool --set "$setting" \
               > "$RUNNER_TEMP/booking-tool-invalid.yaml" 2> "$RUNNER_TEMP/booking-tool-invalid.log"; then
               echo "::error::Chart accepted invalid setting: $setting"

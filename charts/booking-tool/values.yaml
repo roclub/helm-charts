@@ -30,21 +30,21 @@ service:
   annotations: {}
   type: "ClusterIP"
   # Sets server.port and the container port; do not set config.server.
-  # An existing Secret's server.port must match this value.
   httpPort: 8080
 
-# Application config.yaml; TLS terminates outside the Pod.
-# Without existingSecret, inline values render a ConfigMap; empty defaults are not runnable.
-# Keep credentials out of Git, Helm values and Terraform inputs.
-# annotations and existingSecret are chart settings, excluded from the application file.
-# After either source changes, restart the Deployment to reload the subPath-mounted file:
+# Inline application config.yaml, rendered into a ConfigMap and mounted at /srv/config.yaml.
+# TLS terminates outside the Pod; empty defaults are not runnable.
+# annotations is a chart setting, excluded from the application file.
+# After configuration changes, restart the Deployment to reload the subPath-mounted file:
 # kubectl rollout restart deployment/<release-name> --namespace <release-namespace>
 config:
   annotations: {}
-  # Secret in the release namespace; provision/populate it outside Helm before activation.
-  # Its config.yaml key must hold the complete application file.
-  # Mounted read-only at /srv/config.yaml; no application Secret or ConfigMap is rendered.
-  existingSecret: ""
+  deployment:
+    # Identifies the deployment independently of GO_ENV.
+    environment: ""
+  features:
+    # Only effective in development, test and staging.
+    operator_schedule_editing: false
   zitadel:
     domain: ""
     client_id: ""
