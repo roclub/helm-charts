@@ -1,0 +1,99 @@
+image:
+  repository: "ghcr.io/roclub/booking-tool"
+  # Empty uses Chart.appVersion.
+  tag: ""
+  pullPolicy: "Always"
+
+imagePullSecrets:
+  - name: "dockerconfigjson-github-com"
+
+# AWS workload identity (IRSA); the application does not need Kubernetes API access.
+# Kubernetes API-token automount is disabled; EKS supplies a separate projected STS token.
+# Verify injection and AWS credentials before activation.
+# AWS_EC2_METADATA_DISABLED=true blocks node-role fallback.
+serviceAccount:
+  create: true
+  # Empty uses the chart-generated name; required when create is false.
+  name: ""
+  # Set eks.amazonaws.com/role-arn to the GitOps-provisioned IRSA role.
+  # Its trust must match the namespace and service-account name.
+  # With create: false, configure annotations externally; they are rejected here.
+  annotations: {}
+
+# Keep at zero while EC2 is running; never run multiple booking processes.
+replicaCount: 1
+
+deployment:
+  annotations: {}
+
+service:
+  annotations: {}
+  type: "ClusterIP"
+  # Sets server.port and the container port; do not set config.server.
+  httpPort: 8080
+
+# Inline application config.yaml, rendered into a ConfigMap and mounted at /srv/config.yaml.
+# TLS terminates outside the Pod; empty defaults are not runnable.
+# annotations is a chart setting, excluded from the application file.
+# After configuration changes, restart the Deployment to reload the subPath-mounted file:
+# kubectl rollout restart deployment/<release-name> --namespace <release-namespace>
+config:
+  annotations: {}
+  deployment:
+    # Identifies the deployment independently of GO_ENV.
+    environment: ""
+  features:
+    # Only effective in development, test and staging.
+    operator_schedule_editing: false
+  zitadel:
+    domain: ""
+    client_id: ""
+    redirect_uri: ""
+    post_logout_redirect_uri: ""
+    slo_enabled: false
+    project_id: ""
+    pat: ""
+  email:
+    sender: ""
+    smtp_host: ""
+    smtp_port: 587
+    smtp_user: ""
+    smtp_password: ""
+  database:
+    dsn: ""
+    secret_arn: ""
+  conference:
+    base_url: ""
+  storage:
+    bucket: ""
+    region: "eu-central-1"
+    endpoint: ""
+    max_upload_bytes: 10485760
+  sms:
+    region: ""
+    origins: {}
+    default_origin: ""
+  control_plane_app:
+    enabled: false
+    base_url: ""
+    project_id: ""
+    service_account_client_id: ""
+    service_account_client_secret: ""
+  controlplane_authz:
+    base_url: ""
+    project_id: ""
+    service_account_client_id: ""
+    service_account_client_secret: ""
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+    ephemeral-storage: "128Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+    ephemeral-storage: "1Gi"
+
+nodeSelector:
+  kubernetes.io/arch: "arm64"
