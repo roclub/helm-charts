@@ -2,7 +2,7 @@ apiVersion: v2
 name: controlplane
 description: Deploys all microservices associated with managing and controlling the roclub connectors
 type: application
-version: 2.60.12
+version: 2.60.18
 appVersion: "fix-redis-sentinel-failover-616-20261125110740-748b22e"
 dependencies:
   - name: influxdb2
