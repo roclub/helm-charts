@@ -20,11 +20,26 @@ serviceAccount:
   # With create: false, configure annotations externally; they are rejected here.
   annotations: {}
 
-# Keep at zero while EC2 is running; never run multiple booking processes.
+# Run at most one application replica per database; an isolated CNPG database
+# can run alongside EC2/RDS. Pause writers before importing legacy booking data.
 replicaCount: 1
 
 deployment:
   annotations: {}
+
+# migration configures the deployment-blocking schema migration Job, not legacy data transfer.
+migration:
+  # GitOps supplies the Sync hook and wave.
+  annotations: {}
+  backoffLimit: 5
+  activeDeadlineSeconds: 3600
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
 
 service:
   annotations: {}
@@ -35,6 +50,7 @@ service:
 # Inline application config.yaml, rendered into a ConfigMap and mounted at /srv/config.yaml.
 # TLS terminates outside the Pod; empty defaults are not runnable.
 # annotations is a chart setting, excluded from the application file.
+# database is generated from postgres using the runtime role; do not set config.database.
 # After configuration changes, restart the Deployment to reload the subPath-mounted file:
 # kubectl rollout restart deployment/<release-name> --namespace <release-namespace>
 config:
@@ -59,9 +75,6 @@ config:
     smtp_port: 587
     smtp_user: ""
     smtp_password: ""
-  database:
-    dsn: ""
-    secret_arn: ""
   conference:
     base_url: ""
   storage:
@@ -77,13 +90,12 @@ config:
     enabled: false
     base_url: ""
     project_id: ""
-    service_account_client_id: ""
-    service_account_client_secret: ""
+    # Base64-encoded booking-tool service-account JSON key, as required by the application.
+    service_account_key: ""
   controlplane_authz:
     base_url: ""
     project_id: ""
-    service_account_client_id: ""
-    service_account_client_secret: ""
+    service_account_key: ""
 
 resources:
   requests:
@@ -97,3 +109,74 @@ resources:
 
 nodeSelector:
   kubernetes.io/arch: "arm64"
+
+postgres:
+  # Applied to credentials, the database Issuer/Certificate and the recovery ObjectStore.
+  annotations: {}
+  connection:
+    port: 5432
+    database: "roclub_booking"
+    # Encrypts connections using the chart-managed self-signed server certificate.
+    sslMode: "require"
+
+  # Passwords are plain values, encoded by the Secret templates. Supply unique
+  # booking-specific passwords privately before reconciliation; never reuse controlplane-app's.
+  users:
+    superuser:
+      name: "postgres"
+      password: ""
+    runtime:
+      name: "booking_tool_runtime"
+      password: ""
+    migration:
+      name: "booking_tool_migration"
+      password: ""
+
+  cluster:
+    annotations: {}
+    instances: 1
+    imageName: "ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie"
+    storage:
+      className: "aws-gp3-daily-backup"
+      size: "50Gi"
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+
+  # CNPG backup recovery only, not an import of the legacy RDS database.
+  # A restored database must already have the expected roles, ownership and grants.
+  recovery:
+    enabled: false
+    destinationPath: ""
+    # Empty uses <release-name>-postgres-cluster.
+    serverName: ""
+    # Empty replays all available WAL; otherwise supply a CNPG recoveryTarget.
+    recoveryTarget: {}
+    credentials:
+      existingSecret: ""
+      accessKeyIdKey: "ACCESS_KEY_ID"
+      secretAccessKeyKey: "ACCESS_SECRET_KEY"
+
+  backup:
+    # Controls WAL archiving, the write ObjectStore and ScheduledBackup independently of recovery.
+    enabled: true
+    scheduledBackup:
+      annotations: {}
+    # Six-field cron, including seconds.
+    schedule: "0 0 2 * * *"
+    retentionPolicy: "7d"
+    # Empty uses the cluster name. Recovery must write to an empty archive,
+    # or a different path/serverName, to preserve the source backups.
+    serverName: ""
+    objectStore:
+      annotations: {}
+      # Provision a dedicated booking-tool backup destination before deployment.
+      destinationPath: "s3://booking-tool-dev-postgres-backups"
+      credentials:
+        # Already base64-encoded, matching controlplane-app's Secret data convention.
+        accessKeyId: ""
+        secretAccessKey: ""

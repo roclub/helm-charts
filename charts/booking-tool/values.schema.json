@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "replicaCount": {
-      "description": "Use zero during EC2 coexistence or one after cutover.",
+      "description": "At most one application replica per database. A dedicated, empty CNPG database can coexist with EC2/RDS.",
       "type": "integer",
       "minimum": 0,
       "maximum": 1
@@ -66,6 +66,13 @@
       "properties": {
         "server": false,
         "existingSecret": false,
+        "database": false,
+        "control_plane_app": {
+          "$ref": "#/definitions/serviceAccountClient"
+        },
+        "controlplane_authz": {
+          "$ref": "#/definitions/serviceAccountClient"
+        },
         "deployment": {
           "type": "object",
           "properties": {
@@ -79,7 +86,123 @@
           }
         }
       },
-      "description": "Inline ConfigMap configuration; server.port comes from service.httpPort. The existingSecret option is not supported."
+      "description": "Inline ConfigMap configuration; server.port comes from service.httpPort and database comes from postgres. The existingSecret option is not supported."
+    },
+    "migration": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "backoffLimit": { "type": "integer", "minimum": 0 },
+        "activeDeadlineSeconds": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "postgres": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "type": "object",
+          "properties": {
+            "port": { "const": 5432 },
+            "database": { "$ref": "#/definitions/postgresIdentifier" },
+            "sslMode": { "const": "require" }
+          }
+        },
+        "users": {
+          "type": "object",
+          "properties": {
+            "superuser": {
+              "type": "object",
+              "properties": {
+                "name": { "const": "postgres" },
+                "password": { "type": "string" }
+              }
+            },
+            "runtime": { "$ref": "#/definitions/applicationRole" },
+            "migration": { "$ref": "#/definitions/applicationRole" }
+          }
+        },
+        "cluster": {
+          "type": "object",
+          "properties": {
+            "instances": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "backup": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "objectStore": {
+              "type": "object",
+              "properties": {
+                "destinationPath": { "type": "string", "pattern": "^s3://[^/]+.*$" },
+                "credentials": {
+                  "type": "object",
+                  "properties": {
+                    "accessKeyId": { "type": "string" },
+                    "secretAccessKey": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "recovery": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "destinationPath": { "type": "string" },
+            "serverName": { "type": "string" },
+            "recoveryTarget": { "type": "object" },
+            "credentials": {
+              "type": "object",
+              "properties": {
+                "existingSecret": { "type": "string" },
+                "accessKeyIdKey": { "type": "string", "minLength": 1 },
+                "secretAccessKeyKey": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "if": { "properties": { "enabled": { "const": true } } },
+          "then": {
+            "properties": {
+              "destinationPath": { "pattern": "^s3://[^/]+.*$" },
+              "credentials": {
+                "properties": { "existingSecret": { "minLength": 1 } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "postgresIdentifier": {
+      "type": "string",
+      "maxLength": 63,
+      "pattern": "^[a-z_][a-z0-9_]*$"
+    },
+    "applicationRole": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "allOf": [
+            { "$ref": "#/definitions/postgresIdentifier" },
+            { "not": { "const": "postgres" } }
+          ]
+        },
+        "password": { "type": "string" }
+      }
+    },
+    "serviceAccountClient": {
+      "type": "object",
+      "properties": {
+        "service_account_key": { "type": "string" },
+        "service_account_client_id": false,
+        "service_account_client_secret": false
+      }
     }
   }
 }

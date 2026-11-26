@@ -15,16 +15,22 @@ serviceAccount:
 
 deployment:
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "6"
+
+migration:
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 
 service:
   httpPort: 18080
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "5"
 
 config:
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "-1"
   deployment:
     environment: "development"
   features:
@@ -34,24 +40,44 @@ config:
     client_id: "example-client"
     project_id: "00123"
     redirect_uri: "https://bookings.example.com/auth/callback"
-  database:
-    dsn: "postgres://database.example.com:5432/roclub_booking?sslmode=verify-full"
-    secret_arn: "arn:aws:secretsmanager:eu-central-1:123456789012:secret:example"
   conference:
     base_url: "https://conference.example.com"
   control_plane_app:
     enabled: true
     base_url: "https://controlplane.example.com"
     project_id: "00124"
-    service_account_client_id: "example-core-client"
-    service_account_client_secret: "not-a-real-core-secret"
+    service_account_key: "validation-only-core-key"
   controlplane_authz:
     base_url: "https://authz.example.com"
     project_id: "00125"
-    service_account_client_id: "example-authz-client"
-    service_account_client_secret: "not-a-real-authz-secret"
+    service_account_key: "validation-only-authz-key"
   email:
     smtp_password: "not-a-real-password:#"
   sms:
     origins:
       "+49": "example"
+
+postgres:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+  users:
+    superuser:
+      password: "validation-only-admin"
+    runtime:
+      password: "not a real:/?#@+% runtime password"
+    migration:
+      password: "not a real:/?#@+% migration password"
+  cluster:
+    annotations:
+      argocd.argoproj.io/sync-wave: "-4"
+  backup:
+    scheduledBackup:
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+    objectStore:
+      annotations:
+        argocd.argoproj.io/sync-wave: "-5"
+      destinationPath: "s3://validation-only-booking-backups"
+      credentials:
+        accessKeyId: "dmFsaWRhdGlvbi1vbmx5LWFjY2Vzcw=="
+        secretAccessKey: "dmFsaWRhdGlvbi1vbmx5LXNlY3JldA=="

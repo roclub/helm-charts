@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "booking-tool.fullname" . }}-migration
+  labels:
+    {{- include "booking-tool.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+  {{- with .Values.migration.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.migration.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migration.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        {{- include "booking-tool.labels" . | nindent 8 }}
+        app.kubernetes.io/component: migration
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      containers:
+        - name: migration
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /srv/roclub-booking
+          args:
+            - migrate
+            - up
+            - --config
+            - /srv/migrate.yaml
+          volumeMounts:
+            - name: migration-config
+              mountPath: /srv/migrate.yaml
+              subPath: migrate.yaml
+              readOnly: true
+          resources:
+            {{- toYaml .Values.migration.resources | nindent 12 }}
+      volumes:
+        - name: migration-config
+          configMap:
+            name: {{ include "booking-tool.fullname" . }}-migration-config
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}

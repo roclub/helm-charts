@@ -1,0 +1,27 @@
+{{- if .Values.postgres.backup.enabled }}
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: {{ include "booking-tool.fullname" . }}-aws-s3-postgres-backup
+  {{- with .Values.postgres.backup.objectStore.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "booking-tool.labels" . | nindent 4 }}
+spec:
+  retentionPolicy: {{ .Values.postgres.backup.retentionPolicy | quote }}
+  configuration:
+    destinationPath: {{ .Values.postgres.backup.objectStore.destinationPath | quote }}
+    s3Credentials:
+      accessKeyId:
+        name: {{ include "booking-tool.fullname" . }}-postgres-backup-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: {{ include "booking-tool.fullname" . }}-postgres-backup-creds
+        key: ACCESS_SECRET_KEY
+    wal:
+      compression: gzip
+    data:
+      compression: gzip
+{{- end }}

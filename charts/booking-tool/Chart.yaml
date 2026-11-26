@@ -1,6 +1,7 @@
 apiVersion: v2
 name: booking-tool
-description: Deploys the booking tool workload
+description: Deploys booking-tool with CloudNativePG and database migrations
 type: application
 version: 0.1.0
-appVersion: "v0.0.0-33eb892"
+# Replace with the published main-branch image tag after booking-tool PR #143 merges.
+appVersion: "REPLACE_WITH_POST_143_TAG"

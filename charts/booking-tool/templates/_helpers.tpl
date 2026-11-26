@@ -20,3 +20,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/name: {{ .Chart.Name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "booking-tool.postgresURL" -}}
+{{- if eq .root.Values.postgres.users.runtime.name .root.Values.postgres.users.migration.name -}}
+{{- fail "postgres.users.runtime.name and postgres.users.migration.name must differ" -}}
+{{- end -}}
+{{- $user := .user.name | urlquery | replace "+" "%20" -}}
+{{- /* URL userinfo/path use percent-encoded spaces, not form-encoded '+'. */ -}}
+{{- $password := .user.password | urlquery | replace "+" "%20" -}}
+{{- $host := printf "%s-postgres-cluster-rw" (include "booking-tool.fullname" .root) -}}
+{{- $database := .root.Values.postgres.connection.database | urlquery | replace "+" "%20" -}}
+{{- printf "postgres://%s:%s@%s:%v/%s?sslmode=%s" $user $password $host .root.Values.postgres.connection.port $database .root.Values.postgres.connection.sslMode -}}
+{{- end }}
