@@ -1,0 +1,86 @@
+name: Validate booking-tool chart
+
+on:
+  pull_request:
+    paths:
+      - "charts/booking-tool/**"
+      - ".github/workflows/booking-tool-test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "charts/booking-tool/**"
+      - ".github/workflows/booking-tool-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        helm: ["v3.17.3", "v4.1.4"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Helm
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
+        with:
+          version: ${{ matrix.helm }}
+
+      - name: Lint default and sample values
+        run: |
+          helm lint charts/booking-tool --strict
+          helm lint charts/booking-tool --strict --values charts/booking-tool/ci/sample-values.yaml
+
+      - name: Render default, sample, external-account, backup and recovery values
+        run: |
+          helm template booking-tool charts/booking-tool --namespace booking-tool > "$RUNNER_TEMP/booking-tool-default.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --values charts/booking-tool/ci/sample-values.yaml > "$RUNNER_TEMP/booking-tool-sample.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --set serviceAccount.create=false,serviceAccount.name=example-booking-tool \
+            > "$RUNNER_TEMP/booking-tool-external-account.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --set postgres.backup.enabled=false \
+            > "$RUNNER_TEMP/booking-tool-no-backup.yaml"
+          helm template booking-tool charts/booking-tool --namespace booking-tool \
+            --set postgres.recovery.enabled=true,postgres.backup.enabled=false \
+            --set postgres.recovery.destinationPath=s3://validation-only-recovery \
+            --set postgres.recovery.credentials.existingSecret=validation-only-recovery \
+            > "$RUNNER_TEMP/booking-tool-recovery.yaml"
+
+      - name: Check role separation and migration lifecycle
+        run: |
+          ruby charts/booking-tool/ci/check-render.rb \
+            "$RUNNER_TEMP/booking-tool-default.yaml" \
+            "$RUNNER_TEMP/booking-tool-sample.yaml" \
+            "$RUNNER_TEMP/booking-tool-external-account.yaml" \
+            "$RUNNER_TEMP/booking-tool-no-backup.yaml" \
+            "$RUNNER_TEMP/booking-tool-recovery.yaml"
+
+      - name: Reject unsafe settings and invalid configuration
+        run: |
+          for setting in replicaCount=2 replicaCount=-1 serviceAccount.create=false \
+            serviceAccount.annotations.example=true config.existingSecret=example-config \
+            config.deployment.environment=123 config.features.operator_schedule_editing=not-a-boolean \
+            config.database.dsn=postgres://legacy.example/database \
+            config.control_plane_app.service_account_client_secret=legacy \
+            config.controlplane_authz.service_account_client_id=legacy \
+            postgres.users.runtime.name=postgres postgres.users.migration.name=booking_tool_runtime \
+            postgres.users.runtime.name=unsafe-role-name postgres.cluster.instances=0 \
+            postgres.connection.sslMode=disable postgres.connection.port=15432 \
+            postgres.recovery.enabled=true migration.activeDeadlineSeconds=0; do
+            if helm template booking-tool charts/booking-tool --set "$setting" \
+              > "$RUNNER_TEMP/booking-tool-invalid.yaml" 2> "$RUNNER_TEMP/booking-tool-invalid.log"; then
+              echo "::error::Chart accepted invalid setting: $setting"
+              exit 1
+            fi
+          done
+
+      - name: Package chart
+        run: helm package charts/booking-tool --destination "$RUNNER_TEMP"

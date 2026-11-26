@@ -1,0 +1,174 @@
+image:
+  repository: "ghcr.io/roclub/booking-tool"
+  # Empty uses Chart.appVersion.
+  tag: ""
+  pullPolicy: "Always"
+
+imagePullSecrets:
+  - name: "dockerconfigjson-github-com"
+
+# AWS workload identity (IRSA); the application does not need Kubernetes API access.
+# Kubernetes API-token automount is disabled; EKS supplies a separate projected STS token.
+# AWS_EC2_METADATA_DISABLED=true blocks node-role fallback.
+serviceAccount:
+  create: true
+  # Empty uses the chart-generated name; required when create is false.
+  name: ""
+  # Set eks.amazonaws.com/role-arn to the GitOps-provisioned IRSA role.
+  # Its trust must match the namespace and service-account name.
+  # With create: false, configure annotations externally; they are rejected here.
+  annotations: {}
+
+# At most one application replica per database.
+replicaCount: 1
+
+deployment:
+  annotations: {}
+
+migration:
+  annotations: {}
+  backoffLimit: 5
+  activeDeadlineSeconds: 3600
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+
+service:
+  annotations: {}
+  type: "ClusterIP"
+  # Sets server.port and the container port; do not set config.server.
+  httpPort: 8080
+
+# Inline application config.yaml, rendered into a ConfigMap and mounted at /srv/config.yaml.
+# TLS terminates outside the Pod; empty defaults are not runnable.
+# annotations is a chart setting, excluded from the application file.
+# database is generated from postgres using the runtime role; do not set config.database.
+# After configuration changes, restart the Deployment to reload the subPath-mounted file:
+# kubectl rollout restart deployment/<release-name> --namespace <release-namespace>
+config:
+  annotations: {}
+  deployment:
+    # Identifies the deployment independently of GO_ENV.
+    environment: ""
+  features:
+    # Only effective in development, test and staging.
+    operator_schedule_editing: false
+  zitadel:
+    domain: ""
+    client_id: ""
+    redirect_uri: ""
+    post_logout_redirect_uri: ""
+    slo_enabled: false
+    project_id: ""
+    pat: ""
+  email:
+    sender: ""
+    smtp_host: ""
+    smtp_port: 587
+    smtp_user: ""
+    smtp_password: ""
+  conference:
+    base_url: ""
+  storage:
+    bucket: ""
+    region: "eu-central-1"
+    endpoint: ""
+    max_upload_bytes: 10485760
+  sms:
+    region: ""
+    origins: {}
+    default_origin: ""
+  control_plane_app:
+    base_url: ""
+    project_id: ""
+    # Base64-encoded service-account JSON key.
+    service_account_key: ""
+  controlplane_authz:
+    base_url: ""
+    project_id: ""
+    service_account_key: ""
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+    ephemeral-storage: "128Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+    ephemeral-storage: "1Gi"
+
+nodeSelector:
+  kubernetes.io/arch: "arm64"
+
+postgres:
+  # Applied to credentials, the database Issuer/Certificate and the recovery ObjectStore.
+  annotations: {}
+  connection:
+    port: 5432
+    database: "roclub_booking"
+    # Encrypts connections using the chart-managed self-signed server certificate.
+    sslMode: "require"
+
+  # Plain passwords; Secret templates encode them.
+  users:
+    superuser:
+      name: "postgres"
+      password: ""
+    runtime:
+      name: "booking_tool_runtime"
+      password: ""
+    migration:
+      name: "booking_tool_migration"
+      password: ""
+
+  cluster:
+    annotations: {}
+    instances: 1
+    imageName: "ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie"
+    storage:
+      className: "aws-gp3-daily-backup"
+      size: "50Gi"
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+
+  # Recovery requires matching roles, ownership and grants.
+  recovery:
+    enabled: false
+    destinationPath: ""
+    # Empty uses <release-name>-postgres-cluster.
+    serverName: ""
+    # Empty replays all available WAL; otherwise supply a CNPG recoveryTarget.
+    recoveryTarget: {}
+    credentials:
+      existingSecret: ""
+      accessKeyIdKey: "ACCESS_KEY_ID"
+      secretAccessKeyKey: "ACCESS_SECRET_KEY"
+
+  backup:
+    # Controls WAL archiving, the write ObjectStore and ScheduledBackup independently of recovery.
+    enabled: true
+    scheduledBackup:
+      annotations: {}
+    # Six-field cron, including seconds.
+    schedule: "0 0 2 * * *"
+    retentionPolicy: "7d"
+    # Empty uses the cluster name. Recovery must write to an empty archive,
+    # or a different path/serverName, to preserve the source backups.
+    serverName: ""
+    objectStore:
+      annotations: {}
+      destinationPath: "s3://booking-tool-dev-postgres-backups"
+      credentials:
+        # Base64-encoded credentials.
+        accessKeyId: ""
+        secretAccessKey: ""

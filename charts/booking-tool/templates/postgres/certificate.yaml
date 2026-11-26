@@ -1,0 +1,45 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "booking-tool.fullname" . }}-selfsigned-issuer
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "booking-tool.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "booking-tool.fullname" . }}-postgres-cert
+  {{- with .Values.postgres.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "booking-tool.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "booking-tool.fullname" . }}-postgres-cert
+  secretTemplate:
+    labels:
+      cnpg.io/reload: "true"
+      {{- include "booking-tool.labels" . | nindent 6 }}
+  usages:
+    - server auth
+  dnsNames:
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-rw
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-rw.{{ .Release.Namespace }}.svc
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-r
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-r.{{ .Release.Namespace }}.svc
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-ro
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}
+    - {{ include "booking-tool.fullname" . }}-postgres-cluster-ro.{{ .Release.Namespace }}.svc
+  issuerRef:
+    name: {{ include "booking-tool.fullname" . }}-selfsigned-issuer
+    kind: Issuer
+    group: cert-manager.io
