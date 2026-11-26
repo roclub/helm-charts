@@ -3,4 +3,4 @@ name: booking-tool
 description: Deploys booking-tool with CloudNativePG and database migrations
 type: application
 version: 0.1.0
-appVersion: "REPLACE_WITH_POST_143_TAG"
+appVersion: "v0.0.0-7ea86a6"
