@@ -9,7 +9,6 @@ imagePullSecrets:
 
 # AWS workload identity (IRSA); the application does not need Kubernetes API access.
 # Kubernetes API-token automount is disabled; EKS supplies a separate projected STS token.
-# Verify injection and AWS credentials before activation.
 # AWS_EC2_METADATA_DISABLED=true blocks node-role fallback.
 serviceAccount:
   create: true
@@ -20,16 +19,13 @@ serviceAccount:
   # With create: false, configure annotations externally; they are rejected here.
   annotations: {}
 
-# Run at most one application replica per database; an isolated CNPG database
-# can run alongside EC2/RDS. Pause writers before importing legacy booking data.
+# At most one application replica per database.
 replicaCount: 1
 
 deployment:
   annotations: {}
 
-# migration configures the deployment-blocking schema migration Job, not legacy data transfer.
 migration:
-  # GitOps supplies the Sync hook and wave.
   annotations: {}
   backoffLimit: 5
   activeDeadlineSeconds: 3600
@@ -90,7 +86,7 @@ config:
     enabled: false
     base_url: ""
     project_id: ""
-    # Base64-encoded booking-tool service-account JSON key, as required by the application.
+    # Base64-encoded service-account JSON key.
     service_account_key: ""
   controlplane_authz:
     base_url: ""
@@ -119,8 +115,7 @@ postgres:
     # Encrypts connections using the chart-managed self-signed server certificate.
     sslMode: "require"
 
-  # Passwords are plain values, encoded by the Secret templates. Supply unique
-  # booking-specific passwords privately before reconciliation; never reuse controlplane-app's.
+  # Plain passwords; Secret templates encode them.
   users:
     superuser:
       name: "postgres"
@@ -147,8 +142,7 @@ postgres:
         cpu: "200m"
         memory: "512Mi"
 
-  # CNPG backup recovery only, not an import of the legacy RDS database.
-  # A restored database must already have the expected roles, ownership and grants.
+  # Recovery requires matching roles, ownership and grants.
   recovery:
     enabled: false
     destinationPath: ""
@@ -174,9 +168,8 @@ postgres:
     serverName: ""
     objectStore:
       annotations: {}
-      # Provision a dedicated booking-tool backup destination before deployment.
       destinationPath: "s3://booking-tool-dev-postgres-backups"
       credentials:
-        # Already base64-encoded, matching controlplane-app's Secret data convention.
+        # Base64-encoded credentials.
         accessKeyId: ""
         secretAccessKey: ""
