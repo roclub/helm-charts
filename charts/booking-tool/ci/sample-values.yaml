@@ -43,7 +43,6 @@ config:
   conference:
     base_url: "https://conference.example.com"
   control_plane_app:
-    enabled: true
     base_url: "https://controlplane.example.com"
     project_id: "00124"
     service_account_key: "validation-only-core-key"

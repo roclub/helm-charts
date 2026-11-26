@@ -83,7 +83,6 @@ config:
     origins: {}
     default_origin: ""
   control_plane_app:
-    enabled: false
     base_url: ""
     project_id: ""
     # Base64-encoded service-account JSON key.
